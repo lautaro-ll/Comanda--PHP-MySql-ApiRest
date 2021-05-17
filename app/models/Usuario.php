@@ -68,7 +68,7 @@ class Usuario
     public static function borrarUsuario($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET 'fecha-baja'=:fechaBaja WHERE id=:id");
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET `fecha-baja`=:fechaBaja WHERE id=:id");
         $fecha = new DateTime(date("d-m-Y"));
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));

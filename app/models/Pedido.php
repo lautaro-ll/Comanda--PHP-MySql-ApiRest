@@ -75,7 +75,7 @@ class Pedido {
     public static function borrarPedido($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("DELETE FROM `pedidos` WHERE id=:id");
+        $consulta = $objAccesoDato->prepararConsulta("DELETE FROM pedidos WHERE id=:id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
     }

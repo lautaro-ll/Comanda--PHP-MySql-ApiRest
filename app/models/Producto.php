@@ -42,7 +42,7 @@ class Producto {
     public function modificarProducto()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE productos SET tipo=:tipo, producto=:producto, 'tipo-usuario'=:tipoUsuario, precio=:precio WHERE id=:id");
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE productos SET tipo=:tipo, producto=:producto, `tipo-usuario`=:tipoUsuario, precio=:precio WHERE id=:id");
         $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
         $consulta->bindValue(':producto', $this->producto, PDO::PARAM_STR);
         $consulta->bindValue(':tipoUsuario', $this->tipoUsuario, PDO::PARAM_STR);
@@ -54,7 +54,7 @@ class Producto {
     public static function borrarProducto($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("DELETE FROM `productos` WHERE id=:id");
+        $consulta = $objAccesoDato->prepararConsulta("DELETE FROM productos WHERE id=:id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
