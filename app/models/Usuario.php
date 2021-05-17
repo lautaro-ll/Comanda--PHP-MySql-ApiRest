@@ -6,16 +6,18 @@ class Usuario
     public $tipo;
     public $usuario;
     public $clave;
+    public $nombre;
     public $fechaBaja;
 
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (tipo, usuario, clave) VALUES (:tipo, :usuario, :clave)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (tipo, usuario, clave, nombre) VALUES (:tipo, :usuario, :clave, :nombre)");
         $claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
         $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $claveHash);
+        $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -43,10 +45,11 @@ class Usuario
     public function modificarUsuario()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET tipo=:tipo, usuario=:usuario, clave=:clave WHERE id=:id");
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET tipo=:tipo, usuario=:usuario, clave=:clave, nombre=:nombre WHERE id=:id");
         $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
         $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $this->clave, PDO::PARAM_STR);
+        $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
         $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);
         $consulta->execute();
     }
