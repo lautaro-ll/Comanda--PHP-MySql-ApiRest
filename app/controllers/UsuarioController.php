@@ -38,6 +38,19 @@ class UsuarioController extends Usuario implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 
+    public function TraerTodosPorTipo($request, $response, $args)
+    {
+      $parametros = $request->getParsedBody();
+
+        $tipo = $parametros['tipo'];
+        $lista = Usuario::obtenerUsuariosPorTipo($tipo);
+        $payload = json_encode(array("listaUsuario" => $lista));
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
     public function TraerTodos($request, $response, $args)
     {
         $lista = Usuario::obtenerTodos();
