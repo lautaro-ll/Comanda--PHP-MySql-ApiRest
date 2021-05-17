@@ -22,7 +22,7 @@ class PedidoController extends Pedido implements IApiUsable
         $pdd->idMesa = $idMesa;
         $pdd->idProducto = $idProducto;
         $pdd->precio = $precio;
-        $pdd->estado = "en preparación";
+        $pdd->estado = "en preparacion";
         $pdd->crearPedido();
 
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));

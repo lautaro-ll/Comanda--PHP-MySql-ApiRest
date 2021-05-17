@@ -17,7 +17,7 @@ class Pedido {
     public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (`cliente`, `foto`, `codigo-pedido`, `idmesa`, `idproducto`, `precio`, `estado`) VALUES (:cliente, :foto, :codigoPedido, :idMesa, :idProducto, :precio, :idUsuario, :estado)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (`cliente`, `foto`, `codigo-pedido`, `idmesa`, `idproducto`, `precio`, `estado`) VALUES (:cliente, :foto, :codigoPedido, :idMesa, :idProducto, :precio, :estado)");
         $consulta->bindValue(':cliente', $this->cliente, PDO::PARAM_STR);
         $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
