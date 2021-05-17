@@ -8,14 +8,14 @@ class ProductoController extends Producto implements IApiUsable
     {
         $parametros = $request->getParsedBody();
 
+        $tipo = $parametros['tipo'];
         $producto = $parametros['producto'];
-        $descripcion = $parametros['descripcion'];
         $tipoUsuario = $parametros['tipoUsuario'];
         $precio = $parametros['precio'];
 
         $prd = new Producto();
+        $prd->tipo = $tipo;
         $prd->producto = $producto;
-        $prd->descripcion = $descripcion;
         $prd->tipoUsuario = $tipoUsuario;
         $prd->precio = $precio;
         $prd->crearProducto();
@@ -52,15 +52,15 @@ class ProductoController extends Producto implements IApiUsable
     {
         $parametros = $request->getParsedBody();
         
+        $tipo = $parametros['tipo'];
         $producto = $parametros['producto'];
-        $descripcion = $parametros['descripcion'];
         $tipoUsuario = $parametros['tipoUsuario'];
         $precio = $parametros['precio'];
         $id = $parametros['id'];
 
         $prd = new Producto();
+        $prd->tipo = $tipo;
         $prd->producto = $producto;
-        $prd->descripcion = $descripcion;
         $prd->tipoUsuario = $tipoUsuario;
         $prd->precio = $precio;
         $prd->nombre = $id;

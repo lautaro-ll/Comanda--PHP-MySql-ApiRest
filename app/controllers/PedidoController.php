@@ -8,14 +8,24 @@ class PedidoController extends Pedido implements IApiUsable
     {
         $parametros = $request->getParsedBody();
 
-        $pedido = $parametros['pedido'];
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
+        $codigoPedido = $parametros['codigoPedido'];
+        $idMesa = $parametros['idMesa'];
+        $idProducto = $parametros['idProducto'];
+        $precio = $parametros['precio'];
+        $idUsuario = $parametros['idUsuario'];
+        $estado = $parametros['estado'];;
 
         $pdd = new Pedido();
-        $pdd->pedido = $pedido;
         $pdd->cliente = $cliente;
         $pdd->foto = $foto;
+        $pdd->codigoPedido = $codigoPedido;
+        $pdd->idMesa = $idMesa;
+        $pdd->idProducto = $idProducto;
+        $pdd->precio = $precio;
+        $pdd->idUsuario = $idUsuario;
+        $pdd->estado = $estado;
         $pdd->crearPedido();
 
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
@@ -49,16 +59,32 @@ class PedidoController extends Pedido implements IApiUsable
     public function ModificarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-
-        $pedido = $parametros['pedido'];
+        
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
+        $codigoPedido = $parametros['codigoPedido'];
+        $idMesa = $parametros['idMesa'];
+        $idProducto = $parametros['idProducto'];
+        $precio = $parametros['precio'];
+        $idUsuario = $parametros['idUsuario'];
+        $estado = $parametros['estado'];
+        $tiempoEstimado = $parametros['tiempoEstimado'];
+        $tiempoFinalizado = $parametros['tiempoFinalizado'];
+        $tiempoEntregado = $parametros['tiempoEntregado'];
         $id = $parametros['id'];
 
         $pdd = new Pedido();
-        $pdd->pedido = $pedido;
         $pdd->cliente = $cliente;
         $pdd->foto = $foto;
+        $pdd->codigoPedido = $codigoPedido;
+        $pdd->idMesa = $idMesa;
+        $pdd->idProducto = $idProducto;
+        $pdd->precio = $precio;
+        $pdd->idUsuario = $idUsuario;
+        $pdd->estado = $estado;
+        $pdd->tiempoEstimado = $tiempoEstimado;
+        $pdd->tiempoFinalizado = $tiempoFinalizado;
+        $pdd->tiempoEntregado = $tiempoEntregado;
         $pdd->nombre = $id;
         $pdd->modificarPedido();
 

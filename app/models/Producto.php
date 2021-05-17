@@ -2,17 +2,17 @@
 
 class Producto {
     public $id;
+    public $tipo;
     public $producto;
-    public $descripcion;
     public $tipoUsuario;
     public $precio;
 
     public function crearProducto()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (producto, descripcion, 'tipo-usuario', precio) VALUES (:producto, :descripcion, :tipoUsuario, :precio)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (tipo, producto, 'tipo-usuario', precio) VALUES (:tipo, :producto, :tipoUsuario, :precio)");
+        $consulta->bindValue(':tipo', $this->descripcion, PDO::PARAM_STR);
         $consulta->bindValue(':producto', $this->producto, PDO::PARAM_STR);
-        $consulta->bindValue(':descripcion', $this->descripcion, PDO::PARAM_STR);
         $consulta->bindValue(':tipoUsuario', $this->tipoUsuario, PDO::PARAM_STR);
         $consulta->bindValue(':precio', $this->precio, PDO::PARAM_STR);
         $consulta->execute();
@@ -42,9 +42,9 @@ class Producto {
     public function modificarProducto()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE productos SET producto=:producto, descripcion=:descripcion, 'tipo-usuario'=:tipoUsuario, precio=:precio WHERE id=:id");
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE productos SET tipo=:tipo, producto=:producto, 'tipo-usuario'=:tipoUsuario, precio=:precio WHERE id=:id");
+        $consulta->bindValue(':tipo', $this->descripcion, PDO::PARAM_STR);
         $consulta->bindValue(':producto', $this->producto, PDO::PARAM_STR);
-        $consulta->bindValue(':descripcion', $this->descripcion, PDO::PARAM_STR);
         $consulta->bindValue(':tipoUsuario', $this->tipoUsuario, PDO::PARAM_STR);
         $consulta->bindValue(':precio', $this->precio, PDO::PARAM_STR);
         $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);

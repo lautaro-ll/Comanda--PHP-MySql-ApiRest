@@ -1,0 +1,68 @@
+AGREGAR	
+USUARIOS
+datetime fecha-alta
+
+PEDIDOS (se genera con 1 mismo nro de pedido, varias entradas en la db)
+datetime tiempo-estimado
+datetime tiempo-entregado
+varchar estado (completado/cancelado)
+varchar mesa (en que mesa lo pidieron)
+varchar producto (que producto pidieron)
+varchar usuario (que usuario se hizo cargo de la comanda)
+int precio (cuanto sale el pedido a la fecha)
+
+ENCUESTA
+ -> 
+ nro mesa, 
+ nro pedido, 
+ calif. mesa,
+ calif. resto, 
+ calif. mozo, 
+ calif. cocinero,
+ experiencia (66 caract.)
+
+SACAR
+MESA
+datetime tiempo-estimado
+varchar descripcion
+
+
+
+ --------------------------------------
+ 
+ USUARIOS
+ id
+ tipo
+ nombre
+ usuario
+ clave
+ fecha-alta
+ fecha-baja
+ 
+ PRODUCTOS
+ id
+ tipo (bebida o comida)
+ producto (nombre)
+ tipo-usuario (bartender, etc)
+ precio (precio actual)
+ 
+ MESAS
+ id
+ codigo-identif (de la mesa)
+ codigo-pedido (pedido en curso) -NULLEABLE
+ estado (esperando, comiendo, cerrada) 
+ 
+ PEDIDOS
+ cliente
+ foto
+ codigo-pedido
+ idmesa (en que mesa lo pidieron)
+ idproducto (que producto pidieron)
+ precio (cuanto sale el pedido a la fecha)
+ idusuario (que usuario se hizo cargo de la comanda)
+ estado ("en preparacion", "listo para servir", "cancelado")
+ tiempo-estimado
+ tiempo-finalizado
+ tiempo-entregado
+ 
+ si el cliente consulta el tiempo estimado (con nro de mesa y de pedido) se devuelve el tiempo estimado mayor de los pendientes.

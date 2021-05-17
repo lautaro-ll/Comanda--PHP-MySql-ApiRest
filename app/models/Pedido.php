@@ -2,17 +2,33 @@
 
 class Pedido {
     public $id;
-    public $pedido;
     public $cliente;
     public $foto;
+    public $codigoPedido;
+    public $idMesa;
+    public $idProducto;
+    public $precio;
+    public $idUsuario;
+    public $estado;
+    public $tiempoEstimado;
+    public $tiempoFinalizado;
+    public $tiempoEntregado;
 
     public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (pedido, cliente, foto) VALUES (:pedido, :cliente, :foto)");
-        $consulta->bindValue(':pedido', $this->pedido, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (`cliente`, `foto`, `codigo-pedido`, `idmesa`, `idproducto`, `precio`, `idusuario`, `estado`, `tiempo-estimado`, `tiempo-finalizado`, `tiempo-entregado`) VALUES (:cliente, :foto, :codigoPedido, :idMesa, :idProducto, :precio, :idUsuario, :estado, :tiempoEstimado, :tiempoFinalizado, :tiempoEntregado)");
         $consulta->bindValue(':cliente', $this->cliente, PDO::PARAM_STR);
         $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
+        $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':idMesa', $this->idMesa, PDO::PARAM_INT);
+        $consulta->bindValue(':idProducto', $this->idProducto, PDO::PARAM_INT);
+        $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
+        $consulta->bindValue(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
+        $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoEstimado', $this->tiempoEstimado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoFinalizado', $this->tiempoFinalizado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoEntregado', $this->tiempoEntregado, PDO::PARAM_STR);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -40,10 +56,18 @@ class Pedido {
     public function modificarPedido()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE pedidos SET pedido=:pedido, cliente=:cliente, foto=:foto WHERE id=:id");
-        $consulta->bindValue(':pedido', $this->pedido, PDO::PARAM_STR);
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE pedidos SET (cliente=:cliente, foto=:foto, `codigo-pedido`=:codigoPedido, idmesa=:idMesa, idproducto=:idProducto, precio=:precio, idusuario=:idUsuario, estado=:estado, `tiempo-estimado`=:tiempoEstimado, `tiempo-finalizado`=:tiempoFinalizado, `tiempo-entregado`=:tiempoEntregado) WHERE id=:id");
         $consulta->bindValue(':cliente', $this->cliente, PDO::PARAM_STR);
         $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
+        $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':idMesa', $this->idMesa, PDO::PARAM_INT);
+        $consulta->bindValue(':idProducto', $this->idProducto, PDO::PARAM_INT);
+        $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
+        $consulta->bindValue(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
+        $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoEstimado', $this->tiempoEstimado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoFinalizado', $this->tiempoFinalizado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoEntregado', $this->tiempoEntregado, PDO::PARAM_STR);
         $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);
         $consulta->execute();
     }

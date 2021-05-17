@@ -10,13 +10,11 @@ class MesaController extends Mesa implements IApiUsable
 
         $codigoIdentificacion = $parametros['codigoIdentificacion'];
         $codigoPedido = $parametros['codigoPedido'];
-        $tiempoEstimado = $parametros['tiempoEstimado'];
         $estado = $parametros['estado'];
 
         $msa = new Mesa();
         $msa->codigoIdentificacion = $codigoIdentificacion;
         $msa->codigoPedido = $codigoPedido;
-        $msa->tiempoEstimado = $tiempoEstimado;
         $msa->estado = $estado;
         $msa->crearMesa();
 
@@ -54,14 +52,12 @@ class MesaController extends Mesa implements IApiUsable
 
         $codigoIdentificacion = $parametros['codigoIdentificacion'];
         $codigoPedido = $parametros['codigoPedido'];
-        $tiempoEstimado = $parametros['tiempoEstimado'];
         $estado = $parametros['estado'];
         $id = $parametros['id'];
 
         $msa = new Mesa();
         $msa->codigoIdentificacion = $codigoIdentificacion;
         $msa->codigoPedido = $codigoPedido;
-        $msa->tiempoEstimado = $tiempoEstimado;
         $msa->estado = $estado;
         $msa->nombre = $id;
         $msa->modificarMesa();
