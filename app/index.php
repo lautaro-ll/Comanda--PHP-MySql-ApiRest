@@ -50,7 +50,7 @@ $app->get('[/]', function (Request $request, Response $response) {
     $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
     return $response;
 
-})->add($mw);
+});
 
 $app->run();
 
