@@ -14,6 +14,7 @@ class PedidoController extends Pedido implements IApiUsable
         $idMesa = $parametros['idMesa'];
         $idProducto = $parametros['idProducto'];
         $precio = $parametros['precio'];
+        $idMozo = $parametros['idMozo'];
 
         $pdd = new Pedido();
         $pdd->cliente = $cliente;
@@ -22,6 +23,7 @@ class PedidoController extends Pedido implements IApiUsable
         $pdd->idMesa = $idMesa;
         $pdd->idProducto = $idProducto;
         $pdd->precio = $precio;
+        $pdd->idMozo = $idMozo;
         $pdd->estado = "solicitado";
         $pdd->crearPedido();
 
