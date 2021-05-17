@@ -17,18 +17,14 @@ class Pedido {
     public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (`cliente`, `foto`, `codigo-pedido`, `idmesa`, `idproducto`, `precio`, `idusuario`, `estado`, `tiempo-estimado`, `tiempo-finalizado`, `tiempo-entregado`) VALUES (:cliente, :foto, :codigoPedido, :idMesa, :idProducto, :precio, :idUsuario, :estado, :tiempoEstimado, :tiempoFinalizado, :tiempoEntregado)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (`cliente`, `foto`, `codigo-pedido`, `idmesa`, `idproducto`, `precio`, `estado`) VALUES (:cliente, :foto, :codigoPedido, :idMesa, :idProducto, :precio, :idUsuario, :estado)");
         $consulta->bindValue(':cliente', $this->cliente, PDO::PARAM_STR);
         $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':idMesa', $this->idMesa, PDO::PARAM_INT);
         $consulta->bindValue(':idProducto', $this->idProducto, PDO::PARAM_INT);
         $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
-        $consulta->bindValue(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
-        $consulta->bindValue(':tiempoEstimado', $this->tiempoEstimado, PDO::PARAM_STR);
-        $consulta->bindValue(':tiempoFinalizado', $this->tiempoFinalizado, PDO::PARAM_STR);
-        $consulta->bindValue(':tiempoEntregado', $this->tiempoEntregado, PDO::PARAM_STR);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
