@@ -29,8 +29,10 @@ class MesaController extends Mesa implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        $msa = $args['id'];
-        $mesa = Mesa::obtenerMesa($msa);
+      $parametros = $request->getParsedBody();
+
+        $id = $parametros['id'];
+        $mesa = Mesa::obtenerMesa($id);
         $payload = json_encode($mesa);
 
         $response->getBody()->write($payload);
