@@ -25,7 +25,7 @@ $app = AppFactory::create();
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/u/{usuario}', \UsuarioController::class . ':TraerUno');
-    $group->get('/t/{tipo}', \UsuarioController::class . ':TraerUno');
+    $group->get('/t/{tipo}', \UsuarioController::class . ':TraerTodosPorTipo');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
   });
 
