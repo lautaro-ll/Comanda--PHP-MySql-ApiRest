@@ -1,39 +1,5 @@
 <?php
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Factory\AppFactory;
-use Slim\Psr7\Response;
 
-require __DIR__ . '/../vendor/autoload.php';
-
-$app = AppFactory::create();
-
-$app->add(function (Request $request, RequestHandler $handler) {
-    $response = $handler->handle($request);
-    $response->getBody()->write(' BEFFORRRRE');
-    $existingContent = (string) $response->getBody();
-    $response = new Response();
-    $response->getBody()->write('BEFORE ' . $existingContent);
-
-    return $response;
-});
-
-$app->add(function (Request $request, RequestHandler $handler) {
-    $response = $handler->handle($request);
-    $response->getBody()->write(' AFTER');
-    return $response;
-});
-
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write('Hello World');
-    return $response;
-});
-
-$app->run();
-
-
-
-/*
 error_reporting(-1);
 ini_set('display_errors', 1);
 
@@ -46,33 +12,14 @@ use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 
 require __DIR__ . '/../vendor/autoload.php';
-
 require_once './db/AccesoDatos.php';
-// require_once './middlewares/Logger.php';
-
 require_once './controllers/UsuarioController.php';
+require_once './controllers/ProductoController.php';
+require_once './controllers/MesaController.php';
+require_once './controllers/PedidoController.php';
 
-// Instantiate App
+
 $app = AppFactory::create();
-
-// Add error middleware
-$app->addErrorMiddleware(true, true, true);
-
-$mw = function (Request $request, RequestHandler $handler) {
-  $response = $handler->handle($request);
-  $response->getBody()->write('World');
-
-  return $response;
-};
-
-//VERSION < 4
-$mw = function ($request, $response, $next) {
-  $response->getBody()->write('BEFORE');
-  $response = $next($request, $response);
-  $response->getBody()->write('AFTER');
-
-  return $response;
-};
 
 // Routes
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
@@ -81,11 +28,30 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
   });
 
+$app->group('/productos', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \ProductoController::class . ':TraerTodos');
+    $group->get('/{producto}', \ProductoController::class . ':TraerUno');
+    $group->post('[/]', \ProductoController::class . ':CargarUno');
+  });
+
+$app->group('/mesas', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \MesaController::class . ':TraerTodos');
+    $group->get('/{mesa}', \MesaController::class . ':TraerUno');
+    $group->post('[/]', \MesaController::class . ':CargarUno');
+  });
+
+$app->group('/pedidos', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \PedidoController::class . ':TraerTodos');
+    $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
+    $group->post('[/]', \PedidoController::class . ':CargarUno');
+  });
+
 $app->get('[/]', function (Request $request, Response $response) {    
-    $response->getBody()->write("Slim Framework 4 PHP");
+    $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
     return $response;
 
 })->add($mw);
 
 $app->run();
-*/
+
+?>

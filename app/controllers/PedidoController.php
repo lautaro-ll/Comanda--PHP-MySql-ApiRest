@@ -1,24 +1,24 @@
 <?php
-require_once './models/Usuario.php';
+require_once './models/Pedido.php';
 require_once './interfaces/IApiUsable.php';
 
-class UsuarioController extends Usuario implements IApiUsable
+class PedidoController extends Pedido implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
 
-        $tipo = $parametros['tipo'];
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
+        $pedido = $parametros['pedido'];
+        $cliente = $parametros['cliente'];
+        $foto = $parametros['foto'];
 
-        $usr = new Usuario();
-        $usr->tipo = $tipo;
-        $usr->usuario = $usuario;
-        $usr->clave = $clave;
-        $usr->crearUsuario();
+        $pdd = new Pedido();
+        $pdd->pedido = $pedido;
+        $pdd->cliente = $cliente;
+        $pdd->foto = $foto;
+        $pdd->crearPedido();
 
-        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
+        $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
 
         $response->getBody()->write($payload);
         return $response
@@ -27,9 +27,9 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        $usr = $args['id'];
-        $usuario = Usuario::obtenerUsuario($usr);
-        $payload = json_encode($usuario);
+        $pdd = $args['id'];
+        $pedido = Pedido::obtenerPedido($pdd);
+        $payload = json_encode($pedido);
 
         $response->getBody()->write($payload);
         return $response
@@ -38,8 +38,8 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Usuario::obtenerTodos();
-        $payload = json_encode(array("listaUsuario" => $lista));
+        $lista = Pedido::obtenerTodos();
+        $payload = json_encode(array("listaPedido" => $lista));
 
         $response->getBody()->write($payload);
         return $response
@@ -50,19 +50,19 @@ class UsuarioController extends Usuario implements IApiUsable
     {
         $parametros = $request->getParsedBody();
 
-        $tipo = $parametros['tipo'];
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
+        $pedido = $parametros['pedido'];
+        $cliente = $parametros['cliente'];
+        $foto = $parametros['foto'];
         $id = $parametros['id'];
 
-        $usr = new Usuario();
-        $usr->tipo = $tipo;
-        $usr->usuario = $usuario;
-        $usr->clave = $clave;
-        $usr->nombre = $id;
-        $usr->modificarUsuario();
+        $pdd = new Pedido();
+        $pdd->pedido = $pedido;
+        $pdd->cliente = $cliente;
+        $pdd->foto = $foto;
+        $pdd->nombre = $id;
+        $pdd->modificarPedido();
 
-        $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+        $payload = json_encode(array("mensaje" => "Pedido modificado con exito"));
 
         $response->getBody()->write($payload);
         return $response
@@ -74,9 +74,9 @@ class UsuarioController extends Usuario implements IApiUsable
         $parametros = $request->getParsedBody();
 
         $id = $parametros['id'];
-        Usuario::borrarUsuario($id);
+        Pedido::borrarPedido($id);
 
-        $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+        $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
 
         $response->getBody()->write($payload);
         return $response
