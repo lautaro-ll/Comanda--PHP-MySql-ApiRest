@@ -29,10 +29,8 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-      $parametros = $request->getParsedBody();
-
-        $id = $parametros['id'];
-        $usuario = Usuario::obtenerUsuario($id);
+        $usr = $args['id'];
+        $usuario = Usuario::obtenerUsuario($usr);
         $payload = json_encode($usuario);
 
         $response->getBody()->write($payload);
@@ -42,9 +40,7 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerTodosPorTipo($request, $response, $args)
     {
-      $parametros = $request->getParsedBody();
-
-        $tipo = $parametros['tipo'];
+        $tipo = $args['tipo'];
         $lista = Usuario::obtenerUsuariosPorTipo($tipo);
         $payload = json_encode(array("listaUsuario" => $lista));
 
