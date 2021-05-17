@@ -10,7 +10,7 @@ class Producto {
     public function crearProducto()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (tipo, producto, 'tipo-usuario', precio) VALUES (:tipo, :producto, :tipoUsuario, :precio)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos ('tipo', 'producto', 'tipo-usuario', 'precio') VALUES (:tipo, :producto, :tipoUsuario, :precio)");
         $consulta->bindValue(':tipo', $this->descripcion, PDO::PARAM_STR);
         $consulta->bindValue(':producto', $this->producto, PDO::PARAM_STR);
         $consulta->bindValue(':tipoUsuario', $this->tipoUsuario, PDO::PARAM_STR);
