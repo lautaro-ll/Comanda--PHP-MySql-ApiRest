@@ -17,7 +17,23 @@ require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
+// SOLICITUDES USUARIO
+// MOZO
+// GenerarPedido()-> "codigo-pedido"
+// CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)
 
+// BARTENDER-CERVECERO-COCINERO
+// TraerPedidosPendientesSegunTipoUsuario()
+// TomarPedido()
+// PedidoListo()
+
+// SOCIO
+// TraerEstadoPedidos()
+// CerrarMesa(codigoIdentificacion)
+
+// CLIENTE
+// TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual"
+// CargarEncuesta()
 
 $app = AppFactory::create();
 
