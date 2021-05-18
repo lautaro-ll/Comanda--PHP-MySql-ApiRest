@@ -60,9 +60,46 @@ varchar descripcion
  idproducto (que producto pidieron)
  precio (cuanto sale el pedido a la fecha)
  idusuario (que usuario se hizo cargo de la comanda)
- estado ("en preparacion", "listo para servir", "cancelado")
+ estado ("en preparacion", "listo para servir", "servido", "cancelado")
  tiempo-estimado
  tiempo-finalizado
  tiempo-entregado
  
  si el cliente consulta el tiempo estimado (con nro de mesa y de pedido) se devuelve el tiempo estimado mayor de los pendientes.
+ 
+ 
+
+ JSON WEB TOKEN
+ Tokens para diferenciar el acceso de cada usuario!
+ Se almacena del lado del cliente.
+ USAR MW para cifrar o descifrar los TOKEN.
+ nosotros usamos para codif "alg" : "HS256"
+ 
+ obligatorias payload:
+ sub - iat - exp
+ exp = iat + 600 = para darle 10 minutos de tiempo
+ 
+ la signature es la relacion entre el header y el payloader (garantiza q haya unidad en los datos)
+ 
+ La contraseña y los datos sensibles no se guardan NUNCA en un TOKEN (jwt.io te lo decodifica)
+ la contraseña se guarda en una db, no se encripta
+ (cdmon.com/es/conversor-timestamp para ver fechas Unix)
+ 
+ los login si son correctos deben devlver un JWT
+ siempre en un try catch porque esta hecho para q devuelva errores
+ en el ejemplo apirestV5 devuelve el alias, de esa forma tengo q devolver los datos q necesito q vayan al front
+ 
+ jwt.io buscar "firebase" q es la q necesitamos e instalar desde el repo de github de firebase
+ 
+ POSTAMAN
+ Autorization
+ tipo bearer
+ token token1
+ y en el ojito arriba a la derecha le paso el token q quiero sin las comillas
+ 
+ 
+ 
+ una vez q hay un login se genera un JWT, y despues todas las consultas y respuestas son via JWT
+ Guardar quien cambio el estado y en que momento!
+ 
+ date_default_timezone_set('America/Argentina/Buenos_Aires') para la hora

@@ -5,7 +5,6 @@ ini_set('display_errors', 1);
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
@@ -17,25 +16,45 @@ require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
-// SOLICITUDES USUARIO
-// MOZO
-// GenerarPedido()-> "codigo-pedido"
-// CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)
+require_once './middlewares/MWparaAutentificar.php';
 
-// BARTENDER-CERVECERO-COCINERO
-// TraerPedidosPendientesSegunTipoUsuario()
-// TomarPedido()
-// PedidoListo()
 
-// SOCIO
-// TraerEstadoPedidos()
-// CerrarMesa(codigoIdentificacion)
+/*
+ Habilitar CORS por mw
+ JWT por mw
 
-// CLIENTE
-// TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual"
-// CargarEncuesta()
+ SOLICITUDES POR USUARIO
 
+ MOZO
+ GenerarPedido()-> "codigo-pedido"
+ CancelarPedido()
+ CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)
+
+ BARTENDER-CERVECERO-COCINERO
+ TraerPedidosPendientesSegunTipoUsuario()
+ TomarPedido()
+ PedidoListo()
+
+ SOCIO
+ TraerEstadoPedidos()
+ CerrarMesa(codigoIdentificacion)
+ AltaEmpleado()
+ BajaEmpleado()
+ ModificacionEmpleado()
+ AltaProducto()
+ BajaProducto()
+ ModificacionProducto()
+ AltaMesa()
+ BajaMesa()
+ ModificacionMesa()
+
+ CLIENTE
+ TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual"
+ CargarEncuesta()
+*/
 $app = AppFactory::create();
+
+// Middleware
 
 // Routes
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
@@ -61,13 +80,13 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \PedidoController::class . ':TraerTodos');
     $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
     $group->post('[/]', \PedidoController::class . ':CargarUno');
-  });
+  })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
     return $response;
 
-});
+})->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->run();
 
