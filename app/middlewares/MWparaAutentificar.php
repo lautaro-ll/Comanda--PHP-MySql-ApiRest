@@ -22,6 +22,45 @@ class MWparaAutentificar
 		else
 		{
 			$parametros = $request->getParsedBody();
+
+			if(isset($parametros['token']))
+			{
+				$token = $parametros['token'];
+				try 
+				{
+					AutentificadorJWT::verificarToken($token);
+					$payload=AutentificadorJWT::ObtenerData($token);
+					if(isset($payload['tipo']) && $payload['tipo']=="socio")
+					{
+						$response->getBody()->write($existingContent);
+					}
+					else
+					{
+						$response->getBody()->write("NO tenes habilitado el ingreso");
+					}  
+				}
+				catch (Exception $e) {      
+					$response->getBody()->write($e->getMessage());
+				}
+			}
+		}
+		return $response;  
+	}
+
+	/*
+		public function VerificarUsuario(Request $request, RequestHandler $handler) 
+	{         
+		$response = $handler->handle($request);
+		$existingContent = (string) $response->getBody();
+		$response = new Response();
+		
+		if($request->getMethod()=="GET")
+		{
+			$response->getBody()->write("NO necesita credenciales para los get");
+		}
+		else
+		{
+			$parametros = $request->getParsedBody();
 			$tipo=$parametros['tipo'];
 			if($tipo=="socio")
 			{
@@ -34,4 +73,5 @@ class MWparaAutentificar
 		}
 		return $response;  
 	}
+	*/
 }
