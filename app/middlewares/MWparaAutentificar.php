@@ -30,7 +30,7 @@ class MWparaAutentificar
 				{
 					AutentificadorJWT::verificarToken($token);
 					$payload=AutentificadorJWT::ObtenerData($token);
-					if(isset($payload['tipo']) && $payload['tipo']=="socio")
+					if(isset($payload->tipo) && $payload->tipo=="socio")
 					{
 						$response->getBody()->write($existingContent);
 					}
@@ -42,6 +42,10 @@ class MWparaAutentificar
 				catch (Exception $e) {      
 					$response->getBody()->write($e->getMessage());
 				}
+			}
+			else
+			{
+				$response->getBody()->write("NO se ingreso token");
 			}
 		}
 		return $response;  
