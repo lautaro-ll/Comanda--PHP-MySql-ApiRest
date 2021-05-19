@@ -101,7 +101,7 @@ class UsuarioController extends Usuario implements IApiUsable
     public function Validar($request, $response, $args)
     {
       $parametros = $request->getParsedBody();
-      if($parametros['usuario']!=null && $parametros['clave']!=null)
+      if($parametros!=null && $parametros['usuario']!=null && $parametros['clave']!=null)
       {
         $usuario = $parametros['usuario'];
         $clave = $parametros['clave'];
