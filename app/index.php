@@ -57,6 +57,8 @@ $app = AppFactory::create();
 // Middleware
 
 // Routes
+$app->post('/login[/]', \UsuarioController::class . ':ValidarUsuario');
+
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/u/{usuario}', \UsuarioController::class . ':TraerUno');

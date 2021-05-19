@@ -97,4 +97,36 @@ class UsuarioController extends Usuario implements IApiUsable
         return $response
           ->withHeader('Content-Type', 'application/json');
     }
+
+    public function Validar($request, $response, $args)
+    {
+      $parametros = $request->getParsedBody();
+
+      $usuario = $parametros['usuario'];
+      $clave = $parametros['clave'];
+
+      $arrayUsuarios = Usuario::obtenerTodos();
+      if(!is_null($arrayUsuarios)) 
+      {
+        foreach($arrayUsuarios as $usuario)
+        {
+          if($usuario->usuario == $usuario) {
+              if($usuario->clave == $clave) {
+                // OK
+                $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
+                $payload = json_encode($token);
+              }
+              else {
+                $payload = json_encode(array("mensaje" => "Error en la clave"));
+              }
+            }
+            else {
+              $payload = json_encode(array("mensaje" => "Usuario no registrado"));
+            }
+        }
+      }
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
+    }
 }

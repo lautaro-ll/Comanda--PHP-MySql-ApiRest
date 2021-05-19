@@ -74,6 +74,30 @@ class Usuario
         $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));
         $consulta->execute();
     }
+
+    public static function ValidarUsuario($usuario, $clave)
+    {  
+        if($usuario!=NULL && $clave!=NULL)
+        {
+            $arrayUsuarios = Usuario::obtenerTodos();
+            if(!is_null($arrayUsuarios)) 
+            {
+                foreach($arrayUsuarios as $usuario)
+                {
+                    if($usuario->usuario == $usuario)
+                    {
+                        if($usuario->clave == $clave) {
+                            return 1; //ok
+                        }
+                        else {
+                            return -1; //clave errónea
+                        }
+                    }
+                }
+            }
+        }
+        return 0; //usuario no registrado
+    }
 }
 
 ?>

@@ -24,7 +24,7 @@ class MWparaAutentificar
 			//$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
 			
 			//perfil=Administrador(todos)
-			$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
+			$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'tipo' => "Socio");
 			
 			$token= AutentificadorJWT::CrearToken($datos);
 
@@ -85,9 +85,7 @@ class MWparaAutentificar
 		}		  
 		if($objDelaRespuesta->respuesta!="")
 		{
-			$payload = json_encode($objDelaRespuesta);
-
-			$response->getBody()->write($payload);
+			$response->getBody()->write($objDelaRespuesta);
 			return $response
 			->withHeader('Content-Type', 'application/json')
 			->withStatus(401);
