@@ -77,7 +77,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
-    $group->get('[/]', \PedidoController::class . ':TraerTodos');
+    $group->post('[/]', \PedidoController::class . ':TraerTodos');
     $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
     $group->post('[/]', \PedidoController::class . ':CargarUno');
   })->add(\MWparaAutentificar::class . ':VerificarUsuario');;

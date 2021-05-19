@@ -10,15 +10,15 @@ class MWparaAutentificar
          
 		$objDelaRespuesta= new stdclass();
 		$objDelaRespuesta->respuesta="";
+		$response = $handler->handle($request);
 	   
 		if($request->getMethod()=="GET")
 		{
-			$response = $handler->handle($request);
 		    $response->getBody()->write('<p>NO necesita credenciales para los get </p>'); //borrar
 		}
 		else
 		{
-			//$response->getBody()->write('<p>verifico credenciales</p>');
+			$response->getBody()->write('<p>verifico credenciales</p>');
 
 			//perfil=Profesor (GET, POST)
 			//$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
@@ -77,7 +77,7 @@ class MWparaAutentificar
 			}    
 			else
 			{
-				//   $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+				$response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
 				$objDelaRespuesta->respuesta="Solo usuarios registrados";
 				$objDelaRespuesta->elToken=$token;
 
