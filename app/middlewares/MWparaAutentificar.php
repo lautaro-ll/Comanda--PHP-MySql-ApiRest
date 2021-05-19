@@ -26,13 +26,13 @@ class MWparaAutentificar
 			var_dump($tipo);
 			if($tipo=="socio")
 			{
-				$response = json_encode($parametros);
+				$response->getBody()->write($existingContent);
 			}
 			else
 			{
-				$response = json_encode(array("mensaje" => "NO tenes habilitado el ingreso"));
+				$response->getBody()->write("NO tenes habilitado el ingreso");
 			}  
 		}
-		return $response->withStatus(401);  
+		return $response;  
 	}
 }
