@@ -22,9 +22,8 @@ class MWparaAutentificar
 		else
 		{
 			//$parametros = $request->getParsedBody();
-			$headers = $request->getHeaders();
-			var_dump($headers["Authorization"][0]);
-			$arrayConToken = $headers["Authorization"];
+			$arrayConToken = $request->getHeader('Authorization');
+			var_dump($arrayConToken);
 			if(isset($arrayConToken[0]))
 			{
 				//$token = $parametros['token'];
