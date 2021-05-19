@@ -106,7 +106,7 @@ class UsuarioController extends Usuario implements IApiUsable
       $clave = $parametros['clave'];
       var_dump($usuario + $clave);
       $arrayUsuarios = Usuario::obtenerTodos();
-      if(!is_null($arrayUsuarios)) 
+      if($usuario!=null && $clave!=null && !is_null($arrayUsuarios)) 
       {
         foreach($arrayUsuarios as $usuario)
         {
