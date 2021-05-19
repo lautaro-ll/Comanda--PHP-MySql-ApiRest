@@ -85,11 +85,16 @@ class MWparaAutentificar
 		}		  
 		if($objDelaRespuesta->respuesta!="")
 		{
-			$nueva=$response->withJson($objDelaRespuesta, 401);  
-			return $nueva;
+			$payload = json_encode($objDelaRespuesta);
+
+			$response->getBody()->write($payload);
+			return $response
+			->withHeader('Content-Type', 'application/json')
+			->withStatus(401);
 		}
 		  
 		 //$response->getBody()->write('<p>vuelvo del verificador de credenciales</p>');
-		 return $response;   
+		 return $response  
+		 ->withHeader('Content-Type', 'application/json');
 	}
 }
