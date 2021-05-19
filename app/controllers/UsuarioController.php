@@ -111,12 +111,12 @@ class UsuarioController extends Usuario implements IApiUsable
           var_dump($arrayUsuarios);
           foreach($arrayUsuarios as $usuario)
           {
-            if($usuario->usuario == $usuario) 
+            if($usuario["usuario"] == $usuario) 
             {
-                if($usuario->clave == $clave) 
+                if($usuario['clave'] == $clave) 
                 {
-                  // OK 	user: svoce1 - clave: rfooTj
-                  $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
+                  // OK 	user: socio1 - clave: 1234
+                  $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario["usuario"],'nombre' => $usuario->["nombre"], 'tipo' => $usuario->["tipo"])); 
                   $payload = json_encode($token);
                 }
                 else {
