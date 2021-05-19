@@ -9,11 +9,12 @@ class MWparaAutentificar
 	public function VerificarUsuario(Request $request, RequestHandler $handler) 
 	{         
 		$response = $handler->handle($request);
-		var_dump($response);
-
+		
 		if($request->getMethod()=="GET")
 		{
-			$response = json_encode(array("mensaje" => "NO necesita credenciales para los get"));
+			$response->getBody()->write(json_encode(array("mensaje" => "NO necesita credenciales para los get")));
+			$body = $response->getBody();
+			var_dump($body);
 		}
 		else
 		{
