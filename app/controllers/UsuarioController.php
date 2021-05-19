@@ -101,7 +101,7 @@ class UsuarioController extends Usuario implements IApiUsable
     public function Validar($request, $response, $args)
     {
       $parametros = $request->getParsedBody();
-      if($parametros!=null && $parametros['usuario']!=null && $parametros['clave']!=null)
+      if(isset($parametros['usuario']) && isset($parametros['clave']))
       {
         $usuarioIngresado = $parametros['usuario'];
         $claveIngresada = $parametros['clave'];
@@ -119,13 +119,16 @@ class UsuarioController extends Usuario implements IApiUsable
                   // OK 	user: socio1 - clave: 1234
                   $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
                   $payload = json_encode($token);
+                  break;
                 }
                 else {
                   $payload = json_encode(array("mensaje" => "Error en la clave"));
+                  break;
                 }
             }
             else {
               $payload = json_encode(array("mensaje" => "Usuario no registrado"));
+              break;
             }
           }
         }
