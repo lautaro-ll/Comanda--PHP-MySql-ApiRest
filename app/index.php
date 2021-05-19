@@ -57,7 +57,7 @@ $app = AppFactory::create();
 // Middleware
 
 // Routes
-$app->post('/login[/]', \UsuarioController::class . ':ValidarUsuario');
+$app->post('/login[/]', \UsuarioController::class . ':Validar');
 
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
@@ -82,13 +82,12 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \PedidoController::class . ':TraerTodos');
     $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
     $group->post('[/]', \PedidoController::class . ':CargarUno');
-  })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
+  });
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
     return $response;
-
-})->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
+});
 
 $app->run();
 
