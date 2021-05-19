@@ -7,7 +7,7 @@ class UsuarioController extends Usuario implements IApiUsable
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-
+      
         $tipo = $parametros['tipo'];
         $nombre = $parametros['nombre'];
         $usuario = $parametros['usuario'];

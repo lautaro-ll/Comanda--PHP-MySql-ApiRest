@@ -22,6 +22,8 @@ class MWparaAutentificar
 		else
 		{
 			$parametros = $request->getParsedBody();
+			$response->getBody()->write("HOLA");
+
 			$tipo=$parametros['tipo'];
 			var_dump($tipo);
 			if($tipo=="socio")
