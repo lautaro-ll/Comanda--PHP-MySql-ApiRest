@@ -105,12 +105,13 @@ class UsuarioController extends Usuario implements IApiUsable
       {
         $usuario = $parametros['usuario'];
         $clave = $parametros['clave'];
+        var_dump($usuario);
         $arrayUsuarios = Usuario::obtenerTodos();
         if(!is_null($arrayUsuarios)) 
         {
           foreach($arrayUsuarios as $usuario)
           {
-            var_dump($usuario);
+            var_dump($usuario->usuario);
             if($usuario->usuario == $usuario) 
             {
                 if($usuario->clave == $clave) 
