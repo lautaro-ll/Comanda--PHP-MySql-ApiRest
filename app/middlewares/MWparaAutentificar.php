@@ -18,6 +18,7 @@ class MWparaAutentificar
 		{
 			$parametros = $request->getParsedBody();
 			$tipo=$parametros['tipo'];
+			var_dump($tipo);
 			if($tipo=="socio")
 			{
 				$response = json_encode($parametros);
@@ -28,6 +29,6 @@ class MWparaAutentificar
 			}  
 		}
 		var_dump($response);
-		return $response;   
+		return $response;  
 	}
 }
