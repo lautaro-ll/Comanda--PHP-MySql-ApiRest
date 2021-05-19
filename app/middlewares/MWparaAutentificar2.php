@@ -24,7 +24,7 @@ class MWparaAutentificar
 			if(isset($parametros['token']))
 			{
 				$token = $parametros['token'];
-			}
+			
 			try 
 			{
 				AutentificadorJWT::verificarToken($token);
@@ -34,7 +34,7 @@ class MWparaAutentificar
 				$objDelaRespuesta->excepcion=$e->getMessage();
 				$objDelaRespuesta->esValido=false;     
 			}
-
+		}
 			if($objDelaRespuesta->esValido)
 			{						
 				if($request->getMethod()=="POST")

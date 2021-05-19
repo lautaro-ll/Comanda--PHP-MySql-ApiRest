@@ -30,7 +30,7 @@ class MWparaAutentificar
 				{
 					AutentificadorJWT::verificarToken($token);
 					$payload=AutentificadorJWT::ObtenerData($token);
-					if(isset($payload->tipo) && $payload->tipo=="socio")
+					if(isset($payload->tipo) && $payload->tipo=="Socio")
 					{
 						$response->getBody()->write($existingContent);
 					}
