@@ -101,28 +101,30 @@ class UsuarioController extends Usuario implements IApiUsable
     public function Validar($request, $response, $args)
     {
       $parametros = $request->getParsedBody();
-
-      $usuario = $parametros['usuario'];
-      $clave = $parametros['clave'];
-      var_dump($usuario + $clave);
-      $arrayUsuarios = Usuario::obtenerTodos();
-      if($usuario!=null && $clave!=null && !is_null($arrayUsuarios)) 
+      if($parametros['usuario']!=null && $parametros['clave']!=null)
       {
-        foreach($arrayUsuarios as $usuario)
+        $usuario = $parametros['usuario'];
+        $clave = $parametros['clave'];
+        var_dump($usuario + $clave);
+        $arrayUsuarios = Usuario::obtenerTodos();
+        if(!is_null($arrayUsuarios)) 
         {
-          if($usuario->usuario == $usuario) {
-              if($usuario->clave == $clave) {
-                // OK
-                $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
-                $payload = json_encode($token);
+          foreach($arrayUsuarios as $usuario)
+          {
+            if($usuario->usuario == $usuario) {
+                if($usuario->clave == $clave) {
+                  // OK
+                  $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
+                  $payload = json_encode($token);
+                }
+                else {
+                  $payload = json_encode(array("mensaje" => "Error en la clave"));
+                }
               }
               else {
-                $payload = json_encode(array("mensaje" => "Error en la clave"));
+                $payload = json_encode(array("mensaje" => "Usuario no registrado"));
               }
-            }
-            else {
-              $payload = json_encode(array("mensaje" => "Usuario no registrado"));
-            }
+          }
         }
       }
       else {
