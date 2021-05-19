@@ -9,6 +9,7 @@ class MWparaAutentificar
 	public function VerificarUsuario(Request $request, RequestHandler $handler) 
 	{         
 		$response = $handler->handle($request);
+		var_dump($response);
 
 		if($request->getMethod()=="GET")
 		{
@@ -28,7 +29,6 @@ class MWparaAutentificar
 				$response = json_encode(array("mensaje" => "NO tenes habilitado el ingreso"));
 			}  
 		}
-		var_dump($response);
 		return $response;  
 	}
 }
