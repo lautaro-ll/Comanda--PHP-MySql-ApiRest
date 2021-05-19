@@ -103,18 +103,16 @@ class UsuarioController extends Usuario implements IApiUsable
       $parametros = $request->getParsedBody();
       if($parametros!=null && $parametros['usuario']!=null && $parametros['clave']!=null)
       {
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
+        $usuarioIngresado = $parametros['usuario'];
+        $claveIngresada = $parametros['clave'];
         $arrayUsuarios = Usuario::obtenerTodos();
         if(!is_null($arrayUsuarios)) 
         {
           foreach($arrayUsuarios as $usuario)
           {
-            var_dump($usuario);
-            var_dump($usuario->usuario);
-            if($usuario->usuario == $usuario) 
+            if($usuario->usuario == $usuarioIngresado) 
             {
-                if($usuario->clave == $clave) 
+                if($usuario->clave == $claveIngresada) 
                 {
                   // OK 	user: socio1 - clave: 1234
                   $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
