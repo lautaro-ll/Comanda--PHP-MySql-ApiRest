@@ -11,7 +11,7 @@ class MWparaAutentificar
 		$objDelaRespuesta= new stdclass();
 		$objDelaRespuesta->respuesta="";
 	   
-		if($request->isGet())
+		if($request->getMethod()=="GET")
 		{
 			$response = $handler->handle($request);
 		    $response->getBody()->write('<p>NO necesita credenciales para los get </p>'); //borrar
@@ -55,7 +55,7 @@ class MWparaAutentificar
 
 			if($objDelaRespuesta->esValido)
 			{						
-				if($request->isPost())
+				if($request->getMethod()=="POST")
 				{		
 					// el post sirve para todos los logeados			    
 					$response = $handler->handle($request);
