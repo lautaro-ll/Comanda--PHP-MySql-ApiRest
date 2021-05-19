@@ -113,10 +113,10 @@ class UsuarioController extends Usuario implements IApiUsable
           {
             if($usuario["usuario"] == $usuario) 
             {
-                if($usuario['clave'] == $clave) 
+                if($usuario["clave"] == $clave) 
                 {
                   // OK 	user: socio1 - clave: 1234
-                  $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario["usuario"],'nombre' => $usuario->["nombre"], 'tipo' => $usuario->["tipo"])); 
+                  $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario["usuario"],'nombre' => $usuario["nombre"], 'tipo' => $usuario["tipo"])); 
                   $payload = json_encode($token);
                 }
                 else {
