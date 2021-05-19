@@ -125,6 +125,9 @@ class UsuarioController extends Usuario implements IApiUsable
             }
         }
       }
+      else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
       $response->getBody()->write($payload);
       return $response
         ->withHeader('Content-Type', 'application/json');
