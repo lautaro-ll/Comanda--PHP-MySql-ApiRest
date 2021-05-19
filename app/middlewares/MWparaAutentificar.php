@@ -12,9 +12,9 @@ class MWparaAutentificar
 		
 		if($request->getMethod()=="GET")
 		{
-			$response->getBody()->write(json_encode(array("mensaje" => "NO necesita credenciales para los get")));
 			$body = $response->getBody();
 			var_dump($body);
+			$response->getBody()->write(json_encode(array("mensaje" => "NO necesita credenciales para los get")));
 		}
 		else
 		{
