@@ -108,10 +108,13 @@ class UsuarioController extends Usuario implements IApiUsable
         $arrayUsuarios = Usuario::obtenerTodos();
         if(!is_null($arrayUsuarios)) 
         {
+          var_dump($arrayUsuarios);
           foreach($arrayUsuarios as $usuario)
           {
-            if($usuario->usuario == $usuario) {
-                if($usuario->clave == $clave) {
+            if($usuario->usuario == $usuario) 
+            {
+                if($usuario->clave == $clave) 
+                {
                   // OK 	user: svoce1 - clave: rfooTj
                   $token= AutentificadorJWT::CrearToken(array('usuario' => $usuario->usuario,'nombre' => $usuario->nombre, 'tipo' => $usuario->tipo)); 
                   $payload = json_encode($token);
@@ -119,10 +122,10 @@ class UsuarioController extends Usuario implements IApiUsable
                 else {
                   $payload = json_encode(array("mensaje" => "Error en la clave"));
                 }
-              }
-              else {
-                $payload = json_encode(array("mensaje" => "Usuario no registrado"));
-              }
+            }
+            else {
+              $payload = json_encode(array("mensaje" => "Usuario no registrado"));
+            }
           }
         }
       }
