@@ -8,9 +8,9 @@ class MWparaAutentificar
 {
 	public function VerificarUsuario(Request $request, RequestHandler $handler) 
 	{
-         
 		$objDelaRespuesta= new stdclass();
 		$objDelaRespuesta->respuesta="";
+        var_dump($objDelaRespuesta);
 		$response = $handler->handle($request);
 	   
 		if($request->getMethod()=="GET")
