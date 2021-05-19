@@ -17,7 +17,7 @@ class MWparaAutentificar
 		
 		if($request->getMethod()=="GET")
 		{
-			$response->getBody()->write("NO necesita credenciales para los get" . $existingContent);
+			$response->getBody()->write("NO necesita credenciales para los get");
 		}
 		else
 		{
