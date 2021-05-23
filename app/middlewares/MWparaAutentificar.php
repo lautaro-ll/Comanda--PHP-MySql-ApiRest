@@ -22,13 +22,30 @@ class MWparaAutentificar
 				try {
 					AutentificadorJWT::verificarToken($token);
 					$payload = AutentificadorJWT::ObtenerData($token);
-					if (isset($payload->cargo) && $payload->cargo == "Socio") {
-						//$response->getBody()->write("");
+					if (isset($payload->cargo)) 
+					{
 						$parsedBody = $request->getParsedBody();
-						$parsedBody["acceso"] = true;
+						if($payload->cargo == "Socio") {
+							$parsedBody["empleado"] = "socio";
+						}
+						if($payload->cargo == "Cervecero") {
+							$parsedBody["empleado"] = "cervecero";
+						}
+						if($payload->cargo == "Bartender") {
+							$parsedBody["empleado"] = "bartender";
+						}
+						if($payload->cargo == "Cocinero") {
+							$parsedBody["empleado"] = "cocinero";
+						}
+						if($payload->cargo == "Mozo") {
+							$parsedBody["empleado"] = "mozo";
+						}
 						$request = $request->withParsedBody($parsedBody);
 						$response = $handler->handle($request);
-					} else {
+
+					} 
+					else 
+					{
 						$response->getBody()->write("NO tenes habilitado el ingreso");
 					}
 				} catch (Exception $e) {
