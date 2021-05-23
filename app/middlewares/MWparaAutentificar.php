@@ -26,19 +26,19 @@ class MWparaAutentificar
 					{
 						$parsedBody = $request->getParsedBody();
 						if($payload->cargo == "Socio") {
-							$parsedBody["empleado"] = "socio";
+							$parsedBody["accesoEmpleado"] = "socio";
 						}
 						if($payload->cargo == "Cervecero") {
-							$parsedBody["empleado"] = "cervecero";
+							$parsedBody["accesoEmpleado"] = "cervecero";
 						}
 						if($payload->cargo == "Bartender") {
-							$parsedBody["empleado"] = "bartender";
+							$parsedBody["accesoEmpleado"] = "bartender";
 						}
 						if($payload->cargo == "Cocinero") {
-							$parsedBody["empleado"] = "cocinero";
+							$parsedBody["accesoEmpleado"] = "cocinero";
 						}
 						if($payload->cargo == "Mozo") {
-							$parsedBody["empleado"] = "mozo";
+							$parsedBody["accesoEmpleado"] = "mozo";
 						}
 						$request = $request->withParsedBody($parsedBody);
 						$response = $handler->handle($request);
