@@ -128,12 +128,10 @@ class UsuarioController extends Usuario implements IApiUsable
                 }
                 else {
                   $payload = json_encode(array("mensaje" => "Error en la clave"));
-                  break;
                 }
             }
             else {
               $payload = json_encode(array("mensaje" => "Usuario no registrado"));
-              break;
             }
           }
         }
