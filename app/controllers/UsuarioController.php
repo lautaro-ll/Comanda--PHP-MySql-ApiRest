@@ -153,17 +153,4 @@ class UsuarioController extends Usuario implements IApiUsable
   }
 }
 
-/*
-    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
-
-  
-        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
-      } else {
-        $payload = json_encode(array("mensaje" => "Faltan datos"));
-      }
-    } else {
-      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
-    }
-*/
 ?>
