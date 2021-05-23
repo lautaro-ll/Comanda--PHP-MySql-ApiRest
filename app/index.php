@@ -83,9 +83,9 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
-  $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
-  $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
+  $group->get('/u/{pedido}', \PedidoController::class . ':TraerUno');
   $group->get('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
+  $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
   //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
 });
 
