@@ -14,7 +14,7 @@ class MWparaAutentificar
 		$response = $handler->handle($request);
 		$existingContent = (string) $response->getBody();
 		$response = new Response();
-
+		
 		if ($request->getMethod() == "GET") {
 			$response->getBody()->write("NO necesita credenciales para los get");
 		} else {
@@ -25,7 +25,7 @@ class MWparaAutentificar
 					AutentificadorJWT::verificarToken($token);
 					$payload = AutentificadorJWT::ObtenerData($token);
 					if (isset($payload->tipo) && $payload->tipo == "Socio") {
-						//var_dump($existingContent);
+						var_dump($existingContent);
 						$response->getBody()->write($existingContent);
 					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");
