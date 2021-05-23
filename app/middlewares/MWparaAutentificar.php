@@ -11,6 +11,7 @@ class MWparaAutentificar
 {
 	public function VerificarUsuario(Request $request, RequestHandler $handler)
 	{
+		var_dump("Verificar Usuario");
 		$response = $handler->handle($request);
 		$existingContent = (string) $response->getBody();
 		$response = new Response();
@@ -25,7 +26,6 @@ class MWparaAutentificar
 					AutentificadorJWT::verificarToken($token);
 					$payload = AutentificadorJWT::ObtenerData($token);
 					if (isset($payload->cargo) && $payload->cargo == "Socio") {
-						var_dump($existingContent);
 						$response->getBody()->write($existingContent);
 					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");

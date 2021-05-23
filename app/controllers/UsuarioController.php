@@ -6,6 +6,7 @@ class UsuarioController extends Usuario implements IApiUsable
 {
   public function CargarUno($request, $response, $args)
   {
+    var_dump("Cargar Uno");
     $parametros = $request->getParsedBody();
     if (isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
       $cargo = $parametros['cargo'];
@@ -19,7 +20,6 @@ class UsuarioController extends Usuario implements IApiUsable
       $nuevoUsuario->alias = $alias;
       $nuevoUsuario->clave = $clave;
       $nuevoUsuario->crearUsuario();
-      var_dump($nuevoUsuario->alias);
 
       $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
     } else {
