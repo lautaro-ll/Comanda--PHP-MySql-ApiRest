@@ -6,7 +6,6 @@ class UsuarioController extends Usuario implements IApiUsable
 {
   public function CargarUno($request, $response, $args)
   {
-    var_dump("Cargar Uno");
     $parametros = $request->getParsedBody();
     if (isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
       $cargo = $parametros['cargo'];

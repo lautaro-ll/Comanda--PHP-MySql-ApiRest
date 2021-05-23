@@ -11,7 +11,6 @@ class MWparaAutentificar
 {
 	public function VerificarUsuario(Request $request, RequestHandler $handler)
 	{
-		var_dump("Verificar Usuario");
 		$response = new Response();
 		
 		if ($request->getMethod() == "GET") {
@@ -25,10 +24,8 @@ class MWparaAutentificar
 					$payload = AutentificadorJWT::ObtenerData($token);
 					if (isset($payload->cargo) && $payload->cargo == "Socio") {
 						$response = $handler->handle($request);
-						var_dump("Verificado");
 					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");
-						var_dump("NO Verificado");
 					}
 				} catch (Exception $e) {
 					$response->getBody()->write($e->getMessage());
