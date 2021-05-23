@@ -10,9 +10,7 @@ require_once './models/AutentificadorJWT.php';
 class MWparaAutentificar
 {
 	public function VerificarUsuario(Request $request, RequestHandler $handler)
-	{
-		$response = new Response();
-		
+	{		
 		if ($request->getMethod() == "GET") {
 			//$response->getBody()->write("NO necesita credenciales para los get");
 			$response = $handler->handle($request);
@@ -47,12 +45,15 @@ class MWparaAutentificar
 					} 
 					else 
 					{
+						$response = new Response();
 						$response->getBody()->write("NO tenes habilitado el ingreso");
 					}
 				} catch (Exception $e) {
+					$response = new Response();
 					$response->getBody()->write($e->getMessage());
 				}
 			} else {
+				$response = new Response();
 				$response->getBody()->write("NO se ingreso token");
 			}
 		}
