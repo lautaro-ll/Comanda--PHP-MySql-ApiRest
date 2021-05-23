@@ -135,11 +135,13 @@ class PedidoController extends Pedido implements IApiUsable
     var_dump($cargo);
     $lista = Pedido::obtenerPorCargo($cargo);
     var_dump($lista);
-    $payload = json_encode(array("listaUsuario" => $lista));
+    $payload = json_encode(array("listaPedido" => $lista));
 
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
 }
+
 ?>
