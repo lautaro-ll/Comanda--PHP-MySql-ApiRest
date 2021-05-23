@@ -13,7 +13,6 @@ class MWparaAutentificar
 	{		
 		if ($request->getMethod() == "GET") {
 			$response = $handler->handle($request);
-			$response->getBody()->write("NO necesita credenciales para los get");
 		} else {
 			$arrayConToken = $request->getHeader('Authorization');
 			$token = explode(" ", $arrayConToken[0], 2)[1];

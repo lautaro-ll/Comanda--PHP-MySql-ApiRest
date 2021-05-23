@@ -132,9 +132,7 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerPendientes($request, $response, $args)
   {
     $cargo = $args['cargo'];
-    var_dump($cargo);
     $lista = Pedido::obtenerPorCargo($cargo);
-    var_dump($lista);
     $payload = json_encode(array("listaPedido" => $lista));
 
     $response->getBody()->write($payload);
