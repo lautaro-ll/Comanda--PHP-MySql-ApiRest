@@ -4,109 +4,110 @@ require_once './interfaces/IApiUsable.php';
 
 class PedidoController extends Pedido implements IApiUsable
 {
-    public function CargarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
+  public function CargarUno($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
 
-        $cliente = $parametros['cliente'];
-        $foto = $parametros['foto'];
-        $codigoPedido = $parametros['codigoPedido'];
-        $idMesa = $parametros['idMesa'];
-        $idProducto = $parametros['idProducto'];
-        $precio = $parametros['precio'];
-        $idMozo = $parametros['idMozo'];
+    $cliente = $parametros['cliente'];
+    $foto = $parametros['foto'];
+    $codigoPedido = $parametros['codigoPedido'];
+    $idMesa = $parametros['idMesa'];
+    $idProducto = $parametros['idProducto'];
+    $precio = $parametros['precio'];
+    $idMozo = $parametros['idMozo'];
 
-        $pdd = new Pedido();
-        $pdd->cliente = $cliente;
-        $pdd->foto = $foto;
-        $pdd->codigoPedido = $codigoPedido;
-        $pdd->idMesa = $idMesa;
-        $pdd->idProducto = $idProducto;
-        $pdd->precio = $precio;
-        $pdd->idMozo = $idMozo;
-        $pdd->estado = "pendiente";
-        $pdd->crearPedido();
+    $nuevoPedido = new Pedido();
+    $nuevoPedido->cliente = $cliente;
+    $nuevoPedido->foto = $foto;
+    $nuevoPedido->codigoPedido = $codigoPedido;
+    $nuevoPedido->idMesa = $idMesa;
+    $nuevoPedido->idProducto = $idProducto;
+    $nuevoPedido->precio = $precio;
+    $nuevoPedido->idMozo = $idMozo;
+    $nuevoPedido->estado = "pendiente";
+    $nuevoPedido->crearPedido();
 
-        $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+    $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-    public function TraerUno($request, $response, $args)
-    {
-        $pdd = $args['id'];
-        $pedido = Pedido::obtenerPedido($pdd);
-        $payload = json_encode($pedido);
+  public function TraerUno($request, $response, $args)
+  {
+    $id = $args['id'];
+    $pedido = Pedido::obtenerPedido($id);
+    $payload = json_encode($pedido);
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-    public function TraerTodos($request, $response, $args)
-    {
-        $lista = Pedido::obtenerTodos();
-        $payload = json_encode(array("listaPedido" => $lista));
+  public function TraerPendientes($request, $response, $args)
+  {
+    $estado = $args['estado'];
+    $lista = Pedido::obtenerPorEstado($estado);
+    $payload = json_encode(array("listaPedido" => $lista));
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
-    
-    public function ModificarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
-        
-        $cliente = $parametros['cliente'];
-        $foto = $parametros['foto'];
-        $codigoPedido = $parametros['codigoPedido'];
-        $idMesa = $parametros['idMesa'];
-        $idProducto = $parametros['idProducto'];
-        $precio = $parametros['precio'];
-        $idUsuario = $parametros['idUsuario'];
-        $estado = $parametros['estado'];
-        $tiempoEstimado = $parametros['tiempoEstimado'];
-        $tiempoFinalizado = $parametros['tiempoFinalizado'];
-        $tiempoEntregado = $parametros['tiempoEntregado'];
-        $id = $parametros['id'];
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-        $pdd = new Pedido();
-        $pdd->cliente = $cliente;
-        $pdd->foto = $foto;
-        $pdd->codigoPedido = $codigoPedido;
-        $pdd->idMesa = $idMesa;
-        $pdd->idProducto = $idProducto;
-        $pdd->precio = $precio;
-        $pdd->idUsuario = $idUsuario;
-        $pdd->estado = $estado;
-        $pdd->tiempoEstimado = $tiempoEstimado;
-        $pdd->tiempoFinalizado = $tiempoFinalizado;
-        $pdd->tiempoEntregado = $tiempoEntregado;
-        $pdd->nombre = $id;
-        $pdd->modificarPedido();
+  public function ModificarUno($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
 
-        $payload = json_encode(array("mensaje" => "Pedido modificado con exito"));
+    $cliente = $parametros['cliente'];
+    $foto = $parametros['foto'];
+    $codigoPedido = $parametros['codigoPedido'];
+    $idMesa = $parametros['idMesa'];
+    $idProducto = $parametros['idProducto'];
+    $precio = $parametros['precio'];
+    $idUsuario = $parametros['idUsuario'];
+    $estado = $parametros['estado'];
+    $tiempoEstimado = $parametros['tiempoEstimado'];
+    $tiempoFinalizado = $parametros['tiempoFinalizado'];
+    $tiempoEntregado = $parametros['tiempoEntregado'];
+    $id = $parametros['id'];
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+    $nuevoPedido = new Pedido();
+    $nuevoPedido->cliente = $cliente;
+    $nuevoPedido->foto = $foto;
+    $nuevoPedido->codigoPedido = $codigoPedido;
+    $nuevoPedido->idMesa = $idMesa;
+    $nuevoPedido->idProducto = $idProducto;
+    $nuevoPedido->precio = $precio;
+    $nuevoPedido->idUsuario = $idUsuario;
+    $nuevoPedido->estado = $estado;
+    $nuevoPedido->tiempoEstimado = $tiempoEstimado;
+    $nuevoPedido->tiempoFinalizado = $tiempoFinalizado;
+    $nuevoPedido->tiempoEntregado = $tiempoEntregado;
+    $nuevoPedido->nombre = $id;
+    $nuevoPedido->modificarPedido();
 
-    public function BorrarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
+    $payload = json_encode(array("mensaje" => "Pedido modificado con exito"));
 
-        $id = $parametros['id'];
-        Pedido::borrarPedido($id);
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-        $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
+  public function BorrarUno($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+    $id = $parametros['id'];
+    Pedido::borrarPedido($id);
+
+    $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }
 
 ?>

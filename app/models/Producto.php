@@ -59,5 +59,3 @@ class Producto {
         $consulta->execute();
     }
 }
-
-?>

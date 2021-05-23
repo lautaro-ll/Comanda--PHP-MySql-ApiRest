@@ -7,3 +7,4 @@ interface IApiUsable
 	public function BorrarUno($request, $response, $args);
 	public function ModificarUno($request, $response, $args);
 }
+?>

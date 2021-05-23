@@ -12,11 +12,11 @@ class MesaController extends Mesa implements IApiUsable
         $codigoPedido = $parametros['codigoPedido'];
         $estado = $parametros['estado'];
 
-        $msa = new Mesa();
-        $msa->codigoIdentificacion = $codigoIdentificacion;
-        $msa->codigoPedido = $codigoPedido;
-        $msa->estado = $estado;
-        $msa->crearMesa();
+        $nuevaMesa = new Mesa();
+        $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
+        $nuevaMesa->codigoPedido = $codigoPedido;
+        $nuevaMesa->estado = $estado;
+        $nuevaMesa->crearMesa();
 
         $payload = json_encode(array("mensaje" => "Mesa creado con exito"));
 
@@ -27,8 +27,8 @@ class MesaController extends Mesa implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        $msa = $args['id'];
-        $mesa = Mesa::obtenerMesa($msa);
+        $id = $args['id'];
+        $mesa = Mesa::obtenerMesa($id);
         $payload = json_encode($mesa);
 
         $response->getBody()->write($payload);
@@ -55,12 +55,12 @@ class MesaController extends Mesa implements IApiUsable
         $estado = $parametros['estado'];
         $id = $parametros['id'];
 
-        $msa = new Mesa();
-        $msa->codigoIdentificacion = $codigoIdentificacion;
-        $msa->codigoPedido = $codigoPedido;
-        $msa->estado = $estado;
-        $msa->nombre = $id;
-        $msa->modificarMesa();
+        $nuevaMesa = new Mesa();
+        $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
+        $nuevaMesa->codigoPedido = $codigoPedido;
+        $nuevaMesa->estado = $estado;
+        $nuevaMesa->nombre = $id;
+        $nuevaMesa->modificarMesa();
 
         $payload = json_encode(array("mensaje" => "Mesa modificado con exito"));
 
@@ -83,5 +83,4 @@ class MesaController extends Mesa implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 }
-
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
@@ -8,72 +9,35 @@ require_once './models/AutentificadorJWT.php';
 
 class MWparaAutentificar
 {
-	public function VerificarUsuario(Request $request, RequestHandler $handler) 
-	{         
+	public function VerificarUsuarioSocio(Request $request, RequestHandler $handler)
+	{
 		$response = $handler->handle($request);
 		$existingContent = (string) $response->getBody();
 		$response = new Response();
-		
-		if($request->getMethod()=="GET")
-		{
+
+		if ($request->getMethod() == "GET") {
 			$response->getBody()->write("NO necesita credenciales para los get");
-		}
-		else
-		{
+		} else {
 			$arrayConToken = $request->getHeader('Authorization');
 			$token = explode(" ", $arrayConToken[0], 2)[1];
-			if(isset($token))
-			{
-				try 
-				{
+			if (isset($token)) {
+				try {
 					AutentificadorJWT::verificarToken($token);
-					$payload=AutentificadorJWT::ObtenerData($token);
-					if(isset($payload->tipo) && $payload->tipo=="Socio")
-					{
+					$payload = AutentificadorJWT::ObtenerData($token);
+					if (isset($payload->tipo) && $payload->tipo == "Socio") {
+						var_dump($existingContent);
 						$response->getBody()->write($existingContent);
-					}
-					else
-					{
+					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");
-					}  
-				}
-				catch (Exception $e) {      
+					}
+				} catch (Exception $e) {
 					$response->getBody()->write($e->getMessage());
 				}
-			}
-			else
-			{
+			} else {
 				$response->getBody()->write("NO se ingreso token");
 			}
 		}
-		return $response;  
+		return $response;
 	}
-
-	/*
-		public function VerificarUsuario(Request $request, RequestHandler $handler) 
-	{         
-		$response = $handler->handle($request);
-		$existingContent = (string) $response->getBody();
-		$response = new Response();
-		
-		if($request->getMethod()=="GET")
-		{
-			$response->getBody()->write("NO necesita credenciales para los get");
-		}
-		else
-		{
-			$parametros = $request->getParsedBody();
-			$tipo=$parametros['tipo'];
-			if($tipo=="socio")
-			{
-				$response->getBody()->write($existingContent);
-			}
-			else
-			{
-				$response->getBody()->write("NO tenes habilitado el ingreso");
-			}  
-		}
-		return $response;  
-	}
-	*/
 }
+?>

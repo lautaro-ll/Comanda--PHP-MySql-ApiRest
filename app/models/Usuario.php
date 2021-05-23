@@ -3,9 +3,9 @@
 class Usuario
 {
     public $id;
-    public $tipo;
+    public $cargo;
     public $nombre;
-    public $usuario;
+    public $alias;
     public $clave;
     public $fechaAlta;
     public $fechaBaja;
@@ -13,11 +13,11 @@ class Usuario
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (tipo, nombre, usuario, clave) VALUES (:tipo, :nombre, :usuario, :clave)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (cargo, nombre, alias, clave) VALUES (:cargo, :nombre, :alias, :clave)");
         $claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
-        $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
+        $consulta->bindValue(':cargo', $this->cargo, PDO::PARAM_STR);
         $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
+        $consulta->bindValue(':alias', $this->alias, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $claveHash);
         $consulta->execute();
 
@@ -33,11 +33,11 @@ class Usuario
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
     }
 
-    public static function obtenerUsuariosPorTipo($tipo)
+    public static function obtenerUsuariosPorCargo($cargo)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios WHERE tipo=:tipo");
-        $consulta->bindValue(':tipo', $tipo, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios WHERE cargo=:cargo");
+        $consulta->bindValue(':cargo', $cargo, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
@@ -56,10 +56,10 @@ class Usuario
     public function modificarUsuario()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET tipo=:tipo, nombre=:nombre, usuario=:usuario, clave=:clave WHERE id=:id");
-        $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET cargo=:cargo, nombre=:nombre, alias=:alias, clave=:clave WHERE id=:id");
+        $consulta->bindValue(':cargo', $this->cargo, PDO::PARAM_STR);
         $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
+        $consulta->bindValue(':alias', $this->alias, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $this->clave, PDO::PARAM_STR);
         $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);
         $consulta->execute();
@@ -75,5 +75,3 @@ class Usuario
         $consulta->execute();
     }
 }
-
-?>

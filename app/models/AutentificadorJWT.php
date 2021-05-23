@@ -1,5 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
+
 use Firebase\JWT\JWT;
 
 class AutentificadorJWT
@@ -7,7 +8,7 @@ class AutentificadorJWT
     private static $claveSecreta = '03-03-456';
     private static $tipoEncriptacion = ['HS256'];
     private static $aud = null;
-    
+
     public static function CrearToken($datos)
     {
         $ahora = time();
@@ -18,44 +19,42 @@ class AutentificadorJWT
          + los que quieras ej="'app'=> "API REST CD 2017" 
         */
         $payload = array(
-        	'iat'=> $ahora,
+            'iat' => $ahora,
             'exp' => $ahora + $expiracion,
             'aud' => self::Aud(),
             'data' => $datos,
-            'app'=> "API REST CD 2017"
+            'app' => "API REST CD 2017"
         );
-     
+
         return JWT::encode($payload, self::$claveSecreta);
     }
-    
+
     public static function VerificarToken($token)
     {
-       
-        if(empty($token)|| $token=="")
-        {
+
+        if (empty($token) || $token == "") {
             throw new Exception("El token esta vacio.");
-        } 
+        }
         // las siguientes lineas lanzan una excepcion, de no ser correcto o de haberse terminado el tiempo       
         try {
             $decodificado = JWT::decode(
-            $token,
-            self::$claveSecreta,
-            self::$tipoEncriptacion
+                $token,
+                self::$claveSecreta,
+                self::$tipoEncriptacion
             );
         } catch (ExpiredException $e) {
             //var_dump($e);
-           throw new Exception("Clave fuera de tiempo");
+            throw new Exception("Clave fuera de tiempo");
         }
-        
+
         // si no da error,  verifico los datos de AUD que uso para saber de que lugar viene  
-        if($decodificado->aud !== self::Aud())
-        {
+        if ($decodificado->aud !== self::Aud()) {
             throw new Exception("No es el usuario valido");
         }
     }
-    
-   
-     public static function ObtenerPayLoad($token)
+
+
+    public static function ObtenerPayLoad($token)
     {
         return JWT::decode(
             $token,
@@ -63,7 +62,7 @@ class AutentificadorJWT
             self::$tipoEncriptacion
         );
     }
-     public static function ObtenerData($token)
+    public static function ObtenerData($token)
     {
         return JWT::decode(
             $token,
@@ -74,7 +73,7 @@ class AutentificadorJWT
     private static function Aud()
     {
         $aud = '';
-        
+
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $aud = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -82,10 +81,11 @@ class AutentificadorJWT
         } else {
             $aud = $_SERVER['REMOTE_ADDR'];
         }
-        
+
         $aud .= @$_SERVER['HTTP_USER_AGENT'];
         $aud .= gethostname();
-        
+
         return sha1($aud);
     }
 }
+?>
