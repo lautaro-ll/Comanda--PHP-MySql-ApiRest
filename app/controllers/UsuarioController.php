@@ -7,22 +7,26 @@ class UsuarioController extends Usuario implements IApiUsable
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-    if ((isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio" && $parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
-      $cargo = $parametros['cargo'];
-      $nombre = $parametros['nombre'];
-      $alias = $parametros['alias'];
-      $clave = $parametros['clave'];
-
-      $nuevoUsuario = new Usuario();
-      $nuevoUsuario->cargo = $cargo;
-      $nuevoUsuario->nombre = $nombre;
-      $nuevoUsuario->alias = $alias;
-      $nuevoUsuario->clave = $clave;
-      $nuevoUsuario->crearUsuario();
-
-      $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+        $cargo = $parametros['cargo'];
+        $nombre = $parametros['nombre'];
+        $alias = $parametros['alias'];
+        $clave = $parametros['clave'];
+  
+        $nuevoUsuario = new Usuario();
+        $nuevoUsuario->cargo = $cargo;
+        $nuevoUsuario->nombre = $nombre;
+        $nuevoUsuario->alias = $alias;
+        $nuevoUsuario->clave = $clave;
+        $nuevoUsuario->crearUsuario();
+  
+        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
     } else {
-      $payload = json_encode(array("mensaje" => "Faltan datos"));
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
     }
 
     $response->getBody()->write($payload);
