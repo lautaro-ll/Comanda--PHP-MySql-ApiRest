@@ -55,10 +55,10 @@ require_once './middlewares/MWparaAutentificar.php';
 $app = AppFactory::create();
 
 // Middleware
-
-// Routes
+$app->add(\MWparaAutentificar::class . ':VerificarUsuario');
 //$app->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
+// Routes
 $app->post('/login', \UsuarioController::class . ':Validar');
 
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
@@ -66,20 +66,20 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
   $group->get('/u/{id}', \UsuarioController::class . ':TraerUno');
   $group->get('/t/{cargos}', \UsuarioController::class . ':TraerTodosPorCargo');
   $group->post('[/]', \UsuarioController::class . ':CargarUno');
-})->add(\MWparaAutentificar::class . ':VerificarUsuario');
+});
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ProductoController::class . ':TraerTodos');
   $group->get('/{producto}', \ProductoController::class . ':TraerUno');
   $group->post('[/]', \ProductoController::class . ':CargarUno');
-})->add(\MWparaAutentificar::class . ':VerificarUsuario');
+});
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
   $group->get('/{mesa}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno');
   //$group->post('/estado', \MesaController::class . ':CambiarEstado'); //CambiarEstadoMesa ->MOZO
-})->add(\MWparaAutentificar::class . ':VerificarUsuario');
+});
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
@@ -87,7 +87,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
   //group->post('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
   //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
-})->add(\MWparaAutentificar::class . ':VerificarUsuario');
+});
 
 $app->get('[/]', function (Request $request, Response $response) {
   $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
