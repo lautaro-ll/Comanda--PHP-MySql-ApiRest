@@ -84,9 +84,9 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
-  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(\MWparaAutentificar::class . ':VerificarUsuarioMozo'); //GenerarPedido ->MOZO
-  $group->post('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes')->add(\MWparaAutentificar::class . ':VerificarUsuarioServicio'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
-  $group->post('/estado', \PedidoController::class . ':ModificarUno')->add(\MWparaAutentificar::class . ':VerificarUsuarioServicio');; //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
+  $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
+  $group->post('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
+  $group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
