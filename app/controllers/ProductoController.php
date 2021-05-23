@@ -7,20 +7,27 @@ class ProductoController extends Producto implements IApiUsable
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-
-    $tipo = $parametros['tipo'];
-    $producto = $parametros['producto'];
-    $tipoUsuario = $parametros['tipoUsuario'];
-    $precio = $parametros['precio'];
-
-    $nuevoProducto = new Producto();
-    $nuevoProducto->tipo = $tipo;
-    $nuevoProducto->producto = $producto;
-    $nuevoProducto->tipoUsuario = $tipoUsuario;
-    $nuevoProducto->precio = $precio;
-    $nuevoProducto->crearProducto();
-
-    $payload = json_encode(array("mensaje" => "Producto creado con exito"));
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+        $tipo = $parametros['tipo'];
+        $producto = $parametros['producto'];
+        $tipoUsuario = $parametros['tipoUsuario'];
+        $precio = $parametros['precio'];
+    
+        $nuevoProducto = new Producto();
+        $nuevoProducto->tipo = $tipo;
+        $nuevoProducto->producto = $producto;
+        $nuevoProducto->tipoUsuario = $tipoUsuario;
+        $nuevoProducto->precio = $precio;
+        $nuevoProducto->crearProducto();
+    
+        $payload = json_encode(array("mensaje" => "Producto creado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
 
     $response->getBody()->write($payload);
     return $response
@@ -51,22 +58,29 @@ class ProductoController extends Producto implements IApiUsable
   public function ModificarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-
-    $tipo = $parametros['tipo'];
-    $producto = $parametros['producto'];
-    $tipoUsuario = $parametros['tipoUsuario'];
-    $precio = $parametros['precio'];
-    $id = $parametros['id'];
-
-    $nuevoProducto = new Producto();
-    $nuevoProducto->tipo = $tipo;
-    $nuevoProducto->producto = $producto;
-    $nuevoProducto->tipoUsuario = $tipoUsuario;
-    $nuevoProducto->precio = $precio;
-    $nuevoProducto->nombre = $id;
-    $nuevoProducto->modificarProducto();
-
-    $payload = json_encode(array("mensaje" => "Producto modificado con exito"));
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+        $tipo = $parametros['tipo'];
+        $producto = $parametros['producto'];
+        $tipoUsuario = $parametros['tipoUsuario'];
+        $precio = $parametros['precio'];
+        $id = $parametros['id'];
+    
+        $nuevoProducto = new Producto();
+        $nuevoProducto->tipo = $tipo;
+        $nuevoProducto->producto = $producto;
+        $nuevoProducto->tipoUsuario = $tipoUsuario;
+        $nuevoProducto->precio = $precio;
+        $nuevoProducto->nombre = $id;
+        $nuevoProducto->modificarProducto();
+    
+        $payload = json_encode(array("mensaje" => "Producto modificado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
 
     $response->getBody()->write($payload);
     return $response
@@ -76,11 +90,18 @@ class ProductoController extends Producto implements IApiUsable
   public function BorrarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-
-    $id = $parametros['id'];
-    Producto::borrarProducto($id);
-
-    $payload = json_encode(array("mensaje" => "Producto borrado con exito"));
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+        $id = $parametros['id'];
+        Producto::borrarProducto($id);
+    
+        $payload = json_encode(array("mensaje" => "Producto borrado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
 
     $response->getBody()->write($payload);
     return $response
