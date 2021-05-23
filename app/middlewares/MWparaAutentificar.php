@@ -4,7 +4,6 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
 use Slim\Psr7\Response;
 
-
 require_once './models/AutentificadorJWT.php';
 
 class MWparaAutentificar
@@ -23,6 +22,7 @@ class MWparaAutentificar
 		{
 			//$parametros = $request->getParsedBody();
 			$arrayConToken = $request->getHeader('Authorization');
+			var_dump($request->getHeaders());
 			var_dump($arrayConToken);
 			if(isset($arrayConToken[0]))
 			{
