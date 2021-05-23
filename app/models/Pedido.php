@@ -44,7 +44,7 @@ class Pedido {
     public static function obtenerPorCargo($cargo)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidos.id, pedidos.cliente, pedidos.foto, pedidos.`codigo-pedido` AS codigoPedido, pedidos.idmesa, pedidos.idproducto, pedidos.precio, pedidos.idmozo, pedidos.idusuario, pedidos.estado, pedidos.`tiempo-pedido` AS tiempoPedido, pedidos.`tiempo-estimado` AS tiempoEstimado, pedidos.`tiempo-finalizado` AS tiempoFinalizado, pedidos.`tiempo-entregado` FROM pedidos INNER JOIN usuarios ON pedidos.idusuario=usuarios.id WHERE usuarios.cargo=:cargo");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidos.id, pedidos.cliente, pedidos.foto, pedidos.`codigo-pedido` AS codigoPedido, pedidos.idmesa AS idMesa, pedidos.idproducto AS idProducto, pedidos.precio, pedidos.idmozo AS idMozo, pedidos.idusuario AS idUsuario, pedidos.estado, pedidos.`tiempo-pedido` AS tiempoPedido, pedidos.`tiempo-estimado` AS tiempoEstimado, pedidos.`tiempo-finalizado` AS tiempoFinalizado, pedidos.`tiempo-entregado` FROM pedidos INNER JOIN usuarios ON pedidos.idusuario=usuarios.id WHERE usuarios.cargo=:cargo");
         $consulta->bindValue(':cargo', $cargo, PDO::PARAM_STR);
         $consulta->execute();
 
