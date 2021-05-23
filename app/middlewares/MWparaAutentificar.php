@@ -20,15 +20,10 @@ class MWparaAutentificar
 		}
 		else
 		{
-			//$parametros = $request->getParsedBody();
 			$arrayConToken = $request->getHeader('Authorization');
 			$token = explode(" ", $arrayConToken[0], 2)[1];
-			var_dump($arrayConToken);
-			var_dump($token);
 			if(isset($token))
 			{
-				//$token = $parametros['token'];
-				//$token=$arrayConToken[0];			
 				try 
 				{
 					AutentificadorJWT::verificarToken($token);
