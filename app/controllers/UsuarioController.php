@@ -134,3 +134,5 @@ class UsuarioController extends Usuario implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 }
+
+?>

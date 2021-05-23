@@ -75,3 +75,5 @@ class Usuario
         $consulta->execute();
     }
 }
+
+?>

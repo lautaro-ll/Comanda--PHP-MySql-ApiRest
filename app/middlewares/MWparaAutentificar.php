@@ -9,7 +9,7 @@ require_once './models/AutentificadorJWT.php';
 
 class MWparaAutentificar
 {
-	public function VerificarUsuarioSocio(Request $request, RequestHandler $handler)
+	public function VerificarUsuario(Request $request, RequestHandler $handler)
 	{
 		$response = $handler->handle($request);
 		$existingContent = (string) $response->getBody();
@@ -25,7 +25,7 @@ class MWparaAutentificar
 					AutentificadorJWT::verificarToken($token);
 					$payload = AutentificadorJWT::ObtenerData($token);
 					if (isset($payload->tipo) && $payload->tipo == "Socio") {
-						var_dump($existingContent);
+						//var_dump($existingContent);
 						$response->getBody()->write($existingContent);
 					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");
