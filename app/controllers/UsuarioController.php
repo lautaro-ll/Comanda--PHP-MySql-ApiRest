@@ -19,6 +19,7 @@ class UsuarioController extends Usuario implements IApiUsable
       $nuevoUsuario->alias = $alias;
       $nuevoUsuario->clave = $clave;
       $nuevoUsuario->crearUsuario();
+      var_dump($nuevoUsuario->alias);
 
       $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
     } else {
@@ -113,7 +114,6 @@ class UsuarioController extends Usuario implements IApiUsable
           if ($usuario->alias == $usuarioIngresado) {
             if ($usuario->clave == $claveIngresada) {
               // Ej OK =>	user: "socio1", clave: "1234"
-              var_dump($usuario);
               $token = AutentificadorJWT::CrearToken(array('alias' => $usuario->alias, 'nombre' => $usuario->nombre, 'cargo' => $usuario->cargo));
               $payload = json_encode($token);
               break;
