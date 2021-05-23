@@ -87,7 +87,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
   //group->post('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
   //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
-});
+})->add(\MWparaAutentificar::class . ':VerificarUsuario');
 
 $app->get('[/]', function (Request $request, Response $response) {
   $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");

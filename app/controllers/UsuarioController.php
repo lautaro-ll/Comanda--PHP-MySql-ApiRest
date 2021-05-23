@@ -8,7 +8,7 @@ class UsuarioController extends Usuario implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if ((isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave']))) {
         $cargo = $parametros['cargo'];
         $nombre = $parametros['nombre'];
         $alias = $parametros['alias'];
@@ -69,22 +69,29 @@ class UsuarioController extends Usuario implements IApiUsable
   public function ModificarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-
-    $cargo = $parametros['cargo'];
-    $nombre = $parametros['nombre'];
-    $alias = $parametros['alias'];
-    $clave = $parametros['clave'];
-    $id = $parametros['id'];
-
-    $nuevoUsuario = new Usuario();
-    $nuevoUsuario->cargo = $cargo;
-    $nuevoUsuario->nombre = $nombre;
-    $nuevoUsuario->alias = $alias;
-    $nuevoUsuario->clave = $clave;
-    $id->nombre = $id;
-    $nuevoUsuario->modificarUsuario();
-
-    $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+        $cargo = $parametros['cargo'];
+        $nombre = $parametros['nombre'];
+        $alias = $parametros['alias'];
+        $clave = $parametros['clave'];
+        $id = $parametros['id'];
+    
+        $nuevoUsuario = new Usuario();
+        $nuevoUsuario->cargo = $cargo;
+        $nuevoUsuario->nombre = $nombre;
+        $nuevoUsuario->alias = $alias;
+        $nuevoUsuario->clave = $clave;
+        $id->nombre = $id;
+        $nuevoUsuario->modificarUsuario();
+    
+        $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
 
     $response->getBody()->write($payload);
     return $response
@@ -94,11 +101,18 @@ class UsuarioController extends Usuario implements IApiUsable
   public function BorrarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-
-    $id = $parametros['id'];
-    Usuario::borrarUsuario($id);
-
-    $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (isset($parametros['id'])) {
+        $id = $parametros['id'];
+        Usuario::borrarUsuario($id);
+        $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+    
 
     $response->getBody()->write($payload);
     return $response
@@ -139,4 +153,17 @@ class UsuarioController extends Usuario implements IApiUsable
   }
 }
 
+/*
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+
+  
+        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+*/
 ?>
