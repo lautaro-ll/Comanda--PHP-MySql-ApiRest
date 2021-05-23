@@ -25,9 +25,8 @@ class MWparaAutentificar
 					if (isset($payload->cargo) && $payload->cargo == "Socio") {
 						//$response->getBody()->write("");
 						$parsedBody = $request->getParsedBody();
-						$parsedBody["acceso"] = 1;
+						$parsedBody["acceso"] = true;
 						$request = $request->withParsedBody($parsedBody);
-						var_dump($request->getParsedBody());
 						$response = $handler->handle($request);
 					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");
