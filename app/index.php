@@ -78,15 +78,15 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
   $group->get('/{mesa}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno');
-  $group->post('/estado', \MesaController::class . ':CambiarEstado'); //CambiarEstadoMesa ->MOZO
+  //$group->post('/estado', \MesaController::class . ':CambiarEstado'); //CambiarEstadoMesa ->MOZO
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
-  $group->post('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
-  $group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
+  //group->post('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
+  //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
