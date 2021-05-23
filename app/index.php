@@ -57,7 +57,7 @@ $app = AppFactory::create();
 // Middleware
 
 // Routes
-$app->add(\MWparaCORS::class . ':HabilitarCORS8080');
+//$app->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->post('/login', \UsuarioController::class . ':Validar');
 
