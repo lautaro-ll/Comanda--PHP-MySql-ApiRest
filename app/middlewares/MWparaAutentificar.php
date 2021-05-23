@@ -23,6 +23,8 @@ class MWparaAutentificar
 					AutentificadorJWT::verificarToken($token);
 					$payload = AutentificadorJWT::ObtenerData($token);
 					if (isset($payload->cargo) && $payload->cargo == "Socio") {
+						//$response->getBody()->write("");
+						var_dump($response);
 						$response = $handler->handle($request);
 					} else {
 						$response->getBody()->write("NO tenes habilitado el ingreso");
