@@ -7,18 +7,25 @@ class MesaController extends Mesa implements IApiUsable
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-
-        $codigoIdentificacion = $parametros['codigoIdentificacion'];
-        $codigoPedido = $parametros['codigoPedido'];
-        $estado = $parametros['estado'];
-
-        $nuevaMesa = new Mesa();
-        $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
-        $nuevaMesa->codigoPedido = $codigoPedido;
-        $nuevaMesa->estado = $estado;
-        $nuevaMesa->crearMesa();
-
-        $payload = json_encode(array("mensaje" => "Mesa creado con exito"));
+        if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+          if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+            $codigoIdentificacion = $parametros['codigoIdentificacion'];
+            $codigoPedido = $parametros['codigoPedido'];
+            $estado = $parametros['estado'];
+    
+            $nuevaMesa = new Mesa();
+            $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
+            $nuevaMesa->codigoPedido = $codigoPedido;
+            $nuevaMesa->estado = $estado;
+            $nuevaMesa->crearMesa();
+    
+            $payload = json_encode(array("mensaje" => "Mesa creado con exito"));
+          } else {
+            $payload = json_encode(array("mensaje" => "Faltan datos"));
+          }
+        } else {
+          $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+        }
 
         $response->getBody()->write($payload);
         return $response
@@ -49,20 +56,27 @@ class MesaController extends Mesa implements IApiUsable
     public function ModificarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
+        if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+          if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+            $codigoIdentificacion = $parametros['codigoIdentificacion'];
+            $codigoPedido = $parametros['codigoPedido'];
+            $estado = $parametros['estado'];
+            $id = $parametros['id'];
 
-        $codigoIdentificacion = $parametros['codigoIdentificacion'];
-        $codigoPedido = $parametros['codigoPedido'];
-        $estado = $parametros['estado'];
-        $id = $parametros['id'];
-
-        $nuevaMesa = new Mesa();
-        $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
-        $nuevaMesa->codigoPedido = $codigoPedido;
-        $nuevaMesa->estado = $estado;
-        $nuevaMesa->nombre = $id;
-        $nuevaMesa->modificarMesa();
-
-        $payload = json_encode(array("mensaje" => "Mesa modificado con exito"));
+            $nuevaMesa = new Mesa();
+            $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
+            $nuevaMesa->codigoPedido = $codigoPedido;
+            $nuevaMesa->estado = $estado;
+            $nuevaMesa->nombre = $id;
+            $nuevaMesa->modificarMesa();
+    
+            $payload = json_encode(array("mensaje" => "Mesa modificado con exito"));
+          } else {
+            $payload = json_encode(array("mensaje" => "Faltan datos"));
+          }
+        } else {
+          $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+        }
 
         $response->getBody()->write($payload);
         return $response
@@ -72,12 +86,18 @@ class MesaController extends Mesa implements IApiUsable
     public function BorrarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
+        if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+          if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+            $id = $parametros['id'];
+            Mesa::borrarMesa($id);
 
-        $id = $parametros['id'];
-        Mesa::borrarMesa($id);
-
-        $payload = json_encode(array("mensaje" => "Mesa borrado con exito"));
-
+            $payload = json_encode(array("mensaje" => "Mesa borrado con exito"));
+          } else {
+            $payload = json_encode(array("mensaje" => "Faltan datos"));
+          }
+        } else {
+          $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+        }
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');

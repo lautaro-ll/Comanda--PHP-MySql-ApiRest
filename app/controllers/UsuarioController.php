@@ -48,7 +48,7 @@ class UsuarioController extends Usuario implements IApiUsable
   public function TraerTodosPorCargo($request, $response, $args)
   {
     $cargo = $args['cargo'];
-    $lista = Usuario::obtenerUsuariosPorCargo($cargo);
+    $lista = Usuario::obtenerPorCargo($cargo);
     $payload = json_encode(array("listaUsuario" => $lista));
 
     $response->getBody()->write($payload);

@@ -41,6 +41,16 @@ class Pedido {
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
+    public static function obtenerPorCargo($cargo)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidos.id, pedidos.cliente, pedidos.foto, pedidos.`codigo-pedido`, pedidos.idmesa, pedidos.idproducto, pedidos.precio, pedidos.idmozo, pedidos.idusuario, pedidos.estado, pedidos.`tiempo-pedido`, pedidos.`tiempo-estimado`, pedidos.`tiempo-finalizado`, pedidos.`tiempo-entregado` FROM pedidos INNER JOIN usuarios ON pedidos.idusuario=usuarios.id WHERE usuarios.cargo=:cargo");
+        $consulta->bindValue(':cargo', $cargo, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
     public static function obtenerPorEstado($estado)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

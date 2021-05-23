@@ -33,7 +33,7 @@ class Usuario
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
     }
 
-    public static function obtenerUsuariosPorCargo($cargo)
+    public static function obtenerPorCargo($cargo)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios WHERE cargo=:cargo");

@@ -128,5 +128,16 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function TraerPendientes($request, $response, $args)
+  {
+    $cargo = $args['cargo'];
+    $lista = Pedido::obtenerPorCargo($cargo);
+    $payload = json_encode(array("listaUsuario" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }
 ?>
