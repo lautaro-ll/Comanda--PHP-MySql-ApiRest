@@ -8,7 +8,7 @@ class ProductoController extends Producto implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (isset($parametros['tipo']) && isset($parametros['producto']) && isset($parametros['tipoUsuario']) && isset($parametros['precio'])) {
         $tipo = $parametros['tipo'];
         $producto = $parametros['producto'];
         $tipoUsuario = $parametros['tipoUsuario'];
@@ -59,7 +59,7 @@ class ProductoController extends Producto implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (isset($parametros['tipo']) && isset($parametros['producto']) && isset($parametros['tipoUsuario']) && isset($parametros['precio']) && isset($parametros['id'])) {
         $tipo = $parametros['tipo'];
         $producto = $parametros['producto'];
         $tipoUsuario = $parametros['tipoUsuario'];
@@ -91,7 +91,7 @@ class ProductoController extends Producto implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (isset($parametros['id'])) {
         $id = $parametros['id'];
         Producto::borrarProducto($id);
     

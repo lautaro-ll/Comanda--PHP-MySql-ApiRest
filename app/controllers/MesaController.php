@@ -8,7 +8,7 @@ class MesaController extends Mesa implements IApiUsable
     {
         $parametros = $request->getParsedBody();
         if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-          if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+          if (isset($parametros['codigoIdentificacion']) && isset($parametros['codigoPedido']) && isset($parametros['estado'])) {
             $codigoIdentificacion = $parametros['codigoIdentificacion'];
             $codigoPedido = $parametros['codigoPedido'];
             $estado = $parametros['estado'];
@@ -57,7 +57,7 @@ class MesaController extends Mesa implements IApiUsable
     {
         $parametros = $request->getParsedBody();
         if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-          if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+          if (isset($parametros['codigoIdentificacion']) && isset($parametros['codigoPedido']) && isset($parametros['estado']) && isset($parametros['id'])) {
             $codigoIdentificacion = $parametros['codigoIdentificacion'];
             $codigoPedido = $parametros['codigoPedido'];
             $estado = $parametros['estado'];
@@ -87,7 +87,7 @@ class MesaController extends Mesa implements IApiUsable
     {
         $parametros = $request->getParsedBody();
         if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-          if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+          if (isset($parametros['id'])) {
             $id = $parametros['id'];
             Mesa::borrarMesa($id);
 
@@ -98,6 +98,34 @@ class MesaController extends Mesa implements IApiUsable
         } else {
           $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
         }
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function CambiarEstado($request, $response, $args)
+    {
+        $parametros = $request->getParsedBody();
+        if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") 
+        {
+          if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="mozo") 
+          {
+            $id = $parametros['id'];
+            $estado = $parametros['estado'];
+
+            $nuevaMesa = new Mesa();
+            $nuevaMesa->obtenerMesa($id);
+            $nuevaMesa->estado = $estado;
+            $nuevaMesa->ModificarMesa();
+
+            $payload = json_encode(array("mensaje" => "Estado cambiado con exito"));
+          } else {
+            $payload = json_encode(array("mensaje" => "Faltan datos"));
+          }
+        } else {
+          $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+        }
+
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');

@@ -18,7 +18,6 @@ require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './middlewares/MWparaAutentificar.php';
 
-
 /*
  Habilitar CORS por mw
  JWT por mw
@@ -26,14 +25,14 @@ require_once './middlewares/MWparaAutentificar.php';
  SOLICITUDES POR USUARIO
 
  MOZO
- GenerarPedido()-> "codigo-pedido"
- CancelarPedido()
- CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)
+ GenerarPedido()-> "codigo-pedido"*
+ CancelarPedido()*
+ CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)*
 
  BARTENDER-CERVECERO-COCINERO
- TraerPedidosPendientesSegunTipoUsuario()
- TomarPedido()
- PedidoListo()
+ TraerPedidosPendientesSegunTipoUsuario()*
+ TomarPedido()*
+ PedidoListo()*
 
  SOCIO
  TraerEstadoPedidos()
@@ -52,6 +51,7 @@ require_once './middlewares/MWparaAutentificar.php';
  TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual"
  CargarEncuesta()
 */
+
 $app = AppFactory::create();
 
 // Middleware
@@ -78,7 +78,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
   $group->get('/{mesa}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno');
-  //$group->post('/estado', \MesaController::class . ':CambiarEstado'); //CambiarEstadoMesa ->MOZO
+  //$group->post('/estado', \MesaController::class . ':CambiarEstado'); //CambiarEstadoMesa ->MOZO //CerrarMesa(codigoIdentificacion) -> SOCIO
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
@@ -86,15 +86,15 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('/u/{pedido}', \PedidoController::class . ':TraerUno');
   $group->get('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
-  //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() -> BARTENDER-CERVECERO-COCINERO
+  //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() /  TomarPedido() -> BARTENDER-CERVECERO-COCINERO //CancelarPedido -> MOZO //
+  //$group->post('/tiempo/{pedido}', \PedidoController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
+  //$group->post('/encuesta/{pedido}', \PedidoController::class . ':CargarEncuesta'); // CargarEncuesta() -> CLIENTE
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
   $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
   return $response;
 });
-
-//TomarPedido() -> BARTENDER-CERVECERO-COCINERO
 
 $app->run();
 

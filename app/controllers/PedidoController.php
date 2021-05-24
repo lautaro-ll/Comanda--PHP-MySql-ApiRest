@@ -8,7 +8,7 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && ($parametros['accesoEmpleado']=="socio") || ($parametros['accesoEmpleado']=="mozo")) {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['codigoPedido']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idMozo'])) {
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
         $codigoPedido = $parametros['codigoPedido'];
@@ -66,7 +66,7 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado'])) { //CUALQUIER EMPLEADO ES VALIDO
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (isset($parametros['id']) && isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['codigoPedido']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idMozo'])) {
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
         $codigoPedido = $parametros['codigoPedido'];
@@ -112,7 +112,7 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (isset($parametros['id'])) {
         $id = $parametros['id'];
         Pedido::borrarPedido($id);
     
