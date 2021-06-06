@@ -92,7 +92,7 @@ class UsuarioController implements IApiUsable
         $usuarioSolicitado->nombre = $nombre;
         $usuarioSolicitado->alias = $alias;
         $usuarioSolicitado->clave = $clave;
-        $nuevoUsuario->habilitado = $habilitado;
+        $usuarioSolicitado->habilitado = $habilitado;
         $usuarioSolicitado->save();
     
         $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
