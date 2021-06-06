@@ -21,7 +21,7 @@ class UsuarioController implements IApiUsable
         $nuevoUsuario->nombre = $nombre;
         $nuevoUsuario->alias = $alias;
         $nuevoUsuario->clave = $clave;
-        $nuevoUsuario->crearUsuario();
+        $nuevoUsuario->save();
   
         $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
       } else {
@@ -39,7 +39,8 @@ class UsuarioController implements IApiUsable
   public function TraerUno($request, $response, $args)
   {
     $id = $args['id'];
-    $usuario = Usuario::obtenerUsuario($id);
+    $user = new Usuario();
+    $usuario = $user->find($id);
     $payload = json_encode($usuario);
 
     $response->getBody()->write($payload);
@@ -50,7 +51,8 @@ class UsuarioController implements IApiUsable
   public function TraerTodosPorCargo($request, $response, $args)
   {
     $cargo = $args['cargo'];
-    $lista = Usuario::obtenerPorCargo($cargo);
+    $user = new Usuario();
+    $lista = $user->where('cargo',$cargo)->get();
     $payload = json_encode(array("listaUsuario" => $lista));
 
     $response->getBody()->write($payload);
@@ -79,13 +81,14 @@ class UsuarioController implements IApiUsable
         $clave = $parametros['clave'];
         $id = $parametros['id'];
     
-        $nuevoUsuario = new Usuario();
-        $nuevoUsuario->cargo = $cargo;
-        $nuevoUsuario->nombre = $nombre;
-        $nuevoUsuario->alias = $alias;
-        $nuevoUsuario->clave = $clave;
-        $id->nombre = $id;
-        $nuevoUsuario->modificarUsuario();
+        $user = new Usuario();
+        $usuarioSolicitado = $user -> find($id);
+
+        $usuarioSolicitado->cargo = $cargo;
+        $usuarioSolicitado->nombre = $nombre;
+        $usuarioSolicitado->alias = $alias;
+        $usuarioSolicitado->clave = $clave;
+        $usuarioSolicitado->save();
     
         $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
       } else {
@@ -106,7 +109,10 @@ class UsuarioController implements IApiUsable
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
       if (isset($parametros['id'])) {
         $id = $parametros['id'];
-        Usuario::borrarUsuario($id);
+
+        $user = new Usuario();
+        $user->find($id)->delete();
+
         $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
@@ -127,7 +133,7 @@ class UsuarioController implements IApiUsable
     if (isset($parametros['alias']) && isset($parametros['clave'])) {
       $usuarioIngresado = $parametros['alias'];
       $claveIngresada = $parametros['clave'];
-      $arrayUsuarios = Usuario::obtenerTodos();
+      $arrayUsuarios = Usuario::all();
       if (!is_null($arrayUsuarios)) {
         foreach ($arrayUsuarios as $usuario) {
           if ($usuario->alias == $usuarioIngresado) {
