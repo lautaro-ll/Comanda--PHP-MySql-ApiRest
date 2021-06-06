@@ -106,17 +106,20 @@ class MesaController extends Mesa implements IApiUsable
     public function CambiarEstado($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") 
+        if(isset($parametros['accesoEmpleado']))
         {
-          if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="mozo") 
+          if (isset($parametros['id']) && isset($parametros['estado'])) 
           {
             $id = $parametros['id'];
             $estado = $parametros['estado'];
+            $accesoEmpleado = $parametros['accesoEmpleado'];
 
-            $nuevaMesa = new Mesa();
-            $nuevaMesa->obtenerMesa($id);
-            $nuevaMesa->estado = $estado;
-            $nuevaMesa->ModificarMesa();
+            if($accesoEmpleado=="socio" || ($accesoEmpleado=="mozo" && ($estado=="con cliente esperando pedido" || $estado=="con cliente comiendo" || $estado=="con cliente pagando"))) {
+              $nuevaMesa = new Mesa();
+              $nuevaMesa->obtenerMesa($id);
+              $nuevaMesa->estado = $estado;
+              $nuevaMesa->ModificarMesa();
+            }
 
             $payload = json_encode(array("mensaje" => "Estado cambiado con exito"));
           } else {
@@ -131,4 +134,5 @@ class MesaController extends Mesa implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 }
+
 ?>

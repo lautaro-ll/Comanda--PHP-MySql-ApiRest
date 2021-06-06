@@ -62,42 +62,48 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function ModificarUno($request, $response, $args)
+  public function ModificarUno($request, $response, $args) //En Preparacion() Listo para servir() -> BARTENDER-CERVECERO-COCINERO 
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado'])) { //CUALQUIER EMPLEADO ES VALIDO
-      if (isset($parametros['id']) && isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['codigoPedido']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idMozo'])) {
-        $cliente = $parametros['cliente'];
-        $foto = $parametros['foto'];
-        $codigoPedido = $parametros['codigoPedido'];
-        $idMesa = $parametros['idMesa'];
-        $idProducto = $parametros['idProducto'];
-        $precio = $parametros['precio'];
-        $idUsuario = $parametros['idUsuario'];
+      $accesoEmpleado = $parametros['accesoEmpleado'];
+      if (isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="Mozo" && $parametros['estado']=="Cancelar") { //CancelarPedido -> MOZO
         $estado = $parametros['estado'];
-        $tiempoEstimado = $parametros['tiempoEstimado'];
-        $tiempoFinalizado = $parametros['tiempoFinalizado'];
-        $tiempoEntregado = $parametros['tiempoEntregado'];
         $id = $parametros['id'];
     
         $nuevoPedido = new Pedido();
-        $nuevoPedido->cliente = $cliente;
-        $nuevoPedido->foto = $foto;
-        $nuevoPedido->codigoPedido = $codigoPedido;
-        $nuevoPedido->idMesa = $idMesa;
-        $nuevoPedido->idProducto = $idProducto;
-        $nuevoPedido->precio = $precio;
-        $nuevoPedido->idUsuario = $idUsuario;
+        $nuevoPedido->obtenerPedido($id);
         $nuevoPedido->estado = $estado;
-        $nuevoPedido->tiempoEstimado = $tiempoEstimado;
-        $nuevoPedido->tiempoFinalizado = $tiempoFinalizado;
-        $nuevoPedido->tiempoEntregado = $tiempoEntregado;
-        $nuevoPedido->nombre = $id;
         $nuevoPedido->modificarPedido();
     
-        $payload = json_encode(array("mensaje" => "Pedido modificado con exito"));
-      } else {
-        $payload = json_encode(array("mensaje" => "Faltan datos"));
+        $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
+      } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="Bartender" || $accesoEmpleado=="Cervecero" || $accesoEmpleado=="Cocinero") && $parametros['estado']=="En Preparacion") {
+        $estado = $parametros['estado'];
+        $id = $parametros['id'];
+    
+        $nuevoPedido = new Pedido();
+        $nuevoPedido->obtenerPedido($id);
+        $nuevoPedido->estado = $estado;
+        $nuevoPedido->tiempoEstimado = new DateTime("NOW");
+        $nuevoPedido->tiempoEstimado->format("Y-m-d H:i:s");
+        $nuevoPedido->modificarPedido();
+    
+        $payload = json_encode(array("mensaje" => "Pedido seleccionado en preparación"));
+      } else if(isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="Bartender" || $accesoEmpleado=="Cervecero" || $accesoEmpleado=="Cocinero") && $parametros['estado']=="Listo para servir") {
+        $estado = $parametros['estado'];
+        $id = $parametros['id'];
+    
+        $nuevoPedido = new Pedido();
+        $nuevoPedido->obtenerPedido($id);
+        $nuevoPedido->estado = $estado;
+        $nuevoPedido->tiempoFinalizado = new DateTime("NOW");
+        $nuevoPedido->tiempoFinalizado->format("Y-m-d H:i:s");
+        $nuevoPedido->modificarPedido();
+    
+        $payload = json_encode(array("mensaje" => "Pedido seleccionado listo para servir"));        
+      }
+      else {
+        $payload = json_encode(array("mensaje" => "Faltan datos o son erróneos"));
       }
     } else {
       $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
@@ -134,6 +140,58 @@ class PedidoController extends Pedido implements IApiUsable
     $cargo = $args['cargo'];
     $lista = Pedido::obtenerPorCargo($cargo);
     $payload = json_encode(array("listaPedido" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TraerTiempo($request, $response, $args)
+  {
+    $pedido = $args['pedido'];
+    $lista = Pedido::obtenerPedido($pedido);
+
+    $tiempoEstimado = 0;
+    for($i=0; $i<sizeof($lista); $i++)
+    {
+        if($lista[$i]["estado"]=="en preparacion" && $tiempoEstimado < $lista[$i]["tiempoEstimado"]) {
+          $tiempoEstimado = $lista[$i]["tiempoEstimado"];
+        }
+    }
+    $payload = json_encode(array("tiempoEstimado" => $tiempoEstimado));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function CargarEncuesta($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if (isset($parametros['codigo-mesa']) && isset($parametros['codigo-pedido']) && isset($parametros['calif-mesa']) 
+    && isset($parametros['calif-resto']) && isset($parametros['calif-mozo']) && isset($parametros['calif-cocinero']) && isset($parametros['experiencia'])) {
+      $codigoMesa = $parametros['codigo-mesa'];
+      $codigoPedido = $parametros['codigo-pedido'];
+      $mesa = $parametros['calif-mesa'];
+      $resto = $parametros['calif-resto'];
+      $mozo = $parametros['calif-mozo'];
+      $cocinero = $parametros['calif-cocinero'];
+      $experiencia = $parametros['experiencia'];
+
+      $nuevaEncuesta = new Encuesta();
+      $nuevaEncuesta->codigoMesa = $codigoMesa;
+      $nuevaEncuesta->codigoPedido = $codigoPedido;
+      $nuevaEncuesta->mesa = $mesa;
+      $nuevaEncuesta->resto = $resto;
+      $nuevaEncuesta->mozo = $mozo;
+      $nuevaEncuesta->cocinero = $cocinero;
+      $nuevaEncuesta->experiencia = $experiencia;
+      $nuevaEncuesta->crearEncuesta();
+  
+      $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
 
     $response->getBody()->write($payload);
     return $response

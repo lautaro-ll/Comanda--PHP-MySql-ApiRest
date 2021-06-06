@@ -9,6 +9,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 require __DIR__ . '/../vendor/autoload.php';
 require_once './db/AccesoDatos.php';
@@ -54,9 +55,33 @@ require_once './middlewares/MWparaAutentificar.php';
 
 $app = AppFactory::create();
 
+// Load ENV
+/*
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+*/
+
 // Middleware
 $app->add(\MWparaAutentificar::class . ':VerificarUsuario');
 //$app->add(\MWparaCORS::class . ':HabilitarCORS8080');
+
+// Eloquent
+$container=$app->getContainer();
+
+$capsule = new Capsule;
+$capsule->addConnection([
+    'driver'    => 'mysql',
+    'host'      => $_ENV['MYSQL_HOST'],
+    'database'  => $_ENV['MYSQL_DB'],
+    'username'  => $_ENV['MYSQL_USER'],
+    'password'  => $_ENV['MYSQL_PASS'],
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
+
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
 
 // Routes
 $app->post('/login', \UsuarioController::class . ':Validar');
@@ -78,7 +103,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
   $group->get('/{mesa}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno');
-  //$group->post('/estado', \MesaController::class . ':CambiarEstado'); //CambiarEstadoMesa ->MOZO //CerrarMesa(codigoIdentificacion) -> SOCIO
+  $group->post('/estado', \MesaController::class . ':CambiarEstado'); 
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
@@ -86,9 +111,12 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('/u/{pedido}', \PedidoController::class . ':TraerUno');
   $group->get('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
-  //$group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() /  TomarPedido() -> BARTENDER-CERVECERO-COCINERO //CancelarPedido -> MOZO //
-  //$group->post('/tiempo/{pedido}', \PedidoController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
-  //$group->post('/encuesta/{pedido}', \PedidoController::class . ':CargarEncuesta'); // CargarEncuesta() -> CLIENTE
+  $group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() /  TomarPedido() -> BARTENDER-CERVECERO-COCINERO //CancelarPedido -> MOZO
+});
+
+$app->group('/encuesta', function (RouteCollectorProxy $group) {
+  $group->get('/tiempo/{pedido}', \PedidoController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
+  $group->post('/encuesta/{pedido}', \PedidoController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
 });
 
 $app->get('[/]', function (Request $request, Response $response) {

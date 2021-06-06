@@ -72,14 +72,14 @@ class Pedido {
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
-    public static function obtenerPedido($id)
+    public static function obtenerPedido($codigoPedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE id=:id");
-        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE `codigo-pedido`=:codigoPedido");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetchObject('Pedido');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
     public function modificarPedido()
