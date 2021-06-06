@@ -10,17 +10,19 @@ class UsuarioController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if ((isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave']))) {
+      if ((isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave']) && isset($parametros['habilitado']))) {
         $cargo = $parametros['cargo'];
         $nombre = $parametros['nombre'];
         $alias = $parametros['alias'];
         $clave = $parametros['clave'];
+        $habilitado = $parametros['habilitado'];
   
         $nuevoUsuario = new Usuario();
         $nuevoUsuario->cargo = $cargo;
         $nuevoUsuario->nombre = $nombre;
         $nuevoUsuario->alias = $alias;
         $nuevoUsuario->clave = $clave;
+        $nuevoUsuario->habilitado = $habilitado;
         $nuevoUsuario->save();
   
         $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
@@ -74,13 +76,14 @@ class UsuarioController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave'])) {
+      if (($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave']) && isset($parametros['habilitado'])) {
         $cargo = $parametros['cargo'];
         $nombre = $parametros['nombre'];
         $alias = $parametros['alias'];
         $clave = $parametros['clave'];
         $id = $parametros['id'];
-    
+        $habilitado = $parametros['habilitado'];
+
         $user = new Usuario();
         $usuarioSolicitado = $user -> find($id);
 
@@ -88,6 +91,7 @@ class UsuarioController implements IApiUsable
         $usuarioSolicitado->nombre = $nombre;
         $usuarioSolicitado->alias = $alias;
         $usuarioSolicitado->clave = $clave;
+        $nuevoUsuario->habilitado = $habilitado;
         $usuarioSolicitado->save();
     
         $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
