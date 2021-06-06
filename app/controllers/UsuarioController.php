@@ -4,7 +4,7 @@ require_once './interfaces/IApiUsable.php';
 
 use \App\Models\Usuario as Usuario;
 
-class UsuarioController extends Usuario implements IApiUsable
+class UsuarioController implements IApiUsable
 {
   public function CargarUno($request, $response, $args)
   {
