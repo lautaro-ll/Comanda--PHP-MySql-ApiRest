@@ -19,40 +19,6 @@ require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './middlewares/MWparaAutentificar.php';
 
-/*
- Habilitar CORS por mw
- JWT por mw
-
- SOLICITUDES POR USUARIO
-
- MOZO
- GenerarPedido()-> "codigo-pedido"*
- CancelarPedido()*
- CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)*
-
- BARTENDER-CERVECERO-COCINERO
- TraerPedidosPendientesSegunTipoUsuario()*
- TomarPedido()*
- PedidoListo()*
-
- SOCIO
- TraerEstadoPedidos()
- CerrarMesa(codigoIdentificacion)
- AltaEmpleado()
- BajaEmpleado()
- ModificacionEmpleado()
- AltaProducto()
- BajaProducto()
- ModificacionProducto()
- AltaMesa()
- BajaMesa()
- ModificacionMesa()
-
- CLIENTE
- TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual"
- CargarEncuesta()
-*/
-
 $app = AppFactory::create();
 
 // Load ENV
@@ -125,5 +91,39 @@ $app->get('[/]', function (Request $request, Response $response) {
 });
 
 $app->run();
+
+/*
+ Habilitar CORS por mw
+ JWT por mw
+
+ SOLICITUDES POR USUARIO
+
+ MOZO
+ GenerarPedido()-> "codigo-pedido"*
+ CancelarPedido()*
+ CambiarEstadoMesa(codigoIdentificacion, nuevoEstado)*
+
+ BARTENDER-CERVECERO-COCINERO
+ TraerPedidosPendientesSegunTipoUsuario()*
+ TomarPedido()*
+ PedidoListo()*
+
+ SOCIO
+ TraerEstadoPedidos()
+ CerrarMesa(codigoIdentificacion)
+ AltaEmpleado()
+ BajaEmpleado()
+ ModificacionEmpleado()
+ AltaProducto()
+ BajaProducto()
+ ModificacionProducto()
+ AltaMesa()
+ BajaMesa()
+ ModificacionMesa()
+
+ CLIENTE
+ TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual"
+ CargarEncuesta()
+*/
 
 ?>
