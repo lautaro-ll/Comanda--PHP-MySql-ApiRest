@@ -16,6 +16,7 @@ class Usuario extends Model
 
     const DELETED_AT = 'fecha-baja';
     const CREATED_AT = 'fecha-alta';
+    const UPDATED_AT = 'fecha-modificado';
 
     protected $fillable = [
         'cargo', 'nombre', 'alias', 'clave', 'habilitado'
