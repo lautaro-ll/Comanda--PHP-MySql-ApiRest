@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4151f086ea86194522c30f5a7eb1f255",
+    "content-hash": "26d070e307493d5e4b53231ab7d683a9",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -342,7 +342,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.40.0",
+            "version": "v8.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -396,16 +396,16 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v8.40.0",
+            "version": "v8.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "0e38ee1632d470e56aece0079e6e22d13e6bea8e"
+                "reference": "07342efca88cf9fff4f2fa0e3c378ea6ee86e5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/0e38ee1632d470e56aece0079e6e22d13e6bea8e",
-                "reference": "0e38ee1632d470e56aece0079e6e22d13e6bea8e",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/07342efca88cf9fff4f2fa0e3c378ea6ee86e5e2",
+                "reference": "07342efca88cf9fff4f2fa0e3c378ea6ee86e5e2",
                 "shasum": ""
             },
             "require": {
@@ -443,7 +443,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-03-16T19:42:20+00:00"
+            "time": "2021-05-18T12:49:19+00:00"
         },
         {
             "name": "illuminate/contracts",
@@ -563,7 +563,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.40.0",
+            "version": "v8.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -609,16 +609,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.40.0",
+            "version": "v8.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "ce1682ef73ab28a61be01c24ec5b090bdf2c3256"
+                "reference": "3832c4a0ba0f0734de8689500164122f5f51c8ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/ce1682ef73ab28a61be01c24ec5b090bdf2c3256",
-                "reference": "ce1682ef73ab28a61be01c24ec5b090bdf2c3256",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/3832c4a0ba0f0734de8689500164122f5f51c8ab",
+                "reference": "3832c4a0ba0f0734de8689500164122f5f51c8ab",
                 "shasum": ""
             },
             "require": {
@@ -673,7 +673,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-04-28T12:56:25+00:00"
+            "time": "2021-06-01T19:27:52+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",

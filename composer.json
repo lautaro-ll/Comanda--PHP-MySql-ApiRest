@@ -10,6 +10,10 @@
         "guzzlehttp/psr7": "^1.8",
         "http-interop/http-factory-guzzle": "^1.0",
         "laminas/laminas-diactoros": "^2.5",
-        "illuminate/contracts": "^8.45"
+        "illuminate/contracts": "^8.45",
+        "illuminate/support": "^8.45",
+        "illuminate/collections": "^8.45",
+        "illuminate/container": "^8.45",
+        "illuminate/macroable": "^8.45"
      }
  }
