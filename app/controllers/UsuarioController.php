@@ -23,6 +23,7 @@ class UsuarioController implements IApiUsable
         $nuevoUsuario->alias = $alias;
         $nuevoUsuario->clave = $clave;
         $nuevoUsuario->habilitado = $habilitado;
+        var_dump($nuevoUsuario);
         $nuevoUsuario->save();
   
         $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
