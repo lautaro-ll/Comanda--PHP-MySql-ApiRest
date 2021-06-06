@@ -9,8 +9,7 @@ class UsuarioController implements IApiUsable
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-    var_dump("CARGARUNO");
-    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") { var_dump("ACCESO");
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
       if ((isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave']) && isset($parametros['habilitado']))) {
         $cargo = $parametros['cargo'];
         $nombre = $parametros['nombre'];
