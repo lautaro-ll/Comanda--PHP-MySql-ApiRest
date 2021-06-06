@@ -55,7 +55,7 @@ $app->post('/login', \UsuarioController::class . ':Validar');
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
   $group->get('[/]', \UsuarioController::class . ':TraerTodos');
   $group->get('/u/{id}', \UsuarioController::class . ':TraerUno');
-  $group->get('/t/{cargos}', \UsuarioController::class . ':TraerTodosPorCargo');
+  $group->get('/t/{cargo}', \UsuarioController::class . ':TraerTodosPorCargo');
   $group->post('[/]', \UsuarioController::class . ':CargarUno');
 });
 
