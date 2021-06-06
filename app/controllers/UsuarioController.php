@@ -9,7 +9,8 @@ class UsuarioController implements IApiUsable
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
-    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    var_dump("CARGARUNO");
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") { var_dump("ACCESO");
       if ((isset($parametros['cargo']) && isset($parametros['nombre']) && isset($parametros['alias']) && isset($parametros['clave']) && isset($parametros['habilitado']))) {
         $cargo = $parametros['cargo'];
         $nombre = $parametros['nombre'];
@@ -23,8 +24,7 @@ class UsuarioController implements IApiUsable
         $nuevoUsuario->alias = $alias;
         $nuevoUsuario->clave = $clave;
         $nuevoUsuario->habilitado = $habilitado;
-        var_dump($nuevoUsuario);
-        //$nuevoUsuario->save();
+        $nuevoUsuario->save();
   
         $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
       } else {
