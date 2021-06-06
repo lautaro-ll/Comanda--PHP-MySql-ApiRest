@@ -18,7 +18,7 @@ class Usuario extends Model
     const CREATED_AT = 'fecha-alta';
 
     protected $fillable = [
-        'cargo', 'nombre', 'alias', 'clave', 'fecha-alta', 'fecha-baja', 'estado'
+        'cargo', 'nombre', 'alias', 'clave', 'habilitado'
     ];
 
 }
