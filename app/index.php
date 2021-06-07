@@ -17,6 +17,7 @@ require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
+require_once './controllers/EncuestaController.php';
 require_once './middlewares/MWparaAutentificar.php';
 
 $app = AppFactory::create();
