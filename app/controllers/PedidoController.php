@@ -2,7 +2,9 @@
 require_once './models/Pedido.php';
 require_once './interfaces/IApiUsable.php';
 
-class PedidoController extends Pedido implements IApiUsable
+use \App\Models\Pedido as Pedido;
+
+class PedidoController implements IApiUsable
 {
   public function CargarUno($request, $response, $args)
   {
@@ -26,7 +28,7 @@ class PedidoController extends Pedido implements IApiUsable
         $nuevoPedido->precio = $precio;
         $nuevoPedido->idMozo = $idMozo;
         $nuevoPedido->estado = "pendiente";
-        $nuevoPedido->crearPedido();
+        $nuevoPedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
       } else {
@@ -44,7 +46,8 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerUno($request, $response, $args)
   {
     $id = $args['id'];
-    $pedido = Pedido::obtenerPedido($id);
+    $p = new Pedido();
+    $pedido = $p->find($id);
     $payload = json_encode($pedido);
 
     $response->getBody()->write($payload);
@@ -54,7 +57,7 @@ class PedidoController extends Pedido implements IApiUsable
 
   public function TraerTodos($request, $response, $args)
   {
-    $lista = Pedido::obtenerTodos();
+    $lista = Pedido::all();
     $payload = json_encode(array("listaPedido" => $lista));
 
     $response->getBody()->write($payload);
@@ -71,34 +74,35 @@ class PedidoController extends Pedido implements IApiUsable
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
-        $nuevoPedido = new Pedido();
-        $nuevoPedido->obtenerPedido($id);
-        $nuevoPedido->estado = $estado;
-        $nuevoPedido->modificarPedido();
+        $p = new Pedido();
+        $pedido = $p->find($id);
+        $pedido->obtenerPedido($id);
+        $pedido->estado = $estado;
+        $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
       } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="Bartender" || $accesoEmpleado=="Cervecero" || $accesoEmpleado=="Cocinero") && $parametros['estado']=="En Preparacion") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
-        $nuevoPedido = new Pedido();
-        $nuevoPedido->obtenerPedido($id);
-        $nuevoPedido->estado = $estado;
-        $nuevoPedido->tiempoEstimado = new DateTime("NOW");
-        $nuevoPedido->tiempoEstimado->format("Y-m-d H:i:s");
-        $nuevoPedido->modificarPedido();
+        $p = new Pedido();
+        $pedido = $p->find($id);
+        $pedido->estado = $estado;
+        $pedido->tiempoEstimado = new DateTime("NOW");
+        $pedido->tiempoEstimado->format("Y-m-d H:i:s");
+        $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado en preparación"));
       } else if(isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="Bartender" || $accesoEmpleado=="Cervecero" || $accesoEmpleado=="Cocinero") && $parametros['estado']=="Listo para servir") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
-        $nuevoPedido = new Pedido();
-        $nuevoPedido->obtenerPedido($id);
-        $nuevoPedido->estado = $estado;
-        $nuevoPedido->tiempoFinalizado = new DateTime("NOW");
-        $nuevoPedido->tiempoFinalizado->format("Y-m-d H:i:s");
-        $nuevoPedido->modificarPedido();
+        $p = new Pedido();
+        $pedido = $p->find($id);
+        $pedido->estado = $estado;
+        $pedido->tiempoFinalizado = new DateTime("NOW");
+        $pedido->tiempoFinalizado->format("Y-m-d H:i:s");
+        $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado listo para servir"));        
       }
@@ -120,8 +124,9 @@ class PedidoController extends Pedido implements IApiUsable
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
       if (isset($parametros['id'])) {
         $id = $parametros['id'];
-        Pedido::borrarPedido($id);
-    
+        $p = new Pedido();
+        $p->find($id)->delete();
+        
         $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
@@ -138,7 +143,8 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerPendientes($request, $response, $args)
   {
     $cargo = $args['cargo'];
-    $lista = Pedido::obtenerPorCargo($cargo);
+    $p = new Pedido();
+    $lista = $p->where('cargo',$cargo)->get();
     $payload = json_encode(array("listaPedido" => $lista));
 
     $response->getBody()->write($payload);
@@ -149,7 +155,8 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerTiempo($request, $response, $args)
   {
     $pedido = $args['pedido'];
-    $lista = Pedido::obtenerPedido($pedido);
+    $p = new Pedido();
+    $lista = $p->where('pedido',$pedido)->get();
 
     $tiempoEstimado = 0;
     for($i=0; $i<sizeof($lista); $i++)
@@ -164,7 +171,7 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-
+/*
   public function CargarEncuesta($request, $response, $args)
   {
     $parametros = $request->getParsedBody();

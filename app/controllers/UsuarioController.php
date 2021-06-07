@@ -41,21 +41,9 @@ class UsuarioController implements IApiUsable
   public function TraerUno($request, $response, $args)
   {
     $id = $args['id'];
-    $user = new Usuario();
-    $usuario = $user->find($id);
+    $u = new Usuario();
+    $usuario = $u->find($id);
     $payload = json_encode($usuario);
-
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
-  }
-
-  public function TraerTodosPorCargo($request, $response, $args)
-  {
-    $cargo = $args['cargo'];
-    $user = new Usuario();
-    $lista = $user->where('cargo',$cargo)->get();
-    $payload = json_encode(array("listaUsuario" => $lista));
 
     $response->getBody()->write($payload);
     return $response
@@ -84,15 +72,15 @@ class UsuarioController implements IApiUsable
         $id = $parametros['id'];
         $habilitado = $parametros['habilitado'];
 
-        $user = new Usuario();
-        $usuarioSolicitado = $user -> find($id);
+        $u = new Usuario();
+        $usuario = $u -> find($id);
 
-        $usuarioSolicitado->cargo = $cargo;
-        $usuarioSolicitado->nombre = $nombre;
-        $usuarioSolicitado->alias = $alias;
-        $usuarioSolicitado->clave = $clave;
-        $usuarioSolicitado->habilitado = $habilitado;
-        $usuarioSolicitado->save();
+        $usuario->cargo = $cargo;
+        $usuario->nombre = $nombre;
+        $usuario->alias = $alias;
+        $usuario->clave = $clave;
+        $usuario->habilitado = $habilitado;
+        $usuario->save();
     
         $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
       } else {
@@ -125,6 +113,18 @@ class UsuarioController implements IApiUsable
       $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
     }
     
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TraerTodosPorCargo($request, $response, $args)
+  {
+    $cargo = $args['cargo'];
+    $user = new Usuario();
+    $lista = $user->where('cargo',$cargo)->get();
+    $payload = json_encode(array("listaUsuario" => $lista));
 
     $response->getBody()->write($payload);
     return $response

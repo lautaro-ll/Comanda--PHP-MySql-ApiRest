@@ -2,7 +2,9 @@
 require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
 
-class ProductoController extends Producto implements IApiUsable
+use \App\Models\Producto as Producto;
+
+class ProductoController implements IApiUsable
 {
   public function CargarUno($request, $response, $args)
   {
@@ -19,7 +21,7 @@ class ProductoController extends Producto implements IApiUsable
         $nuevoProducto->producto = $producto;
         $nuevoProducto->tipoUsuario = $tipoUsuario;
         $nuevoProducto->precio = $precio;
-        $nuevoProducto->crearProducto();
+        $nuevoProducto->save();
     
         $payload = json_encode(array("mensaje" => "Producto creado con exito"));
       } else {
@@ -37,7 +39,8 @@ class ProductoController extends Producto implements IApiUsable
   public function TraerUno($request, $response, $args)
   {
     $id = $args['id'];
-    $producto = Producto::obtenerProducto($id);
+    $p = new Producto();
+    $producto = $p->find($id);
     $payload = json_encode($producto);
 
     $response->getBody()->write($payload);
@@ -47,7 +50,7 @@ class ProductoController extends Producto implements IApiUsable
 
   public function TraerTodos($request, $response, $args)
   {
-    $lista = Producto::obtenerTodos();
+    $lista = Producto::all();
     $payload = json_encode(array("listaProducto" => $lista));
 
     $response->getBody()->write($payload);
@@ -66,13 +69,15 @@ class ProductoController extends Producto implements IApiUsable
         $precio = $parametros['precio'];
         $id = $parametros['id'];
     
-        $nuevoProducto = new Producto();
-        $nuevoProducto->tipo = $tipo;
-        $nuevoProducto->producto = $producto;
-        $nuevoProducto->tipoUsuario = $tipoUsuario;
-        $nuevoProducto->precio = $precio;
-        $nuevoProducto->nombre = $id;
-        $nuevoProducto->modificarProducto();
+        $p = new Producto();
+        $producto = $p->find($id);
+
+
+        $producto->tipo = $tipo;
+        $producto->producto = $producto;
+        $producto->tipoUsuario = $tipoUsuario;
+        $producto->precio = $precio;
+        $producto->save();
     
         $payload = json_encode(array("mensaje" => "Producto modificado con exito"));
       } else {
@@ -93,7 +98,9 @@ class ProductoController extends Producto implements IApiUsable
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
       if (isset($parametros['id'])) {
         $id = $parametros['id'];
-        Producto::borrarProducto($id);
+
+        $p = new Producto();
+        $p->find($id)->delete();
     
         $payload = json_encode(array("mensaje" => "Producto borrado con exito"));
       } else {

@@ -2,7 +2,9 @@
 require_once './models/Mesa.php';
 require_once './interfaces/IApiUsable.php';
 
-class MesaController extends Mesa implements IApiUsable
+use \App\Models\Mesa as Mesa;
+
+class MesaController implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
     {
@@ -17,7 +19,7 @@ class MesaController extends Mesa implements IApiUsable
             $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
             $nuevaMesa->codigoPedido = $codigoPedido;
             $nuevaMesa->estado = $estado;
-            $nuevaMesa->crearMesa();
+            $nuevaMesa->save();
     
             $payload = json_encode(array("mensaje" => "Mesa creado con exito"));
           } else {
@@ -35,7 +37,8 @@ class MesaController extends Mesa implements IApiUsable
     public function TraerUno($request, $response, $args)
     {
         $id = $args['id'];
-        $mesa = Mesa::obtenerMesa($id);
+        $m = new Mesa();
+        $mesa = $m->find($id);
         $payload = json_encode($mesa);
 
         $response->getBody()->write($payload);
@@ -45,7 +48,7 @@ class MesaController extends Mesa implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Mesa::obtenerTodos();
+        $lista = Mesa::all();
         $payload = json_encode(array("listaMesa" => $lista));
 
         $response->getBody()->write($payload);
@@ -63,12 +66,12 @@ class MesaController extends Mesa implements IApiUsable
             $estado = $parametros['estado'];
             $id = $parametros['id'];
 
-            $nuevaMesa = new Mesa();
-            $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
-            $nuevaMesa->codigoPedido = $codigoPedido;
-            $nuevaMesa->estado = $estado;
-            $nuevaMesa->nombre = $id;
-            $nuevaMesa->modificarMesa();
+            $m = new Mesa();
+            $mesa = $m->find($id);
+            $mesa->codigoIdentificacion = $codigoIdentificacion;
+            $mesa->codigoPedido = $codigoPedido;
+            $mesa->estado = $estado;
+            $mesa->save();
     
             $payload = json_encode(array("mensaje" => "Mesa modificado con exito"));
           } else {
@@ -89,8 +92,8 @@ class MesaController extends Mesa implements IApiUsable
         if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
           if (isset($parametros['id'])) {
             $id = $parametros['id'];
-            Mesa::borrarMesa($id);
-
+            $m = new Mesa();
+            $m->find($id)->delete();
             $payload = json_encode(array("mensaje" => "Mesa borrado con exito"));
           } else {
             $payload = json_encode(array("mensaje" => "Faltan datos"));
@@ -115,10 +118,10 @@ class MesaController extends Mesa implements IApiUsable
             $accesoEmpleado = $parametros['accesoEmpleado'];
 
             if($accesoEmpleado=="socio" || ($accesoEmpleado=="mozo" && ($estado=="con cliente esperando pedido" || $estado=="con cliente comiendo" || $estado=="con cliente pagando"))) {
-              $nuevaMesa = new Mesa();
-              $nuevaMesa->obtenerMesa($id);
-              $nuevaMesa->estado = $estado;
-              $nuevaMesa->ModificarMesa();
+              $m = new Mesa();
+              $mesa = $m->find($id);
+              $mesa->estado = $estado;
+              $mesa->save();
             }
 
             $payload = json_encode(array("mensaje" => "Estado cambiado con exito"));
