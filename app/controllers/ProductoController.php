@@ -152,13 +152,13 @@ class ProductoController implements IApiUsable
           $i = 0;
           while (($datos = fgetcsv($archivo, 1000, ",")) !== FALSE) {
               if(count($datos)==4) {
-                var_dump("datos");
-                var_dump($datos);
-                  $nuevo = new Producto($datos);
-                  var_dump("nuevo");
-                  var_dump($nuevo);
+                $nuevoProducto = new Producto();
+                $nuevoProducto->tipo = $datos[0];
+                $nuevoProducto->producto = $datos[1];
+                $nuevoProducto->tipoUsuario = $datos[2];
+                $nuevoProducto->precio = $datos[3];
               }
-              $listado[$i] = $nuevo;
+              $listado[$i] = $nuevoProducto;
               $i++;
           } 
           fclose($archivo);
