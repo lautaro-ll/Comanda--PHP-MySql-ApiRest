@@ -58,6 +58,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
   $group->get('/u/{id}', \UsuarioController::class . ':TraerUno');
   $group->get('/t/{cargo}', \UsuarioController::class . ':TraerTodosPorCargo');
   $group->post('[/]', \UsuarioController::class . ':CargarUno');
+  $group->post('/csv', \UsuarioController::class . ':CargarCsv');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/productos', function (RouteCollectorProxy $group) {

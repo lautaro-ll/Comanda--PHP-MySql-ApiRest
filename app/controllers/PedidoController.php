@@ -172,7 +172,6 @@ class PedidoController implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  
 }
 
 ?>

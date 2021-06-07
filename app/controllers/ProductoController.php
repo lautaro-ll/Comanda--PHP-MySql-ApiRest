@@ -114,5 +114,57 @@ class ProductoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function CargarCsv($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (isset($_FILES["archivo"])) {
+        $file = $_FILES["archivo"];
+        var_dump("file");
+        var_dump($file);
+        $lista = Producto::RetornarArrayDelCSV($file);
+        var_dump("lista");
+        var_dump($lista);
+        for($i=0;$i<sizeof($lista);$i++) {
+          $lista[$i]->save();
+        }
+    
+        $payload = json_encode(array("mensaje" => "Productos creados con exito"));
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  static function RetornarArrayDelCSV($file)
+  {
+      if(($archivo = fopen($file,"r")) !== FALSE) {
+          $i = 0;
+          while (($datos = fgetcsv($archivo, 1000, ",")) !== FALSE) {
+              if(count($datos)==3) {
+                var_dump("datos");
+                var_dump($datos);
+                  $nuevo = new Producto($datos);
+                  var_dump("nuevo");
+                  var_dump($nuevo);
+              }
+              $listado[$i] = $nuevo;
+              $i++;
+          } 
+          fclose($archivo);
+          return $listado;
+      }
+      else {
+          return null;
+      }
+  }    
+
 }
 ?>
