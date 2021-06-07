@@ -15,7 +15,9 @@ class MWparaAutentificar
 			$response = $handler->handle($request);
 		} else {
 			$arrayConToken = $request->getHeader('Authorization');
-			$token = explode(" ", $arrayConToken[0], 2)[1];
+			if(isset($arrayConToken)) {
+				$token = explode(" ", $arrayConToken[0], 2)[1];
+			}
 			if (isset($token)) {
 				try {
 					AutentificadorJWT::verificarToken($token);
