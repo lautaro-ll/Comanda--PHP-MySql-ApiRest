@@ -171,40 +171,8 @@ class PedidoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-/*
-  public function CargarEncuesta($request, $response, $args)
-  {
-    $parametros = $request->getParsedBody();
-    if (isset($parametros['codigo-mesa']) && isset($parametros['codigo-pedido']) && isset($parametros['calif-mesa']) 
-    && isset($parametros['calif-resto']) && isset($parametros['calif-mozo']) && isset($parametros['calif-cocinero']) && isset($parametros['experiencia'])) {
-      $codigoMesa = $parametros['codigo-mesa'];
-      $codigoPedido = $parametros['codigo-pedido'];
-      $mesa = $parametros['calif-mesa'];
-      $resto = $parametros['calif-resto'];
-      $mozo = $parametros['calif-mozo'];
-      $cocinero = $parametros['calif-cocinero'];
-      $experiencia = $parametros['experiencia'];
 
-      $nuevaEncuesta = new Encuesta();
-      $nuevaEncuesta->codigoMesa = $codigoMesa;
-      $nuevaEncuesta->codigoPedido = $codigoPedido;
-      $nuevaEncuesta->mesa = $mesa;
-      $nuevaEncuesta->resto = $resto;
-      $nuevaEncuesta->mozo = $mozo;
-      $nuevaEncuesta->cocinero = $cocinero;
-      $nuevaEncuesta->experiencia = $experiencia;
-      $nuevaEncuesta->crearEncuesta();
   
-      $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
-    } else {
-      $payload = json_encode(array("mensaje" => "Faltan datos"));
-    }
-
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
-  }
-
 }
 
 ?>
