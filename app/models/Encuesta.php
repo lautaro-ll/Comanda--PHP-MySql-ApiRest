@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Encuesta extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $primaryKey = 'id';
     protected $table = 'encuestas';
