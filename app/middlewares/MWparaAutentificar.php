@@ -15,7 +15,7 @@ class MWparaAutentificar
 			$response = $handler->handle($request);
 		} else {
 			$arrayConToken = $request->getHeader('Authorization');
-			if(isset($arrayConToken)) {
+			if(isset($arrayConToken[0])) {
 				$token = explode(" ", $arrayConToken[0], 2)[1];
 			}
 			if (isset($token)) {

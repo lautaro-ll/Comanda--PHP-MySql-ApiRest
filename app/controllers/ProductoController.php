@@ -120,7 +120,7 @@ class ProductoController implements IApiUsable
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
       var_dump("accesoOK");
-      /*
+      
       if (isset($_FILES["archivo"])) {
         $file = $_FILES["archivo"];
         var_dump("file");
@@ -136,7 +136,7 @@ class ProductoController implements IApiUsable
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
       }
-      */
+      
     } else {
       $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
     }
