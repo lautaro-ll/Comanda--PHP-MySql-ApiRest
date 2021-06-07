@@ -125,7 +125,7 @@ class ProductoController implements IApiUsable
         $file = $_FILES["archivo"];
         var_dump("file");
         var_dump($file);
-        $lista = ProductoController::RetornarArrayDelCSV($file);
+        $lista = ProductoController::RetornarArrayDelCSV($file["tmp_name"]);
         var_dump("lista");
         var_dump($lista);
         for($i=0;$i<sizeof($lista);$i++) {
@@ -146,9 +146,9 @@ class ProductoController implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  static function RetornarArrayDelCSV($file)
+  static function RetornarArrayDelCSV($file_name)
   {
-      if(($archivo = fopen($file,"r")) !== FALSE) {
+      if(($archivo = fopen($file_name,"r")) !== FALSE) {
           $i = 0;
           while (($datos = fgetcsv($archivo, 1000, ",")) !== FALSE) {
               if(count($datos)==4) {
