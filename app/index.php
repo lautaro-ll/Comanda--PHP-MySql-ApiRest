@@ -80,10 +80,10 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() /  TomarPedido() -> BARTENDER-CERVECERO-COCINERO //CancelarPedido -> MOZO
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
-$app->group('/encuesta', function (RouteCollectorProxy $group) {
+$app->group('/encuestas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \EncuestaController::class . ':TraerTodos');
   $group->get('/tiempo/{pedido}', \EncuestaController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
-  $group->post('/encuesta/{pedido}', \EncuestaController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
+  $group->post('/nueva/{pedido}', \EncuestaController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
