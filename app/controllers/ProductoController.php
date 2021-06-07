@@ -114,12 +114,13 @@ class ProductoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-
+  
   public function CargarCsv($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      var_dump("accesoOK");/*
+      var_dump("accesoOK");
+      /*
       if (isset($_FILES["archivo"])) {
         $file = $_FILES["archivo"];
         var_dump("file");
@@ -134,7 +135,8 @@ class ProductoController implements IApiUsable
         $payload = json_encode(array("mensaje" => "Productos creados con exito"));
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
-      }*/
+      }
+      */
     } else {
       $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
     }
