@@ -81,8 +81,9 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/encuesta', function (RouteCollectorProxy $group) {
-  $group->get('/tiempo/{pedido}', \PedidoController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
-  $group->post('/encuesta/{pedido}', \PedidoController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
+  $group->get('[/]', \EncuestaController::class . ':TraerTodos');
+  $group->get('/tiempo/{pedido}', \EncuestaController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
+  $group->post('/encuesta/{pedido}', \EncuestaController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
