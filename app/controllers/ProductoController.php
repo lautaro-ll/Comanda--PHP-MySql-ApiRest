@@ -148,7 +148,7 @@ class ProductoController implements IApiUsable
       if(($archivo = fopen($file,"r")) !== FALSE) {
           $i = 0;
           while (($datos = fgetcsv($archivo, 1000, ",")) !== FALSE) {
-              if(count($datos)==3) {
+              if(count($datos)==4) {
                 var_dump("datos");
                 var_dump($datos);
                   $nuevo = new Producto($datos);
