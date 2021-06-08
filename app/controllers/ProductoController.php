@@ -262,7 +262,7 @@ static function DibujarListado($listado)
         $stringHTML .= "<li>".$producto["producto"]."</li>";
         $stringHTML .= "<li>".$producto["tipoUsuario"]."</li>";
         $stringHTML .= "<li>".$producto["precio"]."</li>";
-        $stringHTML .= "<br/>";
+        $stringHTML .= "<br>";
       }
       $stringHTML .= "</ul>";
     }
