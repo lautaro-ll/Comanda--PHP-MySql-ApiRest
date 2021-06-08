@@ -231,10 +231,11 @@ public function ExportarPdf($request, $response, $args)
   // instantiate and use the dompdf class
   $dompdf = new Dompdf();
 
-  $lista = Producto::all();
-  $payload = json_encode(array("listaProducto" => $lista));
+  $lista = Producto::all()->toArray();;
 
-  $dompdf->loadHtml($payload);
+  //$lista = DibujarListado($lista);
+
+  $dompdf->loadHtml($lista);
 
   // (Optional) Setup the paper size and orientation
   $dompdf->setPaper('A4', 'landscape');
@@ -250,7 +251,21 @@ public function ExportarPdf($request, $response, $args)
     ->withHeader('Content-Type', 'application/pdf');
 }
 
-
+static function DibujarListado($listado)
+{
+    if(!is_null($listado) && is_array($listado)) 
+    {
+        echo "<ul>";
+        foreach($listado as $usuario)
+        {
+            echo "<li>".$usuario->nombre."</li>";
+            echo "<li>".$usuario->clave."</li>";
+            echo "<li>".$usuario->mail."</li>";
+            echo "<br/>";
+        }
+        echo "</ul>";
+    }
+}
 
 
 }
