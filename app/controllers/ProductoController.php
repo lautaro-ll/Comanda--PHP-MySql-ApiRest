@@ -180,6 +180,7 @@ class ProductoController implements IApiUsable
         }
         fclose($archivo);
         var_dump($archivo);
+        
         $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
       }
       else {
