@@ -223,6 +223,7 @@ array_to_csv_download(array(
   "numbers.csv"
 );
 */
+
 //EXPORTAR A PDF
 
 public function ExportarPdf($request, $response, $args)
@@ -266,7 +267,6 @@ static function DibujarListado($listado)
       }
       $stringHTML .= "</ul>";
     }
-    var_dump($stringHTML);
     return $stringHTML;
 }
 
