@@ -181,11 +181,14 @@ class ProductoController implements IApiUsable
           fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
         }
         fclose($archivo);
-        return 1;
+        $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
       }
       else {
-        return 0;
+        $payload = json_encode(array("mensaje" => "No se pudieron guardar los datos"));
       }
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
   }
 
 }
