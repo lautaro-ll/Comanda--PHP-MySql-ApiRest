@@ -169,11 +169,11 @@ class ProductoController implements IApiUsable
   {
     if(!file_exists("productos.csv") || is_writable("productos.csv")) 
     {
-        $lista = Producto::all();
+        $productos = Producto::all();
+        $lista = array("listaProducto" => $productos);
         var_dump($lista);
         $archivo = fopen("productos.csv", "a");
         for($i=0;$i<sizeof($lista);$i++) {
-          var_dump($lista[$i]);
           $tipo = $lista['tipo'];
           $producto = $lista['producto'];
           $tipoUsuario = $lista['tipoUsuario'];
