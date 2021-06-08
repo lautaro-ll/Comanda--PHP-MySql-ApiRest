@@ -62,12 +62,12 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ProductoController::class . ':TraerTodos');
-  $group->get('/{producto}', \ProductoController::class . ':TraerUno');
-  $group->post('/exportarpdf', \ProductoController::class . ':ExportarPdf'); //hacer para otros
+  //$group->get('/{producto}', \ProductoController::class . ':TraerUno');
+  $group->get('/exportarpdf', \ProductoController::class . ':ExportarPdf'); //hacer para otros
   $group->post('/csv', \ProductoController::class . ':CargarCsv'); //hacer para otros
   $group->post('/exportarcsv', \ProductoController::class . ':ExportarCsv'); //hacer para otros
   $group->post('[/]', \ProductoController::class . ':CargarUno');
-})->add(\MWparaAutentificar::class . ':VerificarUsuario');;
+});//->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
