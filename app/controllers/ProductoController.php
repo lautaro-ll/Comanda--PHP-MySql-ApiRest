@@ -169,23 +169,23 @@ class ProductoController implements IApiUsable
   {
     if(!file_exists("productos.csv") || is_writable("productos.csv")) 
     {
-        $lista = Producto::all()->toArray();;
+      $lista = Producto::all()->toArray();;
 
-        $archivo = fopen("productos.csv", "w");
-        for($i=0;$i<sizeof($lista);$i++) {
-          $tipo = $lista[$i]['tipo'];
-          $producto = $lista[$i]['producto'];
-          $tipoUsuario = $lista[$i]['tipoUsuario'];
-          $precio = $lista[$i]['precio'];
-          fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
-        }
-        fclose($archivo);
-        
-        $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
+      $archivo = fopen("productos.csv", "w");
+      for($i=0;$i<sizeof($lista);$i++) {
+        $tipo = $lista[$i]['tipo'];
+        $producto = $lista[$i]['producto'];
+        $tipoUsuario = $lista[$i]['tipoUsuario'];
+        $precio = $lista[$i]['precio'];
+        fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
       }
-      else {
-        $payload = json_encode(array("mensaje" => "No se pudieron guardar los datos"));
-      }
+      fclose($archivo);
+      
+      $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
+    }
+    else {
+      $payload = json_encode(array("mensaje" => "No se pudieron guardar los datos"));
+    }
 
     $response->getBody()->write($payload);
     return $response
