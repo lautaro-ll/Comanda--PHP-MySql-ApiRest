@@ -172,7 +172,12 @@ class ProductoController implements IApiUsable
         $lista = Producto::all();
         $archivo = fopen("productos.csv", "a");
         for($i=0;$i<sizeof($lista);$i++) {
-          fwrite($archivo, "$lista['tipo'], $lista['producto'], $lista['tipoUsuario'], $lista['precio']\n");
+          var_dump($lista[$i]);
+          $tipo = $lista['tipo'];
+          $producto = $lista['producto'];
+          $tipoUsuario = $lista['tipoUsuario'];
+          $precio = $lista['precio'];
+          fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
         }
         fclose($archivo);
         return 1;
