@@ -233,9 +233,9 @@ public function ExportarPdf($request, $response, $args)
 
   $lista = Producto::all()->toArray();;
 
-  //$lista = DibujarListado($lista);
+  $stringHTML = Producto::DibujarListado($lista);
 
-  $dompdf->loadHtml($lista);
+  $dompdf->loadHtml($stringHTML);
 
   // (Optional) Setup the paper size and orientation
   $dompdf->setPaper('A4', 'landscape');
@@ -255,16 +255,18 @@ static function DibujarListado($listado)
 {
     if(!is_null($listado) && is_array($listado)) 
     {
-        echo "<ul>";
-        foreach($listado as $usuario)
-        {
-            echo "<li>".$usuario->nombre."</li>";
-            echo "<li>".$usuario->clave."</li>";
-            echo "<li>".$usuario->mail."</li>";
-            echo "<br/>";
-        }
-        echo "</ul>";
+      $stringHTML = "<ul>";
+      foreach($listado as $producto)
+      {
+        $stringHTML += "<li>".$producto["tipo"]."</li>";
+        $stringHTML += "<li>".$producto["producto"]."</li>";
+        $stringHTML += "<li>".$producto["tipoUsuario"]."</li>";
+        $stringHTML += "<li>".$producto["precio"]."</li>";
+        $stringHTML += "<br/>";
+      }
+      $stringHTML += "</ul>";
     }
+    return $stringHTML;
 }
 
 
