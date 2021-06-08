@@ -230,7 +230,11 @@ public function ExportarPdf($request, $response, $args)
 
   // instantiate and use the dompdf class
   $dompdf = new Dompdf();
-  $dompdf->loadHtml('hello world');
+
+  $lista = Producto::all();
+  $payload = json_encode(array("listaProducto" => $lista));
+
+  $dompdf->loadHtml($payload);
 
   // (Optional) Setup the paper size and orientation
   $dompdf->setPaper('A4', 'landscape');
