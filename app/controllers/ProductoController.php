@@ -123,11 +123,7 @@ class ProductoController implements IApiUsable
       
       if (isset($_FILES["archivo"])) {
         $file = $_FILES["archivo"];
-        var_dump("file");
-        var_dump($file);
         $lista = ProductoController::RetornarArrayDelCSV($file["tmp_name"]);
-        var_dump("lista");
-        var_dump($lista);
         for($i=0;$i<sizeof($lista);$i++) {
           $lista[$i]->save();
         }
@@ -168,6 +164,23 @@ class ProductoController implements IApiUsable
           return null;
       }
   }    
+
+  public function ExportarCsv($request, $response, $args)
+  {
+    if(!file_exists("productos.csv") || is_writable("productos.csv")) 
+    {
+        $lista = Producto::all();
+        $archivo = fopen("productos.csv", "a");
+        for($i=0;$i<sizeof($lista);$i++) {
+          fwrite($archivo, "$lista['tipo'], $lista['producto'], $lista['tipoUsuario'], $lista['precio']\n");
+        }
+        fclose($archivo);
+        return 1;
+      }
+      else {
+        return 0;
+      }
+  }
 
 }
 ?>
