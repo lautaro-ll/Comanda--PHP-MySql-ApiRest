@@ -178,8 +178,8 @@ class ProductoController implements IApiUsable
           $precio = $lista[$i]['precio'];
           fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
         }
-        var_dump($archivo);
         fclose($archivo);
+        var_dump($archivo);
         $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
       }
       else {
