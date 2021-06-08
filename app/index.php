@@ -63,6 +63,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
 $app->group('/productos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ProductoController::class . ':TraerTodos');
   $group->get('/{producto}', \ProductoController::class . ':TraerUno');
+  $group->post('/exportarpdf', \ProductoController::class . ':ExportarCsv'); //hacer para otros
   $group->post('/csv', \ProductoController::class . ':CargarCsv'); //hacer para otros
   $group->post('/exportarcsv', \ProductoController::class . ':ExportarCsv'); //hacer para otros
   $group->post('[/]', \ProductoController::class . ':CargarUno');

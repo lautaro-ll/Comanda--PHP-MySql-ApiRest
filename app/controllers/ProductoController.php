@@ -3,6 +3,7 @@ require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
 
 use \App\Models\Producto as Producto;
+use Dompdf\Dompdf;
 
 class ProductoController implements IApiUsable
 {
@@ -191,6 +192,62 @@ class ProductoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+
+
+//EXPORTAR A CSV
+
+function array_to_csv_download($array, $filename = "export.csv", $delimiter=";") {
+    // open raw memory as file so no temp files needed, you might run out of memory though
+    $f = fopen('php://memory', 'w'); 
+    // loop over the input array
+    foreach ($array as $line) { 
+        // generate csv lines from the inner arrays
+        fputcsv($f, $line, $delimiter); 
+    }
+    // reset the file pointer to the start of the file
+    fseek($f, 0);
+    // tell the browser it's going to be a csv file
+    header('Content-Type: application/csv');
+    // tell the browser we want to save it instead of displaying it
+    header('Content-Disposition: attachment; filename="'.$filename.'";');
+    // make php send the generated csv lines to the browser
+    fpassthru($f);
+}
+/*
+And you can use it like this:
+
+array_to_csv_download(array(
+  array(1,2,3,4), // this array is going to be the first row
+  array(1,2,3,4)), // this array is going to be the second row
+  "numbers.csv"
+);
+*/
+//EXPORTAR A PDF
+
+public function ExportarPdf($request, $response, $args)
+{
+
+  // instantiate and use the dompdf class
+  $dompdf = new Dompdf();
+  $dompdf->loadHtml('hello world');
+
+  // (Optional) Setup the paper size and orientation
+  $dompdf->setPaper('A4', 'landscape');
+
+  // Render the HTML as PDF
+  $dompdf->render();
+
+  // Output the generated PDF to Browser
+  $dompdf->stream();
+
+  $response->getBody()->write($dompdf);
+  return $response
+    ->withHeader('Content-Type', 'application/pdf');
+}
+
+
+
 
 }
 ?>
