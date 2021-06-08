@@ -170,8 +170,6 @@ class ProductoController implements IApiUsable
     if(!file_exists("productos.csv") || is_writable("productos.csv")) 
     {
         $lista = Producto::all()->toArray();;
-        //$lista = array("listaProducto" => $productos["attributes"]);
-        var_dump($lista);
         $archivo = fopen("productos.csv", "a");
         for($i=0;$i<sizeof($lista);$i++) {
           $tipo = $lista[$i]['tipo'];
@@ -180,12 +178,14 @@ class ProductoController implements IApiUsable
           $precio = $lista[$i]['precio'];
           fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
         }
+        var_dump($archivo);
         fclose($archivo);
         $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
       }
       else {
         $payload = json_encode(array("mensaje" => "No se pudieron guardar los datos"));
       }
+
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
