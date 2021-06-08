@@ -174,10 +174,10 @@ class ProductoController implements IApiUsable
         var_dump($lista);
         $archivo = fopen("productos.csv", "a");
         for($i=0;$i<sizeof($lista);$i++) {
-          $tipo = $lista['tipo'];
-          $producto = $lista['producto'];
-          $tipoUsuario = $lista['tipoUsuario'];
-          $precio = $lista['precio'];
+          $tipo = $lista[$i]['tipo'];
+          $producto = $lista[$i]['producto'];
+          $tipoUsuario = $lista[$i]['tipoUsuario'];
+          $precio = $lista[$i]['precio'];
           fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
         }
         fclose($archivo);
