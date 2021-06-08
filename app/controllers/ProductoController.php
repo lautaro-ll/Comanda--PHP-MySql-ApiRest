@@ -233,7 +233,7 @@ public function ExportarPdf($request, $response, $args)
 
   $lista = Producto::all()->toArray();;
 
-  $stringHTML = Producto::DibujarListado($lista);
+  $stringHTML = ProductoController::DibujarListado($lista);
 
   $dompdf->loadHtml($stringHTML);
 
