@@ -15,7 +15,7 @@ class Encuesta extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'codigoMesa', 'codigoPedido', 'mesa', 'resto', 'mozo', 'cocinero', 'experiencia'
+        'codigo_mesa', 'codigo_pedido', 'calif_mesa', 'calif_resto', 'calif_mozo', 'calif_cocinero', 'experiencia'
     ];
 
 }

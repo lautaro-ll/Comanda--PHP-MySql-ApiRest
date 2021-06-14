@@ -15,7 +15,7 @@ class Producto extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'tipo', 'producto', 'tipoUsuario', 'precio'
+        'tipo', 'producto', 'tipo_usuario', 'precio', 'tiempo_estimado'
     ];
 
 }

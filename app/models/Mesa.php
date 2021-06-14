@@ -15,7 +15,7 @@ class Mesa extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'codigoIdentificacion', 'codigoPedido', 'estado'
+        'codigo_identificacion', 'codigo_pedido', 'estado'
     ];
 
 }

@@ -15,7 +15,7 @@ class Pedido extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'cliente', 'foto', 'codigoPedido', 'idMesa', 'idProducto', 'precio', 'idMozo', 'idUsuario', 'estado', 'tiempoEstimado', 'tiempoFinalizado', 'tiempoEntregado'
+        'cliente', 'foto', 'codigo_pedido', 'mesa_id', 'producto_id', 'precio', 'mozo_id', 'usuario_id', 'estado', 'tiempo_pedido', 'tiempo_aceptado', 'tiempo_estimado', 'tiempo_finalizado', 'tiempo_entregado'
     ];
 
 }

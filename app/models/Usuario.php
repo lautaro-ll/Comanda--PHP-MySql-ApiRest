@@ -14,9 +14,9 @@ class Usuario extends Model
     public $incrementing = true;
     //public $timestamps = false;
 
-    const DELETED_AT = 'fecha-baja';
-    const CREATED_AT = 'fecha-alta';
-    const UPDATED_AT = 'fecha-modificado';
+    const DELETED_AT = 'fecha_baja';
+    const CREATED_AT = 'fecha_alta';
+    const UPDATED_AT = 'fecha_modificado';
 
     protected $fillable = [
         'cargo', 'nombre', 'alias', 'clave', 'habilitado'
