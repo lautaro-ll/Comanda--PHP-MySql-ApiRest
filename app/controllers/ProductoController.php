@@ -168,122 +168,66 @@ class ProductoController implements IApiUsable
 
   public function ExportarCsv($request, $response, $args)
   {
-    if(!file_exists("productos.csv") || is_writable("productos.csv")) 
-    {
-      $lista = Producto::all()->toArray();;
+    $lista = Producto::all()->toArray();;
 
-      $f = fopen('php://memory', 'w'); 
+    $f = fopen('php://memory', 'w'); 
+    $titulo = array('id','tipo', 'producto', 'tipo_usuario', 'precio', 'tiempo_estimado');
+    fputcsv($f, $titulo, ";"); 
 
-      foreach ($lista as $line) { 
-        // generate csv lines from the inner arrays
-        fputcsv($f, $line, ";"); 
+    foreach ($lista as $line) { 
+      fputcsv($f, $line, ";"); 
     }
     fseek($f, 0);
     fpassthru($f);
 
-/*
-      $archivo = fopen("productos.csv", "w");
-      for($i=0;$i<sizeof($lista);$i++) {
-        $tipo = $lista[$i]['tipo'];
-        $producto = $lista[$i]['producto'];
-        $tipoUsuario = $lista[$i]['tipo_usuario'];
-        $precio = $lista[$i]['precio'];
-        fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
-      }
-      fclose($archivo);
-      
-      $payload = json_encode(array("mensaje" => "Productos guardados con exito"));
-    }
-    else {
-      $payload = json_encode(array("mensaje" => "No se pudieron guardar los datos"));
-    }
-
-    $response->getBody()->write($payload);
-    $newResponse = $response->withHeader('Content-Type', 'application/csv');
-    return $newResponse->withHeader('Content-Disposition', 'attachment; filename="productos.csv"');
-*/
     $response = $response->withHeader('Content-Type', 'application/csv');
     return $response->withHeader('Content-Disposition', 'attachment; filename="export.csv";');
   }
+
+  public function ExportarPdf($request, $response, $args)
+  {
+
+    // instantiate and use the dompdf class
+    $dompdf = new Dompdf();
+
+    $lista = Producto::all()->toArray();;
+
+    $stringHTML = ProductoController::DibujarListado($lista);
+
+    $dompdf->loadHtml($stringHTML);
+
+    // (Optional) Setup the paper size and orientation
+    $dompdf->setPaper('A4', 'landscape');
+
+    // Render the HTML as PDF
+    $dompdf->render();
+
+    // Output the generated PDF to Browser
+    $dompdf->stream();
+
+    $response->getBody()->write($dompdf);
+    return $response
+      ->withHeader('Content-Type', 'application/pdf');
   }
 
-
-//EXPORTAR A CSV
-
-function array_to_csv_download($array, $filename = "export.csv", $delimiter=";") {
-    // open raw memory as file so no temp files needed, you might run out of memory though
-    $f = fopen('php://memory', 'w'); 
-    // loop over the input array
-    foreach ($array as $line) { 
-        // generate csv lines from the inner arrays
-        fputcsv($f, $line, $delimiter); 
-    }
-    // reset the file pointer to the start of the file
-    fseek($f, 0);
-    // tell the browser it's going to be a csv file
-    header('Content-Type: application/csv');
-    // tell the browser we want to save it instead of displaying it
-    header('Content-Disposition: attachment; filename="'.$filename.'";');
-    // make php send the generated csv lines to the browser
-    fpassthru($f);
-}
-/*
-And you can use it like this:
-
-array_to_csv_download(array(
-  array(1,2,3,4), // this array is going to be the first row
-  array(1,2,3,4)), // this array is going to be the second row
-  "numbers.csv"
-);
-*/
-
-//EXPORTAR A PDF
-
-public function ExportarPdf($request, $response, $args)
-{
-
-  // instantiate and use the dompdf class
-  $dompdf = new Dompdf();
-
-  $lista = Producto::all()->toArray();;
-
-  $stringHTML = ProductoController::DibujarListado($lista);
-
-  $dompdf->loadHtml($stringHTML);
-
-  // (Optional) Setup the paper size and orientation
-  $dompdf->setPaper('A4', 'landscape');
-
-  // Render the HTML as PDF
-  $dompdf->render();
-
-  // Output the generated PDF to Browser
-  $dompdf->stream();
-
-  $response->getBody()->write($dompdf);
-  return $response
-    ->withHeader('Content-Type', 'application/pdf');
-}
-
-static function DibujarListado($listado)
-{
-    if(!is_null($listado) && is_array($listado)) 
-    {
-      $stringHTML = "<h1>Productos</h1>";
-      foreach($listado as $producto)
+  static function DibujarListado($listado)
+  {
+      if(!is_null($listado) && is_array($listado)) 
       {
-        $stringHTML .= "<ul>";
-        $stringHTML .= "<li>".$producto["tipo"]."</li>";
-        $stringHTML .= "<li>".$producto["producto"]."</li>";
-        $stringHTML .= "<li>".$producto["tipo_usuario"]."</li>";
-        $stringHTML .= "<li>".$producto["precio"]."</li>";
-        $stringHTML .= "</ul>";
-        $stringHTML .= "<br>";
+        $stringHTML = "<h1>Productos</h1>";
+        foreach($listado as $producto)
+        {
+          $stringHTML .= "<ul>";
+          $stringHTML .= "<li>".$producto["tipo"]."</li>";
+          $stringHTML .= "<li>".$producto["producto"]."</li>";
+          $stringHTML .= "<li>".$producto["tipo_usuario"]."</li>";
+          $stringHTML .= "<li>".$producto["precio"]."</li>";
+          $stringHTML .= "</ul>";
+          $stringHTML .= "<br>";
+        }
       }
-    }
-    return $stringHTML;
-}
-
+      return $stringHTML;
+  }
 
 }
 ?>
