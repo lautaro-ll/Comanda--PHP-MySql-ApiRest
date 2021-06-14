@@ -189,9 +189,8 @@ class ProductoController implements IApiUsable
     }
 
     $response->getBody()->write($payload);
-    $response->header('Content-Type: application/csv'); //aca hay algo mal
-    $response->header('Content-Disposition: attachment; filename="productos.csv";');
-    return $response;
+    $newResponse = $response->withHeader('Content-type', 'application/csv');
+    return $newResponse->withHeader('Content-Disposition: attachment; filename="productos.csv"');
   }
 
 
