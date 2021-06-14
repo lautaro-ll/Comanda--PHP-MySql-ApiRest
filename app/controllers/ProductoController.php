@@ -257,6 +257,7 @@ static function DibujarListado($listado)
 {
     if(!is_null($listado) && is_array($listado)) 
     {
+      $stringHTML = "<h1>Productos</h1>";
       foreach($listado as $producto)
       {
         $stringHTML = "<ul>";
