@@ -172,6 +172,16 @@ class ProductoController implements IApiUsable
     {
       $lista = Producto::all()->toArray();;
 
+      $f = fopen('php://memory', 'w'); 
+
+      foreach ($lista as $line) { 
+        // generate csv lines from the inner arrays
+        fputcsv($f, $line, ";"); 
+    }
+    fseek($f, 0);
+    fpassthru($f);
+
+/*
       $archivo = fopen("productos.csv", "w");
       for($i=0;$i<sizeof($lista);$i++) {
         $tipo = $lista[$i]['tipo'];
@@ -191,6 +201,8 @@ class ProductoController implements IApiUsable
     $response->getBody()->write($payload);
     $newResponse = $response->withHeader('Content-Type', 'application/csv');
     return $newResponse->withHeader('Content-Disposition', 'attachment; filename="productos.csv"');
+*/
+    return $response->withHeader('Content-Type', 'application/csv');
   }
 
 
