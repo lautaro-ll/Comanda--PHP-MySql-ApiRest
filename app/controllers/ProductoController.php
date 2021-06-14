@@ -176,7 +176,7 @@ class ProductoController implements IApiUsable
       for($i=0;$i<sizeof($lista);$i++) {
         $tipo = $lista[$i]['tipo'];
         $producto = $lista[$i]['producto'];
-        $tipoUsuario = $lista[$i]['tipoUsuario'];
+        $tipoUsuario = $lista[$i]['tipo_usuario'];
         $precio = $lista[$i]['precio'];
         fwrite($archivo, "$tipo, $producto, $tipoUsuario, $precio\n");
       }
