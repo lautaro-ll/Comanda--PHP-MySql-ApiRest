@@ -189,7 +189,7 @@ class ProductoController implements IApiUsable
     }
 
     $response->getBody()->write($payload);
-    $response->header('Content-Type: application/csv');
+    $response->header('Content-Type: application/csv'); //aca hay algo mal
     $response->header('Content-Disposition: attachment; filename="productos.csv";');
     return $response;
   }
@@ -260,7 +260,7 @@ static function DibujarListado($listado)
       $stringHTML = "<h1>Productos</h1>";
       foreach($listado as $producto)
       {
-        $stringHTML = "<ul>";
+        $stringHTML .= "<ul>";
         $stringHTML .= "<li>".$producto["tipo"]."</li>";
         $stringHTML .= "<li>".$producto["producto"]."</li>";
         $stringHTML .= "<li>".$producto["tipo_usuario"]."</li>";
@@ -268,7 +268,6 @@ static function DibujarListado($listado)
         $stringHTML .= "</ul>";
         $stringHTML .= "<br>";
       }
-      var_dump($stringHTML);
     }
     return $stringHTML;
 }
