@@ -190,7 +190,7 @@ class ProductoController implements IApiUsable
 
     $response->getBody()->write($payload);
     $newResponse = $response->withHeader('Content-Type', 'application/pdf');
-    return $newResponse->withHeader('Content-Disposition: attachment', 'filename="productos.csv"');
+    return $newResponse->withHeader('Content-Disposition', 'attachment; filename="productos.csv"');
   }
 
 
