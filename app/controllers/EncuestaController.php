@@ -18,14 +18,14 @@ class EncuestaController implements IApiUsable
       $mozo = $parametros['calif-mozo'];
       $cocinero = $parametros['calif-cocinero'];
       $experiencia = $parametros['experiencia'];
-  
+
       $nuevaEncuesta = new Encuesta();
-      $nuevaEncuesta->codigoMesa = $codigoMesa;
-      $nuevaEncuesta->codigoPedido = $codigoPedido;
-      $nuevaEncuesta->mesa = $mesa;
-      $nuevaEncuesta->resto = $resto;
-      $nuevaEncuesta->mozo = $mozo;
-      $nuevaEncuesta->cocinero = $cocinero;
+      $nuevaEncuesta->codigo_mesa = $codigoMesa;
+      $nuevaEncuesta->codigo_pedido = $codigoPedido;
+      $nuevaEncuesta->calif_mesa = $mesa;
+      $nuevaEncuesta->calif_resto = $resto;
+      $nuevaEncuesta->calif_mozo = $mozo;
+      $nuevaEncuesta->calif_cocinero = $cocinero;
       $nuevaEncuesta->experiencia = $experiencia;
       $nuevaEncuesta->save();
   
@@ -73,15 +73,15 @@ class EncuestaController implements IApiUsable
       $cocinero = $parametros['calif-cocinero'];
       $experiencia = $parametros['experiencia'];
       $id = $parametros['id'];
-  
+
       $e = new Encuesta();
       $encuesta = $e->find($id);
-      $encuesta->codigoMesa = $codigoMesa;
-      $encuesta->codigoPedido = $codigoPedido;
-      $encuesta->mesa = $mesa;
-      $encuesta->resto = $resto;
-      $encuesta->mozo = $mozo;
-      $encuesta->cocinero = $cocinero;
+      $encuesta->codigo_mesa = $codigoMesa;
+      $encuesta->codigo_pedido = $codigoPedido;
+      $encuesta->calif_mesa = $mesa;
+      $encuesta->calif_resto = $resto;
+      $encuesta->calif_mozo = $mozo;
+      $encuesta->calif_cocinero = $cocinero;
       $encuesta->experiencia = $experiencia;
       $encuesta->save();
 
@@ -119,24 +119,6 @@ class EncuestaController implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerTiempo($request, $response, $args)
-  {
-    $pedido = $args['pedido'];
-    $p = new Encuesta();
-    $lista = $p->where('pedido',$pedido)->get();
-  
-    $tiempoEstimado = 0;
-    for($i=0; $i<sizeof($lista); $i++)
-    {
-        if($lista[$i]["estado"]=="en preparacion" && $tiempoEstimado < $lista[$i]["tiempoEstimado"]) {
-          $tiempoEstimado = $lista[$i]["tiempoEstimado"];
-        }
-    }
-    $payload = json_encode(array("tiempoEstimado" => $tiempoEstimado));
-  
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
-  }
 }
 ?>
+

@@ -18,15 +18,15 @@ class PedidoController implements IApiUsable
         $idProducto = $parametros['idProducto'];
         $precio = $parametros['precio'];
         $idMozo = $parametros['idMozo'];
-    
+
         $nuevoPedido = new Pedido();
         $nuevoPedido->cliente = $cliente;
         $nuevoPedido->foto = $foto;
-        $nuevoPedido->codigoPedido = $codigoPedido;
-        $nuevoPedido->idMesa = $idMesa;
-        $nuevoPedido->idProducto = $idProducto;
+        $nuevoPedido->codigo_pedido = $codigoPedido;
+        $nuevoPedido->mesa_id = $idMesa;
+        $nuevoPedido->producto_id = $idProducto;
         $nuevoPedido->precio = $precio;
-        $nuevoPedido->idMozo = $idMozo;
+        $nuevoPedido->mozo_id = $idMozo;
         $nuevoPedido->estado = "pendiente";
         $nuevoPedido->save();
     
@@ -145,14 +145,7 @@ class PedidoController implements IApiUsable
     $cargo = $args['cargo'];
     $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
                 ->where('productos.tipo_usuario',$cargo)->get();
-    /*
-    $u = new Usuario();
-    $lista = $u->where('cargo',$cargo)->get();
-    for($i=0;$i<sizeof($lista);$i++) {
-      $p = new Pedido();
-      $lista = $p->where('producto_id',$lista["id"])->get();
-    }
-    */
+
     $payload = json_encode(array("listaPedido" => $lista));
 
     $response->getBody()->write($payload);
@@ -164,13 +157,13 @@ class PedidoController implements IApiUsable
   {
     $pedido = $args['pedido'];
     $p = new Pedido();
-    $lista = $p->where('pedido',$pedido)->get();
+    $lista = $p->where('codigo_pedido',$pedido)->get();
 
     $tiempoEstimado = 0;
     for($i=0; $i<sizeof($lista); $i++)
     {
-        if($lista[$i]["estado"]=="en preparacion" && $tiempoEstimado < $lista[$i]["tiempoEstimado"]) {
-          $tiempoEstimado = $lista[$i]["tiempoEstimado"];
+        if($lista[$i]["estado"]=="en preparacion" && $tiempoEstimado < $lista[$i]["tiempo_estimado"]) {
+          $tiempoEstimado = $lista[$i]["tiempo_estimado"];
         }
     }
     $payload = json_encode(array("tiempoEstimado" => $tiempoEstimado));
@@ -182,4 +175,4 @@ class PedidoController implements IApiUsable
 
 }
 
-?>
+?> 

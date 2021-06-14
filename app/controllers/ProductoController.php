@@ -20,7 +20,7 @@ class ProductoController implements IApiUsable
         $nuevoProducto = new Producto();
         $nuevoProducto->tipo = $tipo;
         $nuevoProducto->producto = $producto;
-        $nuevoProducto->tipoUsuario = $tipoUsuario;
+        $nuevoProducto->tipo_usuario = $tipoUsuario;
         $nuevoProducto->precio = $precio;
         $nuevoProducto->save();
     
@@ -76,7 +76,7 @@ class ProductoController implements IApiUsable
 
         $producto->tipo = $tipo;
         $producto->producto = $producto;
-        $producto->tipoUsuario = $tipoUsuario;
+        $producto->tipo_usuario = $tipoUsuario;
         $producto->precio = $precio;
         $producto->save();
     
@@ -152,7 +152,7 @@ class ProductoController implements IApiUsable
                 $nuevoProducto = new Producto();
                 $nuevoProducto->tipo = $datos[0];
                 $nuevoProducto->producto = $datos[1];
-                $nuevoProducto->tipoUsuario = $datos[2];
+                $nuevoProducto->tipo_usuario = $datos[2];
                 $nuevoProducto->precio = $datos[3];
               }
               $listado[$i] = $nuevoProducto;

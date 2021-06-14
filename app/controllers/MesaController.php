@@ -14,10 +14,10 @@ class MesaController implements IApiUsable
             $codigoIdentificacion = $parametros['codigoIdentificacion'];
             $codigoPedido = $parametros['codigoPedido'];
             $estado = $parametros['estado'];
-    
+
             $nuevaMesa = new Mesa();
-            $nuevaMesa->codigoIdentificacion = $codigoIdentificacion;
-            $nuevaMesa->codigoPedido = $codigoPedido;
+            $nuevaMesa->codigo_identificacion = $codigoIdentificacion;
+            $nuevaMesa->codigo_pedido = $codigoPedido;
             $nuevaMesa->estado = $estado;
             $nuevaMesa->save();
     
@@ -68,8 +68,8 @@ class MesaController implements IApiUsable
 
             $m = new Mesa();
             $mesa = $m->find($id);
-            $mesa->codigoIdentificacion = $codigoIdentificacion;
-            $mesa->codigoPedido = $codigoPedido;
+            $mesa->codigo_identificacion = $codigoIdentificacion;
+            $mesa->codigo_pedido = $codigoPedido;
             $mesa->estado = $estado;
             $mesa->save();
     
