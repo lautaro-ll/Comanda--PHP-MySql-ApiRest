@@ -143,8 +143,16 @@ class PedidoController implements IApiUsable
   public function TraerPendientes($request, $response, $args)
   {
     $cargo = $args['cargo'];
-    $p = new Pedido();
-    $lista = $p->where('cargo',$cargo)->get();
+    $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+                ->where('productos.tipo_usuario',$cargo)->get();
+    /*
+    $u = new Usuario();
+    $lista = $u->where('cargo',$cargo)->get();
+    for($i=0;$i<sizeof($lista);$i++) {
+      $p = new Pedido();
+      $lista = $p->where('producto_id',$lista["id"])->get();
+    }
+    */
     $payload = json_encode(array("listaPedido" => $lista));
 
     $response->getBody()->write($payload);
