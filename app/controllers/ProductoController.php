@@ -257,16 +257,16 @@ static function DibujarListado($listado)
 {
     if(!is_null($listado) && is_array($listado)) 
     {
-      $stringHTML = "<ul>";
       foreach($listado as $producto)
       {
+        $stringHTML = "<ul>";
         $stringHTML .= "<li>".$producto["tipo"]."</li>";
         $stringHTML .= "<li>".$producto["producto"]."</li>";
         $stringHTML .= "<li>".$producto["tipo_usuario"]."</li>";
         $stringHTML .= "<li>".$producto["precio"]."</li>";
-        $stringHTML .= "<br>";
+        $stringHTML .= "</ul>";
       }
-      $stringHTML .= "</ul>";
+      $stringHTML .= "<br>";
     }
     return $stringHTML;
 }
