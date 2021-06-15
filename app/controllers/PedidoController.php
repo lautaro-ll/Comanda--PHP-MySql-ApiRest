@@ -88,8 +88,8 @@ class PedidoController implements IApiUsable
         $p = new Pedido();
         $pedido = $p->find($id);
         $pedido->estado = $estado;
-        $pedido->tiempoEstimado = new DateTime("NOW");
-        $pedido->tiempoEstimado->format("Y-m-d H:i:s");
+        $pedido->tiempo_estimado = new DateTime("NOW");
+        $pedido->tiempo_estimado->format("Y-m-d H:i:s");
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado en preparación"));
@@ -100,8 +100,8 @@ class PedidoController implements IApiUsable
         $p = new Pedido();
         $pedido = $p->find($id);
         $pedido->estado = $estado;
-        $pedido->tiempoFinalizado = new DateTime("NOW");
-        $pedido->tiempoFinalizado->format("Y-m-d H:i:s");
+        $pedido->tiempo_finalizado = new DateTime("NOW");
+        $pedido->tiempo_finalizado->format("Y-m-d H:i:s");
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado listo para servir"));        
