@@ -234,29 +234,32 @@ class PedidoController implements IApiUsable
 
         if(isset($lista)) {
           $cargo = $lista[0]["tipo_usuario"];
-          $empleado = $lista[0]["usuario_id"];
+          $usuario_id = $lista[0]["usuario_id"];
+          $nombre = $lista[0]["nombre"];
           $c=0;
 
           foreach($lista as $line) {
             if($cargo == $line["tipo_usuario"]) {
-              if($empleado == $line["usuario_id"]) {
+              if($usuario_id == $line["usuario_id"]) {
                 $c++;
               }
               else {
-                $resultado[$cargo][$empleado]=$c;
-                $empleado = $line["nombre"];
+                $resultado[$cargo][$nombre]=$c;
+                $usuario_id = $line["usuario_id"];
+                $nombre = $line["nombre"];
                 $c=1;
               }
             }
             else {
-              $resultado[$cargo][$empleado]=$c;
+              $resultado[$cargo][$usuario_id]=$c;
 
               $cargo = $line["tipo_usuario"];
-              $empleado = $line["nombre"];
+              $usuario_id = $line["usuario_id"];
+              $nombre = $line["nombre"];
               $c=1;
             }
           }
-          $payload = json_encode(array("Lista" => $resultado));
+          $payload = json_encode(array("Lista" => $lista));
         } else {
           $payload = json_encode(array("mensaje" => "No hay datos"));
         }
