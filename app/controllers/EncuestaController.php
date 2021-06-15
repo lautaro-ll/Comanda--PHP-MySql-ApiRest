@@ -142,7 +142,7 @@ class EncuestaController implements IApiUsable
             $c++;
           }
           else {
-            if($c=0) {
+            if($c==0) {
               $c=1;
             }
             $promedioGeneral = $s / (4* $c);
@@ -154,7 +154,7 @@ class EncuestaController implements IApiUsable
             $s=0;
           }
         }
-        if($c=0) {
+        if($c==0) {
           $c=1;
         }
         $promedioGeneral = $s / (4* $c);
