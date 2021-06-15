@@ -285,11 +285,9 @@ class PedidoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (isset($parametros['desde']) && isset($parametros['hasta']) && isset($parametros['cargo'])) {
+      if (isset($parametros['desde']) && isset($parametros['hasta'])) {
         $desde = $parametros['desde'];
         $hasta = $parametros['hasta'];
-        $cargo = $parametros['cargo'];
-
 
         $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
                 ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id')
