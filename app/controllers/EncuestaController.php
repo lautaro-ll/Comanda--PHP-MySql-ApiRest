@@ -125,13 +125,12 @@ class EncuestaController implements IApiUsable
 {
   $parametros = $request->getParsedBody();
   if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-
       $lista = Encuesta::orderby('codigo_mesa','DESC')
       ->get();
 
       if(isset($lista)) {
         $mesa = $lista[0]["codigo_mesa"];
-        $c=0;
+        $c=1;
         $s=0;
 
         foreach($lista as $line) {
@@ -148,7 +147,7 @@ class EncuestaController implements IApiUsable
               $resultado[$mesa]=$promedioGeneral;
             }
             $mesa = $line["codigo_mesa"];
-            $c=0;
+            $c=1;
             $s=0;
           }
         }
@@ -181,7 +180,7 @@ class EncuestaController implements IApiUsable
 
       if(isset($lista)) {
         $mesa = $lista[0]["codigo_mesa"];
-        $c=0;
+        $c=1;
         $s=0;
 
         foreach($lista as $line) {
@@ -198,7 +197,7 @@ class EncuestaController implements IApiUsable
               $resultado[$mesa]=$promedioGeneral;
             }
             $mesa = $line["codigo_mesa"];
-            $c=0;
+            $c=1;
             $s=0;
           }
         }
