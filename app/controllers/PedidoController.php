@@ -177,18 +177,28 @@ class PedidoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (isset($parametros['desde']) && isset($parametros['hasta']) && isset($parametros['cargo'])) {
+      if (isset($parametros['desde']) && isset($parametros['hasta'])) {
         $desde = $parametros['desde'];
         $hasta = $parametros['hasta'];
-        $cargo = $parametros['cargo'];
 
-
-        $cuenta = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
 
-        $payload = json_encode(array("Cantidad" => $cuenta));
+        $user = $lista[0]["tipo_usuario"];
+        $c=0;
+
+        foreach($lista as $line) {
+          if($user == $line["tipo_usuario"]) {
+            $c++;
+          }
+          else {
+            $contador[$line["tipo_usuario"]]=$c;
+            $c=1;
+          }
+        }
+        $payload = json_encode(array("Lista" => $contador));
     
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
