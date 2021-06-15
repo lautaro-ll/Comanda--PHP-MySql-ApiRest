@@ -88,7 +88,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/facturacion', \PedidoController::class . ':Facturacion');
   $group->post('/consulta/mesaconmayorfactura', \PedidoController::class . ':MesaConMayorFactura');
   $group->post('/consulta/mesaconmenorfactura', \PedidoController::class . ':MesaConMenorFactura');
-})->add(\MWparaAutentificar::class . ':VerificarUsuario');;
+})->add(\MWparaAutentificar::class . ':VerificarUsuario');
 
 $app->group('/encuestas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \EncuestaController::class . ':TraerTodos');
@@ -97,7 +97,7 @@ $app->group('/encuestas', function (RouteCollectorProxy $group) {
   $group->post('/consulta/mejorescomentarios', \EncuestaController::class . ':MejoresComentarios');
   $group->post('/consulta/peorescomentarios', \EncuestaController::class . ':PeoresComentarios');
 
-});
+})->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->get('[/]', function (Request $request, Response $response) {
   $response->getBody()->write("TP Comanda - Lemos Lautaro Lucas");
