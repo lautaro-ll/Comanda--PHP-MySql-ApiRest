@@ -440,7 +440,7 @@ public function MenosVendido($request, $response, $args)
           }
         }
 
-        $payload = json_encode(array("Mas vendido:" => $resultadoFinal));
+        $payload = json_encode(array("Menos vendido:" => $resultadoFinal));
       } else {
         $payload = json_encode(array("mensaje" => "No hay datos"));
       }
@@ -458,8 +458,60 @@ public function MenosVendido($request, $response, $args)
     ->withHeader('Content-Type', 'application/json');
 }
 //c- Los que no se entregaron en el tiempo estipulado.
-//d- Los cancelados.
+public function FueraDeTiempo($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
 
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->where('tiempo_finalizado', '>', 'tiempo_estimado')
+              ->get();
+
+        $payload = json_encode(array("Lista:" => $lista));
+
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
+//d- Los cancelados.
+public function FueraDeTiempo($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->where('estado', '=', 'cancelado')
+              ->get();
+
+        $payload = json_encode(array("Lista:" => $lista));
+           
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //9- De las mesas:
 //a- La más usada.
 //b- La menos usada.

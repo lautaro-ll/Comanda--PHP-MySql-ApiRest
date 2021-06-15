@@ -79,6 +79,10 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/cantidadoperaciones', \PedidoController::class . ':CantidadDeOperacionesPorEmpleado');
   $group->post('/consulta/masvendido', \PedidoController::class . ':MasVendido');
   $group->post('/consulta/menosvendido', \PedidoController::class . ':MenosVendido');
+  $group->post('/consulta/fueradetiempo', \PedidoController::class . ':FueraDeTiempo');
+  $group->post('/consulta/cancelados', \PedidoController::class . ':Cancelados');
+
+
 
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
