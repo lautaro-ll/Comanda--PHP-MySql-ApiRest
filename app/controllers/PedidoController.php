@@ -291,7 +291,6 @@ class PedidoController implements IApiUsable
 
         $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
                 ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id')
-                ->where('productos.tipo_usuario',$cargo)
                 ->whereBetween('tiempo_pedido', [$desde, $hasta])
                 ->orderby('usuario_id','DESC')
                 ->get();
