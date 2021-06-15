@@ -706,7 +706,7 @@ public function MesaQueMenosFacturo($request, $response, $args)
       $hasta = $parametros['hasta'];
 
       $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
-              ->where('estado','=','servido')
+              ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
               ->get();
@@ -770,7 +770,7 @@ public function MesaConMayorFactura($request, $response, $args)
       $hasta = $parametros['hasta'];
 
       $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
-              ->where('estado','=','servido')
+              ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('codigo_pedido','DESC')
               ->get();
