@@ -486,7 +486,7 @@ public function FueraDeTiempo($request, $response, $args)
     ->withHeader('Content-Type', 'application/json');
 }
 //d- Los cancelados.
-public function FueraDeTiempo($request, $response, $args)
+public function Cancelados($request, $response, $args)
 {
   $parametros = $request->getParsedBody();
   if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
