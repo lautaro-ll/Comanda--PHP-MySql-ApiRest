@@ -280,7 +280,7 @@ class PedidoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-
+  //Cantidad de operaciones de cada uno por separado.
   public function CantidadDeOperacionesPorEmpleado($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
@@ -292,24 +292,34 @@ class PedidoController implements IApiUsable
 
 
         $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+                ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id')
                 ->where('productos.tipo_usuario',$cargo)
                 ->whereBetween('tiempo_pedido', [$desde, $hasta])
                 ->orderby('usuario_id','DESC')
                 ->get();
 
-        $user = $lista[0]["usuario_id"];
-        $c=0;
+        if(isset($lista)) {
+          $cargo = $lista[0]["usuario_id"];
+          $nombre = $lista[0]["nombre"];
+          $c=0;
+  
+          foreach($lista as $line) {
+            if($cargo == $line["usuario_id"]) {
+              $c++;
+            }
+            else {
+              $resultado[$nombre]=$c;
+              $cargo = $line["usuario_id"];
+              $nombre = $line["nombre"];
+              $c=1;
+            }
+          }
+          $resultado[$nombre]=$c;
 
-        foreach($lista as $line) {
-          if($user == $line["usuario_id"]) {
-            $c++;
-          }
-          else {
-            $contador[$line["usuario_id"]]=$c;
-            $c=1;
-          }
+          $payload = json_encode(array("Lista" => $resultado));
+        } else {
+          $payload = json_encode(array("mensaje" => "No hay datos"));
         }
-        $payload = json_encode(array("lista" => $contador));
     
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
