@@ -192,7 +192,6 @@ class PedidoController implements IApiUsable
           foreach($lista as $line) {
             if($cargo == $line["tipo_usuario"]) {
               $c++;
-              $resultado[$cargo]=$c;
             }
             else {
               $resultado[$cargo]=$c;
@@ -200,6 +199,8 @@ class PedidoController implements IApiUsable
               $c=1;
             }
           }
+          $resultado[$cargo]=$c;
+
           $payload = json_encode(array("Lista" => $resultado));
         } else {
           $payload = json_encode(array("mensaje" => "No hay datos"));
