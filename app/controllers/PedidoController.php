@@ -467,8 +467,8 @@ public function FueraDeTiempo($request, $response, $args)
       $hasta = $parametros['hasta'];
 
       $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
-              //->whereBetween('tiempo_pedido', [$desde, $hasta])
-              ->where('tiempo_estimado', '<', 'tiempo_finalizado')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->where('pedidos.tiempo_estimado', '<', 'pedidos.tiempo_finalizado')
               ->get();
 
         $payload = json_encode(array("Lista:" => $lista));
@@ -514,6 +514,64 @@ public function Cancelados($request, $response, $args)
 }
 //9- De las mesas:
 //a- La más usada.
+public function MesaMasUsada($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->orderby('mesa_id','DESC')
+              ->get();
+
+      if(isset($lista)) {
+        $id = $lista[0]["mesa_id"];
+        $nombre = $lista[0]["codigo_identificacion"];
+        $c=0;
+        $max=1;
+
+        foreach($lista as $line) {
+          if($id == $line["mesa_id"]) {
+            $c++;
+            if($max < $c) {
+              $max = $c;
+            }
+          }
+          else {
+            $resultado[$nombre]=$c;
+            $id = $line["mesa_id"];
+            $nombre = $line["codigo_identificacion"];
+            $c=1;
+          }
+        }
+        $resultado[$nombre]=$c;
+        $resultadoFinal=array();
+        foreach($resultado as $mesa => $cantidad) {
+          if($cantidad == $max) {
+            array_push($resultadoFinal, $mesa);
+          }
+        }
+
+        $payload = json_encode(array("Mas usada:" => $resultadoFinal));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //b- La menos usada.
 //c- La que más facturó.
 //d- La que menos facturó.
