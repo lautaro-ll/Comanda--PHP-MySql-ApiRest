@@ -82,6 +82,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/fueradetiempo', \PedidoController::class . ':FueraDeTiempo');
   $group->post('/consulta/cancelados', \PedidoController::class . ':Cancelados');
   $group->post('/consulta/mesamasusada', \PedidoController::class . ':MesaMasUsada');
+  $group->post('/consulta/mesamenosusada', \PedidoController::class . ':MesaMenosUsada');
 
 
 

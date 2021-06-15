@@ -573,6 +573,68 @@ public function MesaMasUsada($request, $response, $args)
     ->withHeader('Content-Type', 'application/json');
 }
 //b- La menos usada.
+public function MesaMenosUsada($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->orderby('mesa_id','DESC')
+              ->get();
+
+      if(isset($lista)) {
+        $id = $lista[0]["mesa_id"];
+        $nombre = $lista[0]["codigo_identificacion"];
+        $c=0;
+        $min=9999999999;
+
+        foreach($lista as $line) {
+          if($id == $line["mesa_id"]) {
+            $c++;
+          }
+          else {
+            $resultado[$nombre]=$c;
+            if($min > $c) {
+              $min = $c;
+            }
+            $id = $line["mesa_id"];
+            $nombre = $line["codigo_identificacion"];
+            $c=1;
+          }
+        }
+        $resultado[$nombre]=$c;
+        if($min > $c) {
+          $min = $c;
+        }
+
+        $resultadoFinal=array();
+        foreach($resultado as $mesa => $cantidad) {
+          if($cantidad == $min) {
+            array_push($resultadoFinal, $mesa);
+          }
+        }
+
+        $payload = json_encode(array("Menos vendido:" => $resultadoFinal));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //c- La que más facturó.
 //d- La que menos facturó.
 //e- La/s que tuvo la factura con el mayor importe.
