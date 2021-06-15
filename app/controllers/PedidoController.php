@@ -244,7 +244,7 @@ class PedidoController implements IApiUsable
               }
               else {
                 $resultado[$cargo][$empleado]=$c;
-                $empleado = $line["usuario_id"];
+                $empleado = $line["nombre"];
                 $c=1;
               }
             }
@@ -252,11 +252,11 @@ class PedidoController implements IApiUsable
               $resultado[$cargo][$empleado]=$c;
 
               $cargo = $line["tipo_usuario"];
-              $empleado = $line["usuario_id"];
+              $empleado = $line["nombre"];
               $c=1;
             }
           }
-          $payload = json_encode(array("Lista" => $lista));
+          $payload = json_encode(array("Lista" => $resultado));
         } else {
           $payload = json_encode(array("mensaje" => "No hay datos"));
         }
