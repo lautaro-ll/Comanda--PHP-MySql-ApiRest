@@ -148,7 +148,10 @@ class EncuestaController implements IApiUsable
             //}
             $mesa = $line["codigo_mesa"];
             $c=1;
-            $s=0;
+            $s = $line["calif_mesa"];
+            $s += $line["calif_resto"];
+            $s += $line["calif_mozo"];
+            $s += $line["calif_cocinero"];
           }
         }
         $promedioGeneral = $s / (4* $c);
