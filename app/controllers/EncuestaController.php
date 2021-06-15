@@ -142,20 +142,14 @@ class EncuestaController implements IApiUsable
             $c++;
           }
           else {
-            if($c==0) {
-              $c=1;
-            }
             $promedioGeneral = $s / (4* $c);
             //if($promedioGeneral > 5) {
               $resultado[$mesa]=$promedioGeneral;
             //}
             $mesa = $line["codigo_mesa"];
-            $c=0;
+            $c=1;
             $s=0;
           }
-        }
-        if($c==0) {
-          $c=1;
         }
         $promedioGeneral = $s / (4* $c);
         //if($promedioGeneral > 5) {
