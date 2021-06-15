@@ -81,15 +81,18 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
-      } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En Preparacion") {
+      } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
         $p = new Pedido();
         $pedido = $p->find($id);
         $pedido->estado = $estado;
+        $pedido->tiempo_aceptado = new DateTime("NOW");
+        $pedido->tiempo_aceptado->format("Y-m-d H:i:s");
         $pedido->tiempo_estimado = new DateTime("NOW");
         $pedido->tiempo_estimado->format("Y-m-d H:i:s");
+
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado en preparación"));
@@ -105,6 +108,18 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado listo para servir"));        
+      } else if(isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="mozo" && $parametros['estado']=="Servido") {
+        $estado = $parametros['estado'];
+        $id = $parametros['id'];
+    
+        $p = new Pedido();
+        $pedido = $p->find($id);
+        $pedido->estado = $estado;
+        $pedido->tiempo_entregado = new DateTime("NOW");
+        $pedido->tiempo_entregado->format("Y-m-d H:i:s");
+        $pedido->save();
+    
+        $payload = json_encode(array("mensaje" => "Pedido servido"));        
       }
       else {
         $payload = json_encode(array("mensaje" => "Faltan datos o son erróneos"));
