@@ -143,9 +143,9 @@ class EncuestaController implements IApiUsable
           }
           else {
             $promedioGeneral = $s / (4* $c);
-            //if($promedioGeneral > 5) {
+            if($promedioGeneral > 5) {
               $resultado[$mesa]=$promedioGeneral;
-            //}
+            }
             $mesa = $line["codigo_mesa"];
             $c=1;
             $s = $line["calif_mesa"];
@@ -155,9 +155,9 @@ class EncuestaController implements IApiUsable
           }
         }
         $promedioGeneral = $s / (4* $c);
-        //if($promedioGeneral > 5) {
+        if($promedioGeneral > 5) {
           $resultado[$mesa]=$promedioGeneral;
-        //}
+        }
 
         $payload = json_encode(array("Lista" => $resultado));
       } else {
@@ -200,15 +200,18 @@ class EncuestaController implements IApiUsable
               $resultado[$mesa]=$promedioGeneral;
             }
             $mesa = $line["codigo_mesa"];
-            $c=0;
-            $s=0;
+            $c=1;
+            $s = $line["calif_mesa"];
+            $s += $line["calif_resto"];
+            $s += $line["calif_mozo"];
+            $s += $line["calif_cocinero"];
           }
         }
         $promedioGeneral = $s / (4* $c);
         if($promedioGeneral < 5) {
           $resultado[$mesa]=$promedioGeneral;
         }
-        
+
         $payload = json_encode(array("Lista" => $resultado));
       } else {
         $payload = json_encode(array("mensaje" => "No hay datos"));
