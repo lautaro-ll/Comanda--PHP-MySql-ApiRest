@@ -86,8 +86,8 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/mesaquemasfacturo', \PedidoController::class . ':MesaQueMasFacturo');
   $group->post('/consulta/mesaquemenosfacturo', \PedidoController::class . ':MesaQueMenosFacturo');
   $group->post('/consulta/facturacion', \PedidoController::class . ':Facturacion');
-
-
+  $group->post('/consulta/mesaquemasfacturo', \PedidoController::class . ':MesaConMayorFactura');
+  $group->post('/consulta/mesaquemenosfacturo', \PedidoController::class . ':MesaConMenorFactura');
 
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 

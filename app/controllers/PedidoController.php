@@ -645,6 +645,7 @@ public function MesaQueMasFacturo($request, $response, $args)
       $hasta = $parametros['hasta'];
 
       $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+              ->where('estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
               ->get();
@@ -705,6 +706,7 @@ public function MesaQueMenosFacturo($request, $response, $args)
       $hasta = $parametros['hasta'];
 
       $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+              ->where('estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
               ->get();
@@ -759,7 +761,129 @@ public function MesaQueMenosFacturo($request, $response, $args)
     ->withHeader('Content-Type', 'application/json');
 }
 //e- La/s que tuvo la factura con el mayor importe.
+public function MesaConMayorFactura($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+              ->where('estado','=','servido')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->orderby('codigo_pedido','DESC')
+              ->get();
+
+      if(isset($lista)) {
+        $id = $lista[0]["codigo_pedido"];
+        $nombre = $lista[0]["codigo_identificacion"];
+        $c=0;
+        $max=0;
+
+        foreach($lista as $line) {
+          if($id == $line["codigo_pedido"]) {
+            $c += $line["precio"];
+            if($max < $c) {
+              $max = $c;
+            }
+          }
+          else {
+            $resultado[$nombre]=$c;
+            $id = $line["codigo_pedido"];
+            $nombre = $line["codigo_identificacion"];
+            $c = $line["precio"];
+          }
+        }
+        $resultado[$nombre]=$c;
+
+        $resultadoFinal=array();
+        foreach($resultado as $mesa => $cantidad) {
+          if($cantidad == $max) {
+            array_push($resultadoFinal, $mesa);
+          }
+        }
+
+        $payload = json_encode(array("Mesa con mayor facturación:" => $resultadoFinal));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //f- La/s que tuvo la factura con el menor importe.
+public function MesaConMenorFactura($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+              ->where('estado','=','servido')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->orderby('codigo_pedido','DESC')
+              ->get();
+
+      if(isset($lista)) {
+        $id = $lista[0]["codigo_pedido"];
+        $nombre = $lista[0]["codigo_identificacion"];
+        $c=0;
+        $min=9999999999;
+
+        foreach($lista as $line) {
+          if($id == $line["codigo_pedido"]) {
+            $c += $line["precio"];
+          }
+          else {
+            $resultado[$nombre]=$c;
+            if($min > $c) {
+              $min = $c;
+            }
+            $id = $line["codigo_pedido"];
+            $nombre = $line["codigo_identificacion"];
+            $c = $line["precio"];
+          }
+        }
+        $resultado[$nombre]=$c;
+        if($min > $c) {
+          $min = $c;
+        }
+
+        $resultadoFinal=array();
+        foreach($resultado as $mesa => $cantidad) {
+          if($cantidad == $min) {
+            array_push($resultadoFinal, $mesa);
+          }
+        }
+
+        $payload = json_encode(array("Menos con menor facturación:" => $resultadoFinal));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //g- Lo que facturó entre dos fechas dadas.
 public function Facturacion($request, $response, $args)
 {
