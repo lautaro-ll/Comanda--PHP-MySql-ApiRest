@@ -125,12 +125,8 @@ class EncuestaController implements IApiUsable
 {
   $parametros = $request->getParsedBody();
   if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
-      $desde = $parametros['desde'];
-      $hasta = $parametros['hasta'];
 
       $lista = Encuesta::orderby('codigo_mesa','DESC')
-      ->whereBetween('tiempo_pedido', [$desde, $hasta])
       ->get();
 
       if(isset($lista)) {
@@ -165,10 +161,6 @@ class EncuestaController implements IApiUsable
       } else {
         $payload = json_encode(array("mensaje" => "No hay datos"));
       }
-  
-    } else {
-      $payload = json_encode(array("mensaje" => "Faltan datos"));
-    }
   } else {
     $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
   }
@@ -183,12 +175,8 @@ class EncuestaController implements IApiUsable
 {
   $parametros = $request->getParsedBody();
   if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
-      $desde = $parametros['desde'];
-      $hasta = $parametros['hasta'];
 
       $lista = Encuesta::orderby('codigo_mesa','DESC')
-      ->whereBetween('tiempo_pedido', [$desde, $hasta])
       ->get();
 
       if(isset($lista)) {
@@ -224,9 +212,6 @@ class EncuestaController implements IApiUsable
         $payload = json_encode(array("mensaje" => "No hay datos"));
       }
   
-    } else {
-      $payload = json_encode(array("mensaje" => "Faltan datos"));
-    }
   } else {
     $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
   }
