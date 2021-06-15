@@ -3,6 +3,7 @@ require_once './models/Usuario.php';
 require_once './interfaces/IApiUsable.php';
 
 use \App\Models\Usuario as Usuario;
+use \App\Models\Acceso as Acceso;
 
 class UsuarioController implements IApiUsable
 {
@@ -163,6 +164,37 @@ class UsuarioController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function TraerIngresos($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+        $desde = $parametros['desde'];
+        $hasta = $parametros['hasta'];
+
+        $lista = Acceso::whereBetween('horario', [$desde, $hasta])->get();
+        $payload = json_encode(array("listaAccesos" => $lista));
+    
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+    
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+/*
+7- De los empleados:
+a- Los días y horarios que se Ingresaron al sistema. -/
+e- Posibilidad de dar de alta a nuevos, suspenderlos o borrarlos. -/
+*/
+
 }
 
 ?>

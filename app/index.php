@@ -22,16 +22,6 @@ require_once './middlewares/MWparaAutentificar.php';
 
 $app = AppFactory::create();
 
-// Load ENV
-/*
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
-*/
-
-// Middleware
-//$app->add(\MWparaAutentificar::class . ':VerificarUsuario');
-//$app->add(\MWparaCORS::class . ':HabilitarCORS8080');
-
 // Eloquent
 $container=$app->getContainer();
 
@@ -58,30 +48,36 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
   $group->get('/u/{id}', \UsuarioController::class . ':TraerUno');
   $group->get('/t/{cargo}', \UsuarioController::class . ':TraerTodosPorCargo');
   $group->post('[/]', \UsuarioController::class . ':CargarUno');
+  $group->post('/ingresos', \UsuarioController::class . ':TraerIngresos');
+  $group->post('/borrar', \UsuarioController::class . ':BorrarUno');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ProductoController::class . ':TraerTodos');
   $group->get('/t/{id}', \ProductoController::class . ':TraerUno');
-  $group->get('/exportarpdf', \ProductoController::class . ':ExportarPdf'); //hacer para otros
-  $group->get('/exportarcsv', \ProductoController::class . ':ExportarCsv'); //hacer para otros
-  $group->post('/csv', \ProductoController::class . ':CargarCsv'); //hacer para otros
+  $group->get('/exportarpdf', \ProductoController::class . ':ExportarPdf'); 
+  $group->get('/exportarcsv', \ProductoController::class . ':ExportarCsv'); 
+  $group->post('/csv', \ProductoController::class . ':CargarCsv');
   $group->post('[/]', \ProductoController::class . ':CargarUno');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
-  $group->get('/{mesa}', \MesaController::class . ':TraerUno');
+  $group->get('/{id}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno');
   $group->post('/estado', \MesaController::class . ':CambiarEstado'); 
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
-  $group->get('/u/{pedido}', \PedidoController::class . ':TraerUno');
+  $group->get('/u/{id}', \PedidoController::class . ':TraerUno');
   $group->get('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
   $group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() /  TomarPedido() -> BARTENDER-CERVECERO-COCINERO //CancelarPedido -> MOZO
+  $group->post('/consulta/operaciones', \PedidoController::class . ':OperacionesPorSector');
+  $group->post('/consulta/operacionesempleado', \PedidoController::class . ':OperacionesPorSectorYEmpleado');
+  $group->post('/consulta/cantidadoperaciones', \PedidoController::class . ':CantidadDeOperacionesPorEmpleado');
+
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/encuestas', function (RouteCollectorProxy $group) {

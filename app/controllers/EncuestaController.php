@@ -118,7 +118,11 @@ class EncuestaController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-
+  /*
+  9- De las mesas:
+  h- Mejores comentarios.
+  i- Peores comentarios.
+  */
 }
 ?>
 

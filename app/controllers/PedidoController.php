@@ -173,6 +173,131 @@ class PedidoController implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+  public function OperacionesPorSector($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (isset($parametros['desde']) && isset($parametros['hasta']) && isset($parametros['cargo'])) {
+        $desde = $parametros['desde'];
+        $hasta = $parametros['hasta'];
+        $cargo = $parametros['cargo'];
+
+
+        $cuenta = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+                ->where('productos.tipo_usuario',$cargo)
+                ->whereBetween('tiempo_pedido', [$desde, $hasta])
+                ->count();
+
+        $payload = json_encode(array("Cantidad" => $cuenta));
+    
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+    
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function OperacionesPorSectorYEmpleado($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (isset($parametros['desde']) && isset($parametros['hasta']) && isset($parametros['cargo'])) {
+        $desde = $parametros['desde'];
+        $hasta = $parametros['hasta'];
+        $cargo = $parametros['cargo'];
+
+
+        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+                ->where('productos.tipo_usuario',$cargo)
+                ->whereBetween('tiempo_pedido', [$desde, $hasta])
+                ->orderby('usuario_id','DESC')
+                ->get();
+        $payload = json_encode(array("lista" => $lista));
+    
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+    
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function CantidadDeOperacionesPorEmpleado($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+      if (isset($parametros['desde']) && isset($parametros['hasta']) && isset($parametros['cargo'])) {
+        $desde = $parametros['desde'];
+        $hasta = $parametros['hasta'];
+        $cargo = $parametros['cargo'];
+
+
+        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+                ->where('productos.tipo_usuario',$cargo)
+                ->whereBetween('tiempo_pedido', [$desde, $hasta])
+                ->orderby('usuario_id','DESC')
+                ->get();
+
+        $user = $lista[0]["usuario_id"];
+        $c=0;
+
+        foreach($lista as $line) {
+          if($user == $line["usuario_id"]) {
+            $c++;
+          }
+          else {
+            $contador[$line["usuario_id"]]=$c;
+            $c=1;
+          }
+        }
+        $payload = json_encode(array("lista" => $contador));
+    
+      } else {
+        $payload = json_encode(array("mensaje" => "Faltan datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+    }
+    
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+/*
+7- De los empleados:
+b- Cantidad de operaciones de todos por sector.
+c- Cantidad de operaciones de todos por sector, listada por cada empleado.
+d- Cantidad de operaciones de cada uno por separado.
+
+8- De las pedidos:
+a- Lo que más se vendió.
+b- Lo que menos se vendió.
+c- Los que no se entregaron en el tiempo estipulado.
+d- Los cancelados.
+
+9- De las mesas:
+a- La más usada.
+b- La menos usada.
+c- La que más facturó.
+d- La que menos facturó.
+e- La/s que tuvo la factura con el mayor importe.
+f- La/s que tuvo la factura con el menor importe.
+g- Lo que facturó entre dos fechas dadas.
+h- Mejores comentarios.
+i- Peores comentarios.
+*/
 }
 
 ?> 
