@@ -263,7 +263,7 @@ class PedidoController implements IApiUsable
           }
           $resultado[$cargo][$nombre]=$c;
 
-          $payload = json_encode(array("Lista" => $lista));
+          $payload = json_encode(array("Lista" => $resultado));
         } else {
           $payload = json_encode(array("mensaje" => "No hay datos"));
         }
