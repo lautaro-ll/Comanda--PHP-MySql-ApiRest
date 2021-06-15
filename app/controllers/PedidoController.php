@@ -350,24 +350,34 @@ public function MasVendido($request, $response, $args)
               ->get();
 
       if(isset($lista)) {
-        $cargo = $lista[0]["usuario_id"];
-        $nombre = $lista[0]["nombre"];
+        $cargo = $lista[0]["producto_id"];
+        $nombre = $lista[0]["producto"];
         $c=0;
+        $max=1;
 
         foreach($lista as $line) {
-          if($cargo == $line["usuario_id"]) {
+          if($cargo == $line["producto_id"]) {
             $c++;
+            if($max < $c) {
+              $max = $c;
+            }
           }
           else {
             $resultado[$nombre]=$c;
-            $cargo = $line["usuario_id"];
-            $nombre = $line["nombre"];
+            $cargo = $line["producto_id"];
+            $nombre = $line["producto"];
             $c=1;
           }
         }
         $resultado[$nombre]=$c;
+        var_dump($resultado);
+        foreach($resultado as $producto) {
+          if($producto == $max) {
+            array_push($resultadoFinal, $producto);
+          }
+        }
 
-        $payload = json_encode(array("Lista" => $lista));
+        $payload = json_encode(array("Lista" => $resultadoFinal));
       } else {
         $payload = json_encode(array("mensaje" => "No hay datos"));
       }
