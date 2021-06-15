@@ -186,19 +186,20 @@ class PedidoController implements IApiUsable
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
 
-        $user = $lista[0]["tipo_usuario"];
+        $cargo = $lista[0]["tipo_usuario"];
         $c=0;
 
         foreach($lista as $line) {
-          if($user == $line["tipo_usuario"]) {
+          if($cargo == $line["tipo_usuario"]) {
             $c++;
           }
           else {
-            $contador[$line["tipo_usuario"]]=$c;
+            $resultado[$cargo]=$c;
+            $cargo = $line["tipo_usuario"];
             $c=1;
           }
         }
-        $payload = json_encode(array("Lista" => $contador));
+        $payload = json_encode(array("Lista" => $resultado));
     
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
@@ -212,7 +213,7 @@ class PedidoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-
+  //Cantidad de operaciones de todos por sector, listada por cada empleado.
   public function OperacionesPorSectorYEmpleado($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
@@ -222,14 +223,37 @@ class PedidoController implements IApiUsable
         $hasta = $parametros['hasta'];
         $cargo = $parametros['cargo'];
 
-
         $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
-                ->where('productos.tipo_usuario',$cargo)
-                ->whereBetween('tiempo_pedido', [$desde, $hasta])
-                ->orderby('usuario_id','DESC')
-                ->get();
-        $payload = json_encode(array("lista" => $lista));
-    
+        ->whereBetween('tiempo_pedido', [$desde, $hasta])
+        ->orderby('pedidos.usuario_id','DESC')
+        ->orderby('productos.tipo_usuario','DESC')
+        ->get();
+
+        $cargo = $lista[0]["tipo_usuario"];
+        $empleado = $lista[0]["usuario_id"];
+        $c=0;
+
+        foreach($lista as $line) {
+          if($cargo == $line["tipo_usuario"]) {
+            if($empleado == $line["usuario_id"]) {
+              $c++;
+            }
+            else {
+              $resultado[$cargo][$empleado]=$c;
+              $empleado = $line["usuario_id"];
+              $c=1;
+            }
+          }
+          else {
+            $resultado[$cargo][$empleado]=$c;
+
+            $cargo = $line["tipo_usuario"];
+            $empleado = $line["usuario_id"];
+            $c=1;
+          }
+        }
+        $payload = json_encode(array("Lista" => $resultado));
+
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
       }
