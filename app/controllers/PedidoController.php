@@ -70,7 +70,7 @@ class PedidoController implements IApiUsable
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado'])) { //CUALQUIER EMPLEADO ES VALIDO
       $accesoEmpleado = $parametros['accesoEmpleado'];
-      if (isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="Mozo" && $parametros['estado']=="Cancelar") { //CancelarPedido -> MOZO
+      if (isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="mozo" && $parametros['estado']=="Cancelar") { //CancelarPedido -> MOZO
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
@@ -81,7 +81,7 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
-      } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="Bartender" || $accesoEmpleado=="Cervecero" || $accesoEmpleado=="Cocinero") && $parametros['estado']=="En Preparacion") {
+      } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En Preparacion") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
@@ -93,7 +93,7 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado en preparación"));
-      } else if(isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="Bartender" || $accesoEmpleado=="Cervecero" || $accesoEmpleado=="Cocinero") && $parametros['estado']=="Listo para servir") {
+      } else if(isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="Listo para servir") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
