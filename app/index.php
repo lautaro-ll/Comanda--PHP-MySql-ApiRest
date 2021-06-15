@@ -78,7 +78,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/operacionesempleado', \PedidoController::class . ':OperacionesPorSectorYEmpleado');
   $group->post('/consulta/cantidadoperaciones', \PedidoController::class . ':CantidadDeOperacionesPorEmpleado');
   $group->post('/consulta/masvendido', \PedidoController::class . ':MasVendido');
-
+  $group->post('/consulta/menosvendido', \PedidoController::class . ':MenosVendido');
 
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 

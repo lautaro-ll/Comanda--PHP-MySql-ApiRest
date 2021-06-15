@@ -350,13 +350,13 @@ public function MasVendido($request, $response, $args)
               ->get();
 
       if(isset($lista)) {
-        $cargo = $lista[0]["producto_id"];
+        $id = $lista[0]["producto_id"];
         $nombre = $lista[0]["producto"];
         $c=0;
         $max=1;
 
         foreach($lista as $line) {
-          if($cargo == $line["producto_id"]) {
+          if($id == $line["producto_id"]) {
             $c++;
             if($max < $c) {
               $max = $c;
@@ -364,13 +364,12 @@ public function MasVendido($request, $response, $args)
           }
           else {
             $resultado[$nombre]=$c;
-            $cargo = $line["producto_id"];
+            $id = $line["producto_id"];
             $nombre = $line["producto"];
             $c=1;
           }
         }
         $resultado[$nombre]=$c;
-        var_dump($resultado);
         $resultadoFinal=array();
         foreach($resultado as $producto => $cantidad) {
           if($cantidad == $max) {
@@ -378,7 +377,7 @@ public function MasVendido($request, $response, $args)
           }
         }
 
-        $payload = json_encode(array("Lista" => $resultadoFinal));
+        $payload = json_encode(array("Mas vendido:" => $resultadoFinal));
       } else {
         $payload = json_encode(array("mensaje" => "No hay datos"));
       }
@@ -396,6 +395,68 @@ public function MasVendido($request, $response, $args)
     ->withHeader('Content-Type', 'application/json');
 }
 //b- Lo que menos se vendió.
+public function MenosVendido($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->orderby('producto_id','DESC')
+              ->get();
+
+      if(isset($lista)) {
+        $id = $lista[0]["producto_id"];
+        $nombre = $lista[0]["producto"];
+        $c=0;
+        $min=9999999999;
+
+        foreach($lista as $line) {
+          if($id == $line["producto_id"]) {
+            $c++;
+          }
+          else {
+            $resultado[$nombre]=$c;
+            if($min > $c) {
+              $min = $c;
+            }
+            $id = $line["producto_id"];
+            $nombre = $line["producto"];
+            $c=1;
+          }
+        }
+        $resultado[$nombre]=$c;
+        if($min > $c) {
+          $min = $c;
+        }
+
+        $resultadoFinal=array();
+        foreach($resultado as $producto => $cantidad) {
+          if($cantidad == $min) {
+            array_push($resultadoFinal, $producto);
+          }
+        }
+
+        $payload = json_encode(array("Mas vendido:" => $resultadoFinal));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //c- Los que no se entregaron en el tiempo estipulado.
 //d- Los cancelados.
 
