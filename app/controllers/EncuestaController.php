@@ -130,7 +130,7 @@ class EncuestaController implements IApiUsable
 
       if(isset($lista)) {
         $mesa = $lista[0]["codigo_mesa"];
-        $c=1;
+        $c=0;
         $s=0;
 
         foreach($lista as $line) {
@@ -180,7 +180,7 @@ class EncuestaController implements IApiUsable
 
       if(isset($lista)) {
         $mesa = $lista[0]["codigo_mesa"];
-        $c=1;
+        $c=0;
         $s=0;
 
         foreach($lista as $line) {
