@@ -142,10 +142,13 @@ class EncuestaController implements IApiUsable
             $c++;
           }
           else {
-            $promedioGeneral = $s / (4* $c);
-            if($promedioGeneral > 5) {
-              $resultado[$mesa]=$promedioGeneral;
+            if($c=0) {
+              $c=1;
             }
+            $promedioGeneral = $s / (4* $c);
+            //if($promedioGeneral > 5) {
+              $resultado[$mesa]=$promedioGeneral;
+            //}
             $mesa = $line["codigo_mesa"];
             $c=0;
             $s=0;
@@ -155,9 +158,9 @@ class EncuestaController implements IApiUsable
           $c=1;
         }
         $promedioGeneral = $s / (4* $c);
-        if($promedioGeneral > 5) {
+        //if($promedioGeneral > 5) {
           $resultado[$mesa]=$promedioGeneral;
-        }
+        //}
 
         $payload = json_encode(array("Lista" => $resultado));
       } else {
