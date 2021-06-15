@@ -770,7 +770,7 @@ public function Facturacion($request, $response, $args)
       $hasta = $parametros['hasta'];
 
       $lista = Pedido::select('precio')
-              ->where('estado','=','finalizado')
+              ->where('estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->get();
 
