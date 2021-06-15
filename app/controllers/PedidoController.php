@@ -330,29 +330,75 @@ class PedidoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-/*
-7- De los empleados:
-b- Cantidad de operaciones de todos por sector.
-c- Cantidad de operaciones de todos por sector, listada por cada empleado.
-d- Cantidad de operaciones de cada uno por separado.
 
-8- De las pedidos:
-a- Lo que más se vendió.
-b- Lo que menos se vendió.
-c- Los que no se entregaron en el tiempo estipulado.
-d- Los cancelados.
+  
 
-9- De las mesas:
-a- La más usada.
-b- La menos usada.
-c- La que más facturó.
-d- La que menos facturó.
-e- La/s que tuvo la factura con el mayor importe.
-f- La/s que tuvo la factura con el menor importe.
-g- Lo que facturó entre dos fechas dadas.
-h- Mejores comentarios.
-i- Peores comentarios.
-*/
+//8- De las pedidos:
+
+//a- Lo que más se vendió.
+public function MasVendido($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->orderby('producto_id','DESC')
+              ->get();
+
+      if(isset($lista)) {
+        $cargo = $lista[0]["usuario_id"];
+        $nombre = $lista[0]["nombre"];
+        $c=0;
+
+        foreach($lista as $line) {
+          if($cargo == $line["usuario_id"]) {
+            $c++;
+          }
+          else {
+            $resultado[$nombre]=$c;
+            $cargo = $line["usuario_id"];
+            $nombre = $line["nombre"];
+            $c=1;
+          }
+        }
+        $resultado[$nombre]=$c;
+
+        $payload = json_encode(array("Lista" => $lista));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
+//b- Lo que menos se vendió.
+//c- Los que no se entregaron en el tiempo estipulado.
+//d- Los cancelados.
+
+//9- De las mesas:
+//a- La más usada.
+//b- La menos usada.
+//c- La que más facturó.
+//d- La que menos facturó.
+//e- La/s que tuvo la factura con el mayor importe.
+//f- La/s que tuvo la factura con el menor importe.
+//g- Lo que facturó entre dos fechas dadas.
+//h- Mejores comentarios.
+//i- Peores comentarios.
+
 }
 
 ?> 
