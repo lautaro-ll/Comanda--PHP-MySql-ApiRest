@@ -85,6 +85,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/mesamenosusada', \PedidoController::class . ':MesaMenosUsada');
   $group->post('/consulta/mesaquemasfacturo', \PedidoController::class . ':MesaQueMasFacturo');
   $group->post('/consulta/mesaquemenosfacturo', \PedidoController::class . ':MesaQueMenosFacturo');
+  $group->post('/consulta/facturacion', \PedidoController::class . ':Facturacion');
 
 
 

@@ -741,7 +741,7 @@ public function MesaQueMenosFacturo($request, $response, $args)
           }
         }
 
-        $payload = json_encode(array("Menos usada:" => $resultadoFinal));
+        $payload = json_encode(array("Menos con menor facturación:" => $resultadoFinal));
       } else {
         $payload = json_encode(array("mensaje" => "No hay datos"));
       }
@@ -761,6 +761,40 @@ public function MesaQueMenosFacturo($request, $response, $args)
 //e- La/s que tuvo la factura con el mayor importe.
 //f- La/s que tuvo la factura con el menor importe.
 //g- Lo que facturó entre dos fechas dadas.
+public function Facturacion($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Pedido::select('precio')
+              ->where('estado','=','finalizado')
+              ->whereBetween('tiempo_pedido', [$desde, $hasta])
+              ->get();
+
+      if(isset($lista)) {
+        $resultado = 0;
+        foreach($lista as $line) {
+            $resultado += $line["precio"];
+            }
+        }
+
+        $payload = json_encode(array("Facturación:" => $resultado));
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 //h- Mejores comentarios.
 //i- Peores comentarios.
 
