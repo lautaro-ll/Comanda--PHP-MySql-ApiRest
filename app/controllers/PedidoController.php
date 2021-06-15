@@ -185,22 +185,25 @@ class PedidoController implements IApiUsable
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
-
-        $cargo = $lista[0]["tipo_usuario"];
-        $c=0;
-
-        foreach($lista as $line) {
-          if($cargo == $line["tipo_usuario"]) {
-            $c++;
+        if(isset($lista)) {
+          $cargo = $lista[0]["tipo_usuario"];
+          $c=0;
+  
+          foreach($lista as $line) {
+            if($cargo == $line["tipo_usuario"]) {
+              $c++;
+            }
+            else {
+              $resultado[$cargo]=$c;
+              $cargo = $line["tipo_usuario"];
+              $c=1;
+            }
           }
-          else {
-            $resultado[$cargo]=$c;
-            $cargo = $line["tipo_usuario"];
-            $c=1;
-          }
+          $payload = json_encode(array("Lista" => $resultado));
+        } else {
+          $payload = json_encode(array("mensaje" => "No hay datos"));
         }
-        $payload = json_encode(array("Lista" => $resultado));
-    
+
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
       }
@@ -218,10 +221,9 @@ class PedidoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (isset($parametros['desde']) && isset($parametros['hasta']) && isset($parametros['cargo'])) {
+      if (isset($parametros['desde']) && isset($parametros['hasta'])) {
         $desde = $parametros['desde'];
         $hasta = $parametros['hasta'];
-        $cargo = $parametros['cargo'];
 
         $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
@@ -229,30 +231,34 @@ class PedidoController implements IApiUsable
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
 
-        $cargo = $lista[0]["tipo_usuario"];
-        $empleado = $lista[0]["usuario_id"];
-        $c=0;
+        if(isset($lista)) {
+          $cargo = $lista[0]["tipo_usuario"];
+          $empleado = $lista[0]["usuario_id"];
+          $c=0;
 
-        foreach($lista as $line) {
-          if($cargo == $line["tipo_usuario"]) {
-            if($empleado == $line["usuario_id"]) {
-              $c++;
+          foreach($lista as $line) {
+            if($cargo == $line["tipo_usuario"]) {
+              if($empleado == $line["usuario_id"]) {
+                $c++;
+              }
+              else {
+                $resultado[$cargo][$empleado]=$c;
+                $empleado = $line["usuario_id"];
+                $c=1;
+              }
             }
             else {
               $resultado[$cargo][$empleado]=$c;
+
+              $cargo = $line["tipo_usuario"];
               $empleado = $line["usuario_id"];
               $c=1;
             }
           }
-          else {
-            $resultado[$cargo][$empleado]=$c;
-
-            $cargo = $line["tipo_usuario"];
-            $empleado = $line["usuario_id"];
-            $c=1;
-          }
+          $payload = json_encode(array("Lista" => $resultado));
+        } else {
+          $payload = json_encode(array("mensaje" => "No hay datos"));
         }
-        $payload = json_encode(array("Lista" => $resultado));
 
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
