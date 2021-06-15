@@ -919,8 +919,6 @@ public function Facturacion($request, $response, $args)
   return $response
     ->withHeader('Content-Type', 'application/json');
 }
-//h- Mejores comentarios.
-//i- Peores comentarios.
 
 }
 

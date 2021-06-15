@@ -118,11 +118,124 @@ class EncuestaController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-  /*
-  9- De las mesas:
-  h- Mejores comentarios.
-  i- Peores comentarios.
-  */
+  
+  //9- De las mesas:
+  //h- Mejores comentarios.
+  public function MejoresComentarios($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Encuesta::orderby('codigo_mesa','DESC')
+      ->whereBetween('tiempo_pedido', [$desde, $hasta])
+      ->get();
+
+      if(isset($lista)) {
+        $mesa = $lista[0]["codigo_mesa"];
+        $c=0;
+        $s=0;
+
+        foreach($lista as $line) {
+          if($mesa == $line["codigo_mesa"]) {
+            $s += $line["calif_mesa"];
+            $s += $line["calif_resto"];
+            $s += $line["calif_mozo"];
+            $s += $line["calif_cocinero"];
+            $c++;
+          }
+          else {
+            $promedioGeneral = $s / (4* $c);
+            if($promedioGeneral > 5) {
+              $resultado[$mesa]=$promedioGeneral;
+            }
+            $mesa = $line["codigo_mesa"];
+            $c=0;
+            $s=0;
+          }
+        }
+        $promedioGeneral = $s / (4* $c);
+        if($promedioGeneral > 5) {
+          $resultado[$mesa]=$promedioGeneral;
+        }
+
+        $payload = json_encode(array("Lista" => $resultado));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
+  //i- Peores comentarios.
+  public function PeoresComentarios($request, $response, $args)
+{
+  $parametros = $request->getParsedBody();
+  if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
+    if (isset($parametros['desde']) && isset($parametros['hasta'])) {
+      $desde = $parametros['desde'];
+      $hasta = $parametros['hasta'];
+
+      $lista = Encuesta::orderby('codigo_mesa','DESC')
+      ->whereBetween('tiempo_pedido', [$desde, $hasta])
+      ->get();
+
+      if(isset($lista)) {
+        $mesa = $lista[0]["codigo_mesa"];
+        $c=0;
+        $s=0;
+
+        foreach($lista as $line) {
+          if($mesa == $line["codigo_mesa"]) {
+            $s += $line["calif_mesa"];
+            $s += $line["calif_resto"];
+            $s += $line["calif_mozo"];
+            $s += $line["calif_cocinero"];
+            $c++;
+          }
+          else {
+            $promedioGeneral = $s / (4* $c);
+            if($promedioGeneral < 5) {
+              $resultado[$mesa]=$promedioGeneral;
+            }
+            $mesa = $line["codigo_mesa"];
+            $c=0;
+            $s=0;
+          }
+        }
+        $promedioGeneral = $s / (4* $c);
+        if($promedioGeneral < 5) {
+          $resultado[$mesa]=$promedioGeneral;
+        }
+        
+        $payload = json_encode(array("Lista" => $resultado));
+      } else {
+        $payload = json_encode(array("mensaje" => "No hay datos"));
+      }
+  
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+  } else {
+    $payload = json_encode(array("mensaje" => "Usuario no autorizado"));
+  }
+  
+
+  $response->getBody()->write($payload);
+  return $response
+    ->withHeader('Content-Type', 'application/json');
+}
 }
 ?>
 

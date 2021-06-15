@@ -12,7 +12,7 @@ class AutentificadorJWT
     public static function CrearToken($datos)
     {
         $ahora = time();
-        $expiracion = 600;
+        $expiracion = 3600;
         /*
          parametros del payload
          https://tools.ietf.org/html/rfc7519#section-4.1

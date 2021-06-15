@@ -88,13 +88,15 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/consulta/facturacion', \PedidoController::class . ':Facturacion');
   $group->post('/consulta/mesaconmayorfactura', \PedidoController::class . ':MesaConMayorFactura');
   $group->post('/consulta/mesaconmenorfactura', \PedidoController::class . ':MesaConMenorFactura');
-
 })->add(\MWparaAutentificar::class . ':VerificarUsuario');;
 
 $app->group('/encuestas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \EncuestaController::class . ':TraerTodos');
   $group->get('/tiempo/{pedido}', \EncuestaController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
   $group->post('/nueva/{pedido}', \EncuestaController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
+  $group->post('/consulta/mejorescomentarios', \PedidoController::class . ':MejoresComentarios');
+  $group->post('/consulta/peorescomentarios', \PedidoController::class . ':PeoresComentarios');
+
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
