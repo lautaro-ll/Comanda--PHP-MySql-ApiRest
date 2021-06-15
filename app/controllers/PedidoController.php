@@ -772,7 +772,7 @@ public function MesaConMayorFactura($request, $response, $args)
       $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
               ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
-              ->orderby('codigo_pedido','DESC')
+              ->orderby('pedidos.codigo_pedido','DESC')
               ->get();
 
       if(isset($lista)) {
@@ -833,7 +833,7 @@ public function MesaConMenorFactura($request, $response, $args)
       $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
               ->where('estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
-              ->orderby('codigo_pedido','DESC')
+              ->orderby('pedidos.codigo_pedido','DESC')
               ->get();
 
       if(isset($lista)) {
