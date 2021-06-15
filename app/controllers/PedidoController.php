@@ -195,7 +195,7 @@ class PedidoController implements IApiUsable
               $resultado[$cargo]=$c;
             }
             else {
-              //$resultado[$cargo]=$c;
+              $resultado[$cargo]=$c;
               $cargo = $line["tipo_usuario"];
               $c=1;
             }
