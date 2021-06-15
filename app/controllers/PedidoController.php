@@ -172,7 +172,7 @@ class PedidoController implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-
+  //Cantidad de operaciones de todos por sector.
   public function OperacionesPorSector($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
@@ -184,9 +184,9 @@ class PedidoController implements IApiUsable
 
 
         $cuenta = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
-                ->where('productos.tipo_usuario',$cargo)
-                ->whereBetween('tiempo_pedido', [$desde, $hasta])
-                ->count();
+        ->whereBetween('tiempo_pedido', [$desde, $hasta])
+        ->orderby('productos.tipo_usuario','DESC')
+        ->get();
 
         $payload = json_encode(array("Cantidad" => $cuenta));
     
