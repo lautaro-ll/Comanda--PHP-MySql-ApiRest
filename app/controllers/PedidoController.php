@@ -372,8 +372,8 @@ public function MasVendido($request, $response, $args)
         $resultado[$nombre]=$c;
         var_dump($resultado);
         $resultadoFinal=array();
-        foreach($resultado as $producto) {
-          if($producto == $max) {
+        foreach($resultado as $producto => $cantidad) {
+          if($cantidad == $max) {
             array_push($resultadoFinal, $producto);
           }
         }
