@@ -81,13 +81,15 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
-      } else if (isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
+      } else if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['usuario_id']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
+        $usuario_id = $parametros['usuario_id'];
     
         $p = new Pedido();
         $pedido = $p->find($id);
         $pedido->estado = $estado;
+        $pedido->usuario_id = $usuario_id;
         $pedido->tiempo_aceptado = new DateTime("NOW");
         $pedido->tiempo_aceptado->format("Y-m-d H:i:s");
         $pedido->tiempo_estimado = new DateTime("NOW");
