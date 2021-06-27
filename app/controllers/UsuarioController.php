@@ -7,6 +7,39 @@ use \App\Models\Acceso as Acceso;
 
 class UsuarioController implements IApiUsable
 {
+  public function Validar($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+    if (isset($parametros['alias']) && isset($parametros['clave'])) {
+      $usuarioIngresado = $parametros['alias'];
+      $claveIngresada = $parametros['clave'];
+      $arrayUsuarios = Usuario::all();
+      if (!is_null($arrayUsuarios)) {
+        foreach ($arrayUsuarios as $usuario) {
+          if ($usuario->alias == $usuarioIngresado) {
+            if ($usuario->clave == $claveIngresada) {
+              // Ej OK =>	user: "socio1", clave: "1234"
+              $token = AutentificadorJWT::CrearToken(array('alias' => $usuario->alias, 'nombre' => $usuario->nombre, 'cargo' => $usuario->cargo, 'id' => $usuario->id));
+              $payload = json_encode($token);
+              break;
+            } else {
+              $payload = json_encode(array("mensaje" => "Error en la clave"));
+            }
+          } else {
+            $payload = json_encode(array("mensaje" => "Usuario no registrado"));
+          }
+        }
+      } else {
+        $payload = json_encode(array("mensaje" => "Error de base de datos"));
+      }
+    } else {
+      $payload = json_encode(array("mensaje" => "Faltan datos"));
+    }
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
@@ -127,39 +160,6 @@ class UsuarioController implements IApiUsable
     $lista = $user->where('cargo',$cargo)->get();
     $payload = json_encode(array("listaUsuario" => $lista));
 
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
-  }
-
-  public function Validar($request, $response, $args)
-  {
-    $parametros = $request->getParsedBody();
-    if (isset($parametros['alias']) && isset($parametros['clave'])) {
-      $usuarioIngresado = $parametros['alias'];
-      $claveIngresada = $parametros['clave'];
-      $arrayUsuarios = Usuario::all();
-      if (!is_null($arrayUsuarios)) {
-        foreach ($arrayUsuarios as $usuario) {
-          if ($usuario->alias == $usuarioIngresado) {
-            if ($usuario->clave == $claveIngresada) {
-              // Ej OK =>	user: "socio1", clave: "1234"
-              $token = AutentificadorJWT::CrearToken(array('alias' => $usuario->alias, 'nombre' => $usuario->nombre, 'cargo' => $usuario->cargo));
-              $payload = json_encode($token);
-              break;
-            } else {
-              $payload = json_encode(array("mensaje" => "Error en la clave"));
-            }
-          } else {
-            $payload = json_encode(array("mensaje" => "Usuario no registrado"));
-          }
-        }
-      } else {
-        $payload = json_encode(array("mensaje" => "Error de base de datos"));
-      }
-    } else {
-      $payload = json_encode(array("mensaje" => "Faltan datos"));
-    }
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');

@@ -5,7 +5,7 @@ use Firebase\JWT\JWT;
 
 class AutentificadorJWT
 {
-    private static $claveSecreta = '03-03-456';
+    private static $claveSecreta = 'llemos';
     private static $tipoEncriptacion = ['HS256'];
     private static $aud = null;
 
