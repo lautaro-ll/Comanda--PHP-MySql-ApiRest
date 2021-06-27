@@ -20,9 +20,14 @@ class PedidoController implements IApiUsable
         $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
         $idMozo = $parametros['idUsuarioRegistrado'];
-        
-        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+
+        if (isset($parametros['codigoPedido'])) {
+          $codigoPedido = $parametros['codigoPedido'];
+        } 
+        else {
+          $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+        }
 
         $nuevoPedido = new Pedido();
         $nuevoPedido->cliente = $cliente;
