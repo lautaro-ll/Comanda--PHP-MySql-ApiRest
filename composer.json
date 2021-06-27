@@ -15,6 +15,7 @@
         "illuminate/collections": "^8.45",
         "illuminate/container": "^8.45",
         "illuminate/macroable": "^8.45",
-        "dompdf/dompdf": "^1.0"
+        "dompdf/dompdf": "^1.0",
+        "vlucas/phpdotenv": "^5.3"
      }
  }

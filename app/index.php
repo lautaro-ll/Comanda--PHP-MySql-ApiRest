@@ -22,6 +22,10 @@ require_once './middlewares/MWparaAutentificar.php';
 
 $app = AppFactory::create();
 
+// Load ENV
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+
 // Eloquent
 $container=$app->getContainer();
 
