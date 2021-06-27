@@ -24,6 +24,7 @@ class PedidoController implements IApiUsable
 
         $foto = $uploadedFiles['foto'];
         $destino = "";
+        mkdir("nuevaCarpeta");
         $extension = explode("/",$foto->getClientMediaType());
         $ruta = $destino.$idMesa."-".$cliente.".".$extension[1];
         var_dump($ruta);
