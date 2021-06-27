@@ -1,10 +1,12 @@
 <?php
 require_once './models/Pedido.php';
 require_once './models/Producto.php';
+require_once './models/Mesa.php';
 require_once './interfaces/IApiUsable.php';
 
 use \App\Models\Pedido as Pedido;
 use \App\Models\Producto as Producto;
+use \App\Models\Mesa as Mesa;
 
 class PedidoController implements IApiUsable
 {
@@ -31,6 +33,11 @@ class PedidoController implements IApiUsable
         $nuevoPedido->mozo_id = $idMozo;
         $nuevoPedido->estado = "pendiente";
         $nuevoPedido->save();
+
+        $m = new Mesa();
+        $mesa = $m->find($idMesa);
+        $mesa->estado = "con cliente esperando pedido";
+        $mesa->save();
     
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
       } else {
@@ -67,6 +74,16 @@ class PedidoController implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+  public function TraerTodosPorPedido($request, $response, $args)
+  {
+    $lista = Pedido::all();
+    $payload = json_encode(array("listaPedido" => $lista));
+    $user->where('pedido',$pedido)->get();
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
   public function ModificarUno($request, $response, $args) //En Preparacion() Listo para servir() -> BARTENDER-CERVECERO-COCINERO 
   {
     $parametros = $request->getParsedBody();
@@ -83,7 +100,8 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
-      } else if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['idUsuarioRegistrado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
+      } else if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['idUsuarioRegistrado']) && 
+      ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
         $usuario_id = $parametros['idUsuarioRegistrado'];
@@ -95,8 +113,6 @@ class PedidoController implements IApiUsable
         $pedido->tiempo_aceptado = new DateTime("NOW");
         $pedido->tiempo_aceptado->format("Y-m-d H:i:s");
         $p = new Producto();
-        var_dump("p->producto_id ");
-        var_dump($pedido->producto_id);
         $producto = $p->find($pedido->producto_id);
         $demora = explode(":", $producto->demora);
         $now = new DateTime("NOW");
@@ -107,7 +123,8 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado en preparación"));
-      } else if(isset($parametros['id']) && isset($parametros['estado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="Listo para servir") {
+      } else if(isset($parametros['id']) && isset($parametros['estado']) && 
+      ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="Listo para servir") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
@@ -119,16 +136,26 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido seleccionado listo para servir"));        
-      } else if(isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="mozo" && $parametros['estado']=="Servido") {
+      } else if(isset($parametros['codigo_pedido']) && isset($parametros['estado']) && $accesoEmpleado=="mozo" && $parametros['estado']=="Servido") {
         $estado = $parametros['estado'];
-        $id = $parametros['id'];
-    
+        $codigo = $parametros['codigo_pedido'];
+
         $p = new Pedido();
-        $pedido = $p->find($id);
-        $pedido->estado = $estado;
-        $pedido->tiempo_entregado = new DateTime("NOW");
-        $pedido->tiempo_entregado->format("Y-m-d H:i:s");
-        $pedido->save();
+        $lista = $p->where('codigo_pedido',$codigo)->get();
+        var_dump($lista);
+        $now = new DateTime("NOW");
+        foreach($lista as $pedido) {
+          $pedido->estado = $estado;
+          $pedido->tiempo_entregado = $now;
+          $pedido->tiempo_entregado->format("Y-m-d H:i:s");
+          $pedido->save();
+        }
+
+
+        $m = new Mesa();
+        $mesa = $m->find($pedido->idMesa);
+        $mesa->estado = "con cliente comiendo";
+        $mesa->save();
     
         $payload = json_encode(array("mensaje" => "Pedido servido"));        
       }
