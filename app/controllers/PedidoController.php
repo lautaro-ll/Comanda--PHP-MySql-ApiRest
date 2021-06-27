@@ -31,7 +31,11 @@ class PedidoController implements IApiUsable
         $nuevoPedido->codigo_pedido = $codigoPedido;
         $nuevoPedido->mesa_id = $idMesa;
         $nuevoPedido->producto_id = $idProducto;
-        $nuevoPedido->precio = $precio;
+
+        $p = new Producto();
+        $producto = $p->find($idProducto);
+        $nuevoPedido->precio = $producto->precio;
+        
         $nuevoPedido->mozo_id = $idMozo;
         $nuevoPedido->estado = "pendiente";
         $nuevoPedido->save();
