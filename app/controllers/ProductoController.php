@@ -178,8 +178,8 @@ class ProductoController implements IApiUsable
     }
     fseek($f, 0);
     fpassthru($f);
-    //$response = $response->withHeader('Content-Type', 'application/csv');
-    return $response;//->withHeader('Content-Disposition', 'attachment; filename="export.csv";');
+    $response = $response->withHeader('Content-Type', 'application/csv');
+    return $response->withHeader('Content-Disposition', 'attachment; filename="export.csv";');
   }
 
   public function ExportarPdf($request, $response, $args)
