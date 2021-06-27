@@ -9,10 +9,10 @@ class EncuestaController implements IApiUsable
   public function CargarUno($request, $response, $args)
   {  
     $parametros = $request->getParsedBody();
-    if (isset($parametros['codigo-mesa']) && isset($parametros['codigo-pedido']) && isset($parametros['calif-mesa']) 
+    if (isset($parametros['codigo-mesa']) && isset($parametros['cliente']) && isset($parametros['calif-mesa']) 
     && isset($parametros['calif-resto']) && isset($parametros['calif-mozo']) && isset($parametros['calif-cocinero']) && isset($parametros['experiencia'])) {
       $codigoMesa = $parametros['codigo-mesa'];
-      $codigoPedido = $parametros['codigo-pedido'];
+      $cliente = $parametros['cliente'];
       $mesa = $parametros['calif-mesa'];
       $resto = $parametros['calif-resto'];
       $mozo = $parametros['calif-mozo'];
@@ -21,7 +21,7 @@ class EncuestaController implements IApiUsable
 
       $nuevaEncuesta = new Encuesta();
       $nuevaEncuesta->codigo_mesa = $codigoMesa;
-      $nuevaEncuesta->codigo_pedido = $codigoPedido;
+      $nuevaEncuesta->cliente = $cliente;
       $nuevaEncuesta->calif_mesa = $mesa;
       $nuevaEncuesta->calif_resto = $resto;
       $nuevaEncuesta->calif_mozo = $mozo;

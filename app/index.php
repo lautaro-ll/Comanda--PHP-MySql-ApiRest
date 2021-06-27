@@ -21,11 +21,11 @@ require_once './controllers/EncuestaController.php';
 require_once './middlewares/MWparaAutentificar.php';
 
 $app = AppFactory::create();
-
+/*
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-
+*/
 // Eloquent
 $container=$app->getContainer();
 
