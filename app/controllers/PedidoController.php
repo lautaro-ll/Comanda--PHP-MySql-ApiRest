@@ -25,6 +25,7 @@ class PedidoController implements IApiUsable
         $foto = $uploadedFiles['foto'];
         $destino = "./";
         $ruta = $destino.$idMesa."-".$cliente.".".$foto->getClientMediaType();
+        var_dump($ruta);
         if ($foto->getError() === UPLOAD_ERR_OK) {
           $foto->moveTo($ruta);
         }
