@@ -13,21 +13,37 @@ class PedidoController implements IApiUsable
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
+    $uploadedFiles = $request->getUploadedFiles();
+
     if(isset($parametros['accesoEmpleado']) && ($parametros['accesoEmpleado']=="socio") || ($parametros['accesoEmpleado']=="mozo")) {
-      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['idUsuarioRegistrado'])) {
+      if (isset($parametros['cliente']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['idUsuarioRegistrado'])) {
         $cliente = $parametros['cliente'];
-        $foto = $parametros['foto'];
         $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
         $idMozo = $parametros['idUsuarioRegistrado'];
 
+        $foto = $uploadedFiles['foto'];
+        $destino = "./";
+        $ruta = $destino.$idMesa."-".$cliente."-".$foto->getClientFilename();
+        if ($foto->getError() === UPLOAD_ERR_OK) {
+          $foto->moveTo($ruta);
+        }
+        
         $m = new Mesa();
         $mesa = $m->find($idMesa);
+        $lista = $m->all();
         $ok = false;
-      
+
         if ($mesa->estado == "con cliente comiendo" || $mesa->estado == "cerrada") {
-          $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          $nuevoCodigo = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+            $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $nuevoCodigo = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+            for($i=0;$i<sizeof($lista);$i++) {
+              if($lista[$i]->codigo_pedido == $nuevoCodigo) {
+                $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $nuevoCodigo = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+                $i=0;
+              }
+            }
           $mesa->codigo_pedido = $nuevoCodigo;
           $mesa->estado = "con cliente esperando pedido";
           $ok = true;
@@ -41,7 +57,7 @@ class PedidoController implements IApiUsable
   
           $nuevoPedido = new Pedido();
           $nuevoPedido->cliente = $cliente;
-          $nuevoPedido->foto = $foto;
+          $nuevoPedido->foto = $ruta;
           $nuevoPedido->codigo_pedido = $mesa->codigo_pedido;
           $nuevoPedido->mesa_id = $idMesa;
           $nuevoPedido->producto_id = $idProducto;
