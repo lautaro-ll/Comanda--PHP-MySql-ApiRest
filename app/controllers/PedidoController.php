@@ -96,8 +96,8 @@ class PedidoController implements IApiUsable
         $pedido->tiempo_aceptado->format("Y-m-d H:i:s");
         $p = new Producto();
         var_dump("p->mesa_id ");
-        var_dump($p->mesa_id);
-        $producto = $p->find($p->mesa_id);
+        var_dump($pedido->mesa_id);
+        $producto = $p->find($pedido->mesa_id);
         var_dump($producto);
         $demora = new DateTime($producto->demora);
         $now = new DateTime("NOW");
