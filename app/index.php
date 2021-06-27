@@ -24,7 +24,7 @@ $app = AppFactory::create();
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
+$dotenv->load();
 
 // Eloquent
 $container=$app->getContainer();
