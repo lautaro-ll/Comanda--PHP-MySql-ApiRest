@@ -120,7 +120,6 @@ class ProductoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      var_dump("accesoOK");
       
       if (isset($_FILES["archivo"])) {
         $file = $_FILES["archivo"];
@@ -179,7 +178,6 @@ class ProductoController implements IApiUsable
     }
     fseek($f, 0);
     fpassthru($f);
-    var_dump($lista);
     //$response = $response->withHeader('Content-Type', 'application/csv');
     return $response;//->withHeader('Content-Disposition', 'attachment; filename="export.csv";');
   }
