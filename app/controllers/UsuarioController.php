@@ -24,7 +24,7 @@ class UsuarioController implements IApiUsable
               $registro = new Acceso();
               $registro->usuario_id = $usuario->id;
               $registro->save();
-              $payload = json_encode($token);
+              $payload = json_encode(array("token" => $token));
               break;
             } else {
               $payload = json_encode(array("mensaje" => "Error en la clave"));
