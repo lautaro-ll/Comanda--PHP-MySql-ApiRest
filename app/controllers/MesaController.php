@@ -117,7 +117,7 @@ class MesaController implements IApiUsable
             $estado = $parametros['estado'];
             $accesoEmpleado = $parametros['accesoEmpleado'];
 
-            if($accesoEmpleado=="socio" || ($accesoEmpleado=="mozo" && ($estado=="con cliente esperando pedido" || $estado=="con cliente comiendo" || $estado=="con cliente pagando"))) {
+            if($accesoEmpleado=="socio" || ($accesoEmpleado=="mozo" && $estado=="con cliente pagando")) {
               $m = new Mesa();
               $mesa = $m->find($id);
               $mesa->estado = $estado;

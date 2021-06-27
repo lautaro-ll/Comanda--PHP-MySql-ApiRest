@@ -28,10 +28,6 @@ class PedidoController implements IApiUsable
         $ruta = $destino.$idMesa."-".$cliente.".".$extension[1];
         if ($foto->getError() === UPLOAD_ERR_OK) {
           $foto->moveTo($ruta);      
-          /*
-          $content = (string)$foto->getStream();
-          $resultado = file_put_contents($ruta, $content);
-          */
         }
         
         $m = new Mesa();
