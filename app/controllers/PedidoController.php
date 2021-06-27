@@ -23,12 +23,12 @@ class PedidoController implements IApiUsable
         $idMozo = $parametros['idUsuarioRegistrado'];
 
         $foto = $uploadedFiles['foto'];
-        $destino = "/app/app/";
+        $destino = "../usr/";
         $extension = explode("/",$foto->getClientMediaType());
         $ruta = $destino.$idMesa."-".$cliente.".".$extension[1];
         var_dump($ruta);
-        $foto->moveTo($ruta);
         if ($foto->getError() === UPLOAD_ERR_OK) {
+          $foto->moveTo($ruta);
         }
         
         $m = new Mesa();
