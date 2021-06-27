@@ -142,9 +142,9 @@ class PedidoController implements IApiUsable
         $p = new Producto();
         $producto = $p->find($pedido->producto_id);
         $demora = explode(":", $producto->demora);
-        $now = new DateTime("NOW");
-        $now->add(new DateInterval("PT".$demora[0]."H".$demora[1]."M".$demora[2]."S"));
-        $pedido->tiempo_estimado = $now;
+        $tiempo = new DateTime($pedido->tiempo_pedido);
+        $tiempo->add(new DateInterval("PT".$demora[0]."H".$demora[1]."M".$demora[2]."S"));
+        $pedido->tiempo_estimado = $tiempo;
         $pedido->tiempo_estimado->format("Y-m-d H:i:s");
 
         $pedido->save();
