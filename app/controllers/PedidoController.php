@@ -32,8 +32,10 @@ class PedidoController implements IApiUsable
       
           // Convert the stream to string
           $content = (string)$foto->getStream();
+          var_dump($content);
           // Save the content to file
-          file_put_contents($ruta, $content);
+          $resultado = file_put_contents($ruta, $content);
+          var_dump($resultado);
         }
         
         $m = new Mesa();
