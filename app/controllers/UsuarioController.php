@@ -20,9 +20,9 @@ class UsuarioController implements IApiUsable
           if ($usuario->alias == $usuarioIngresado) {
             if ($usuario->clave == $claveIngresada) {
               // Ej OK =>	user: "socio1", clave: "1234"
-              $token = AutentificadorJWT::CrearToken(array('alias' => $usuario->alias, 'nombre' => $usuario->nombre, 'cargo' => $usuario->cargo, 'id' => $usuario->id));
+              $token = AutentificadorJWT::CrearToken(array('alias' => $usuario->alias, 'nombre' => $usuario->nombre, 'cargo' => $usuario->cargo, 'id' => $usuario->id_usuarios));
               $registro = new Acceso();
-              $registro->usuario_id = $usuario->id;
+              $registro->usuario_id = $usuario->id_usuarios;
               $registro->save();
               $payload = json_encode(array("token" => $token));
               break;
