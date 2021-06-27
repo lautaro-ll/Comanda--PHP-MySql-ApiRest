@@ -23,27 +23,25 @@ class PedidoController implements IApiUsable
 
         $m = new Mesa();
         $mesa = $m->find($idMesa);
-
-        $ok=false;
-        if (isset($parametros['codigoPedido']) && $mesa->estado == "con cliente esperando pedido") {
-          $codigoPedido = $parametros['codigoPedido'];
-          $ok = true;
-        } 
-        else if ($mesa->estado == "con cliente comiendo" || $mesa->estado == "cerrada") {
+        $ok = true;
+      
+        if ($mesa->estado == "con cliente comiendo" || $mesa->estado == "cerrada") {
           $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
-          $ok = true;
+          $nuevoCodigo = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+          $mesa->codigo_pedido = $nuevoCodigo;
+          $mesa->estado = "con cliente esperando pedido";
         }
+        else if ($mesa->estado == "con cliente esperando pedido") {
+          $ok = false;
+        } 
 
         if($ok) {
-          $mesa->codigo_pedido = $codigoPedido;
-          $mesa->estado = "con cliente esperando pedido";
           $mesa->save();
   
           $nuevoPedido = new Pedido();
           $nuevoPedido->cliente = $cliente;
           $nuevoPedido->foto = $foto;
-          $nuevoPedido->codigo_pedido = $codigoPedido;
+          $nuevoPedido->codigo_pedido = $mesa->codigo_pedido;
           $nuevoPedido->mesa_id = $idMesa;
           $nuevoPedido->producto_id = $idProducto;
   
