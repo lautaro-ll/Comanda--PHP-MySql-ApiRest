@@ -9,7 +9,7 @@ class Encuesta extends Model
 {
     //use SoftDeletes;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_encuestas';
     protected $table = 'encuestas';
     public $incrementing = true;
     public $timestamps = false;

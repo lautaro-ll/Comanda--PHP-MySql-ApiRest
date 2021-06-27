@@ -9,7 +9,7 @@ class Acceso extends Model
 {
     //use SoftDeletes;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_accesos';
     protected $table = 'accesos';
     public $incrementing = true;
     public $timestamps = false;

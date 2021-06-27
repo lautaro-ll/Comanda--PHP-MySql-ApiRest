@@ -9,7 +9,7 @@ class Pedido extends Model
 {
     //use SoftDeletes;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_pedidos';
     protected $table = 'pedidos';
     public $incrementing = true;
     public $timestamps = false;

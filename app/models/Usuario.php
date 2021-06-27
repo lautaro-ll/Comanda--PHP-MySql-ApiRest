@@ -9,7 +9,7 @@ class Usuario extends Model
 {
     use SoftDeletes;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_usuarios';
     protected $table = 'usuarios';
     public $incrementing = true;
     //public $timestamps = false;

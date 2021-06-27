@@ -221,7 +221,7 @@ class PedidoController implements IApiUsable
   public function TraerPendientes($request, $response, $args)
   {
     $cargo = $args['cargo'];
-    $lista = Pedido::join('productos', 'productos.id', '=', 'pedidos.producto_id')
+    $lista = Pedido::join('productos', 'productos.id_productos', '=', 'pedidos.producto_id')
                 ->where('productos.tipo_usuario',$cargo)->get();
 
     $payload = json_encode(array("listaPedido" => $lista));
@@ -259,7 +259,7 @@ class PedidoController implements IApiUsable
         $desde = $parametros['desde'];
         $hasta = $parametros['hasta'];
 
-        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
@@ -305,8 +305,8 @@ class PedidoController implements IApiUsable
         $desde = $parametros['desde'];
         $hasta = $parametros['hasta'];
 
-        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
-        ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id')
+        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
+        ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id_usuarios')
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
         ->orderby('pedidos.usuario_id','DESC')
         ->orderby('productos.tipo_usuario','DESC')
@@ -367,8 +367,8 @@ class PedidoController implements IApiUsable
         $desde = $parametros['desde'];
         $hasta = $parametros['hasta'];
 
-        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
-                ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id')
+        $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
+                ->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id_usuarios')
                 ->whereBetween('tiempo_pedido', [$desde, $hasta])
                 ->orderby('usuario_id','DESC')
                 ->get();
@@ -422,7 +422,7 @@ public function MasVendido($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('producto_id','DESC')
               ->get();
@@ -481,7 +481,7 @@ public function MenosVendido($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('producto_id','DESC')
               ->get();
@@ -544,7 +544,7 @@ public function FueraDeTiempo($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->where('pedidos.tiempo_estimado', '<', 'pedidos.tiempo_finalizado')
               ->get();
@@ -572,7 +572,7 @@ public function Cancelados($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id')
+      $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->where('estado', '=', 'cancelado')
               ->get();
@@ -600,7 +600,7 @@ public function MesaMasUsada($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id_mesas')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
               ->get();
@@ -659,7 +659,7 @@ public function MesaMenosUsada($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id_mesas')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
               ->get();
@@ -722,7 +722,7 @@ public function MesaQueMasFacturo($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id_mesas')
               ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
@@ -783,7 +783,7 @@ public function MesaQueMenosFacturo($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id_mesas')
               ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('mesa_id','DESC')
@@ -847,7 +847,7 @@ public function MesaConMayorFactura($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id_mesas')
               ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('pedidos.codigo_pedido','DESC')
@@ -908,7 +908,7 @@ public function MesaConMenorFactura($request, $response, $args)
       $desde = $parametros['desde'];
       $hasta = $parametros['hasta'];
 
-      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id')
+      $lista = Pedido::join('mesas', 'pedidos.mesa_id', '=', 'mesas.id_mesas')
               ->where('pedidos.estado','=','servido')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->orderby('pedidos.codigo_pedido','DESC')

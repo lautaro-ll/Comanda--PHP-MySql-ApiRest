@@ -9,7 +9,7 @@ class Mesa extends Model
 {
     //use SoftDeletes;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_mesas';
     protected $table = 'mesas';
     public $incrementing = true;
     public $timestamps = false;
