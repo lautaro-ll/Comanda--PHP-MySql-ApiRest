@@ -12,9 +12,9 @@ class Acceso extends Model
     protected $primaryKey = 'id';
     protected $table = 'accesos';
     public $incrementing = true;
-    //public $timestamps = false;
+    public $timestamps = false;
 
-    const CREATED_AT = 'horario';
+    //const CREATED_AT = 'horario';
 
     protected $fillable = [
         'usuario_id'
