@@ -20,7 +20,7 @@ class PedidoController implements IApiUsable
         $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
         $idMozo = $parametros['idUsuarioRegistrado'];
-// no permitir crear un pedido nuevo si no está resuelto el pendiente.
+
         $m = new Mesa();
         $mesa = $m->find($idMesa);
 
@@ -29,7 +29,7 @@ class PedidoController implements IApiUsable
           $codigoPedido = $parametros['codigoPedido'];
           $ok = true;
         } 
-        else if ($mesa->estado = "con cliente comiendo" || $mesa->estado = "cerrada"){
+        else if ($mesa->estado = "con cliente comiendo" || $mesa->estado = "cerrada") {
           $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
           $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
           $ok = true;
