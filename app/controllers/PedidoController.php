@@ -20,37 +20,47 @@ class PedidoController implements IApiUsable
         $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
         $idMozo = $parametros['idUsuarioRegistrado'];
-
-        if (isset($parametros['codigoPedido'])) {
-          $codigoPedido = $parametros['codigoPedido'];
-        } 
-        else {
-          $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
-        }
-
-        $nuevoPedido = new Pedido();
-        $nuevoPedido->cliente = $cliente;
-        $nuevoPedido->foto = $foto;
-        $nuevoPedido->codigo_pedido = $codigoPedido;
-        $nuevoPedido->mesa_id = $idMesa;
-        $nuevoPedido->producto_id = $idProducto;
-
-        $p = new Producto();
-        $producto = $p->find($idProducto);
-        $nuevoPedido->precio = $producto->precio;
-
-        $nuevoPedido->mozo_id = $idMozo;
-        $nuevoPedido->estado = "pendiente";
-        $nuevoPedido->save();
-
+// no permitir crear un pedido nuevo si no está resuelto el pendiente.
         $m = new Mesa();
         $mesa = $m->find($idMesa);
-        $mesa->codigo_pedido = $codigoPedido;
-        $mesa->estado = "con cliente esperando pedido";
-        $mesa->save();
-    
-        $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+
+        $ok=false;
+        if (isset($parametros['codigoPedido']) && $mesa->estado = "con cliente esperando pedido") {
+          $codigoPedido = $parametros['codigoPedido'];
+          $ok = true;
+        } 
+        else if ($mesa->estado = "con cliente comiendo" || $mesa->estado = "cerrada"){
+          $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
+          $ok = true;
+        }
+
+        if($ok) {
+          $mesa->codigo_pedido = $codigoPedido;
+          $mesa->estado = "con cliente esperando pedido";
+          $mesa->save();
+  
+          $nuevoPedido = new Pedido();
+          $nuevoPedido->cliente = $cliente;
+          $nuevoPedido->foto = $foto;
+          $nuevoPedido->codigo_pedido = $codigoPedido;
+          $nuevoPedido->mesa_id = $idMesa;
+          $nuevoPedido->producto_id = $idProducto;
+  
+          $p = new Producto();
+          $producto = $p->find($idProducto);
+          $nuevoPedido->precio = $producto->precio;
+  
+          $nuevoPedido->mozo_id = $idMozo;
+          $nuevoPedido->estado = "pendiente";
+          $nuevoPedido->save();
+  
+      
+          $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+        }
+        else {
+          $payload = json_encode(array("mensaje" => "Codigo inexistente o Falta resolver un pedido anterior"));
+        }
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
       }
