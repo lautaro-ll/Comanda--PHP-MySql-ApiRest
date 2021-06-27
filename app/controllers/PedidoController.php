@@ -153,7 +153,7 @@ class PedidoController implements IApiUsable
 
 
         $m = new Mesa();
-        $mesa = $m->find($pedido->idMesa);
+        $mesa = $m->find($lista[0]->idMesa);
         $mesa->estado = "con cliente comiendo";
         $mesa->save();
     
