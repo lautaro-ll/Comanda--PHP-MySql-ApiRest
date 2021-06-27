@@ -63,9 +63,9 @@ class EncuestaController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && $parametros['accesoEmpleado']=="socio") {
-      if (isset($parametros['id']) && isset($parametros['codigoMesa']) && isset($parametros['codigoPedido']) && isset($parametros['mesa']) && isset($parametros['resto']) && isset($parametros['mozo']) && isset($parametros['cocinero']) && isset($parametros['experiencia']) && isset($parametros['id'])) {
+      if (isset($parametros['id']) && isset($parametros['codigo-mesa']) && isset($parametros['cliente']) && isset($parametros['calif-mesa']) && isset($parametros['calif-resto']) && isset($parametros['calif-mozo']) && isset($parametros['calif-cocinero']) && isset($parametros['experiencia']) && isset($parametros['id'])) {
       $codigoMesa = $parametros['codigo-mesa'];
-      $codigoPedido = $parametros['codigo-pedido'];
+      $cliente = $parametros['cliente'];
       $mesa = $parametros['calif-mesa'];
       $resto = $parametros['calif-resto'];
       $mozo = $parametros['calif-mozo'];
@@ -76,7 +76,7 @@ class EncuestaController implements IApiUsable
       $e = new Encuesta();
       $encuesta = $e->find($id);
       $encuesta->codigo_mesa = $codigoMesa;
-      $encuesta->codigo_pedido = $codigoPedido;
+      $encuesta->cliente = $cliente;
       $encuesta->calif_mesa = $mesa;
       $encuesta->calif_resto = $resto;
       $encuesta->calif_mozo = $mozo;
