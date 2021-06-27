@@ -14,14 +14,16 @@ class PedidoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && ($parametros['accesoEmpleado']=="socio") || ($parametros['accesoEmpleado']=="mozo")) {
-      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['codigoPedido']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idUsuarioRegistrado'])) {
+      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idUsuarioRegistrado'])) {
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
-        $codigoPedido = $parametros['codigoPedido'];
         $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
         $precio = $parametros['precio'];
         $idMozo = $parametros['idUsuarioRegistrado'];
+        
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
 
         $nuevoPedido = new Pedido();
         $nuevoPedido->cliente = $cliente;
@@ -36,6 +38,7 @@ class PedidoController implements IApiUsable
 
         $m = new Mesa();
         $mesa = $m->find($idMesa);
+        $mesa->codigo_pedido = $codigoPedido;
         $mesa->estado = "con cliente esperando pedido";
         $mesa->save();
     
@@ -69,16 +72,6 @@ class PedidoController implements IApiUsable
     $lista = Pedido::all();
     $payload = json_encode(array("listaPedido" => $lista));
 
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
-  }
-
-  public function TraerTodosPorPedido($request, $response, $args)
-  {
-    $lista = Pedido::all();
-    $payload = json_encode(array("listaPedido" => $lista));
-    $user->where('pedido',$pedido)->get();
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
@@ -150,7 +143,6 @@ class PedidoController implements IApiUsable
           $pedido->save();
         }
 
-        var_dump($lista[0]->mesa_id);
         $m = new Mesa();
         $mesa = $m->find($lista[0]->mesa_id);
         $mesa->estado = "con cliente comiendo";
