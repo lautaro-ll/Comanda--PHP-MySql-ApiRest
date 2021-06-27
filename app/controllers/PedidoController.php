@@ -14,12 +14,11 @@ class PedidoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && ($parametros['accesoEmpleado']=="socio") || ($parametros['accesoEmpleado']=="mozo")) {
-      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idUsuarioRegistrado'])) {
+      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['idUsuarioRegistrado'])) {
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
         $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
-        $precio = $parametros['precio'];
         $idMozo = $parametros['idUsuarioRegistrado'];
         
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -35,7 +34,7 @@ class PedidoController implements IApiUsable
         $p = new Producto();
         $producto = $p->find($idProducto);
         $nuevoPedido->precio = $producto->precio;
-        
+
         $nuevoPedido->mozo_id = $idMozo;
         $nuevoPedido->estado = "pendiente";
         $nuevoPedido->save();
