@@ -76,6 +76,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/u/{id}', \PedidoController::class . ':TraerUno');
   $group->get('/pendientes/{cargo}', \PedidoController::class . ':TraerPendientes'); //TraerPedidosPendientesSegunTipoUsuario() -> BARTENDER-CERVECERO-COCINERO
+  $group->get('/tiempo/{pedido}', \PedidoController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
   $group->post('[/]', \PedidoController::class . ':CargarUno'); //GenerarPedido ->MOZO
   $group->post('/estado', \PedidoController::class . ':ModificarUno'); //PedidoListo() /  TomarPedido() -> BARTENDER-CERVECERO-COCINERO //CancelarPedido -> MOZO
   $group->post('/consulta/operaciones', \PedidoController::class . ':OperacionesPorSector');
@@ -96,8 +97,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
 
 $app->group('/encuestas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \EncuestaController::class . ':TraerTodos');
-  $group->get('/tiempo/{pedido}', \EncuestaController::class . ':TraerTiempo'); // TraerTiempoRestante(codigo-pedido) -> "tiempo-estimado" - "tiempo-actual" -> CLIENTE
-  $group->post('/nueva/{pedido}', \EncuestaController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
+  $group->post('[/]', \EncuestaController::class . ':CargarUno'); // CargarEncuesta() -> CLIENTE
   $group->post('/consulta/mejorescomentarios', \EncuestaController::class . ':MejoresComentarios');
   $group->post('/consulta/peorescomentarios', \EncuestaController::class . ':PeoresComentarios');
 
