@@ -27,16 +27,10 @@ class PedidoController implements IApiUsable
         mkdir("nuevaCarpeta");
         $extension = explode("/",$foto->getClientMediaType());
         $ruta = $destino.$idMesa."-".$cliente.".".$extension[1];
-        var_dump($ruta);
         if ($foto->getError() === UPLOAD_ERR_OK) {
-          //$foto->moveTo($ruta);
-      
-          // Convert the stream to string
+          //$foto->moveTo($ruta);      
           $content = (string)$foto->getStream();
-          var_dump($content);
-          // Save the content to file
           $resultado = file_put_contents($ruta, $content);
-          var_dump($resultado);
         }
         
         $m = new Mesa();
