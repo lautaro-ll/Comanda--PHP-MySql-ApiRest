@@ -98,14 +98,9 @@ class PedidoController implements IApiUsable
         var_dump("p->producto_id ");
         var_dump($pedido->producto_id);
         $producto = $p->find($pedido->producto_id);
-        $demora = explode(":", $producto->demora); //new DateTime($producto->demora);
+        $demora = explode(":", $producto->demora);
         $now = new DateTime("NOW");
         $now->add(new DateInterval("PT".$demora[0]."H".$demora[1]."M".$demora[2]."S"));
-        var_dump("Demora ");
-        var_dump($demora);
-        var_dump("Suma ");
-        var_dump($now);
-
         $pedido->tiempo_estimado = $now;
         $pedido->tiempo_estimado->format("Y-m-d H:i:s");
 
