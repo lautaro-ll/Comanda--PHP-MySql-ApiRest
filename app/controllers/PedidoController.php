@@ -1,8 +1,10 @@
 <?php
 require_once './models/Pedido.php';
+require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
 
 use \App\Models\Pedido as Pedido;
+use \App\Models\Producto as Producto;
 
 class PedidoController implements IApiUsable
 {
@@ -10,14 +12,14 @@ class PedidoController implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado']) && ($parametros['accesoEmpleado']=="socio") || ($parametros['accesoEmpleado']=="mozo")) {
-      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['codigoPedido']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idMozo'])) {
+      if (isset($parametros['cliente']) && isset($parametros['foto']) && isset($parametros['codigoPedido']) && isset($parametros['idMesa']) && isset($parametros['idProducto']) && isset($parametros['precio']) && isset($parametros['idUsuarioRegistrado'])) {
         $cliente = $parametros['cliente'];
         $foto = $parametros['foto'];
         $codigoPedido = $parametros['codigoPedido'];
-        $idMesa = $parametros['idMesa'];
+        $idMesa = $parametros['idMesa']; 
         $idProducto = $parametros['idProducto'];
         $precio = $parametros['precio'];
-        $idMozo = $parametros['idMozo'];
+        $idMozo = $parametros['idUsuarioRegistrado'];
 
         $nuevoPedido = new Pedido();
         $nuevoPedido->cliente = $cliente;
@@ -81,10 +83,10 @@ class PedidoController implements IApiUsable
         $pedido->save();
     
         $payload = json_encode(array("mensaje" => "Pedido cancelado con exito"));
-      } else if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['usuario_id']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
+      } else if (isset($parametros['id']) && isset($parametros['estado']) && isset($parametros['idUsuarioRegistrado']) && ($accesoEmpleado=="bartender" || $accesoEmpleado=="cervecero" || $accesoEmpleado=="cocinero") && $parametros['estado']=="En preparacion") {
         $estado = $parametros['estado'];
         $id = $parametros['id'];
-        $usuario_id = $parametros['usuario_id'];
+        $usuario_id = $parametros['idUsuarioRegistrado'];
     
         $p = new Pedido();
         $pedido = $p->find($id);
@@ -92,7 +94,17 @@ class PedidoController implements IApiUsable
         $pedido->usuario_id = $usuario_id;
         $pedido->tiempo_aceptado = new DateTime("NOW");
         $pedido->tiempo_aceptado->format("Y-m-d H:i:s");
-        $pedido->tiempo_estimado = new DateTime("NOW");
+        $p = new Producto();
+        $producto = $p->find($p->mesa_id);
+        $demora = new DateTime($producto->demora);
+        $now = new DateTime("NOW");
+        $now->add(new DateInterval($demora));
+        var_dump("Demora ");
+        var_dump($demora);
+        var_dump("Suma ");
+        var_dump($now);
+
+        $pedido->tiempo_estimado = $now;
         $pedido->tiempo_estimado->format("Y-m-d H:i:s");
 
         $pedido->save();
