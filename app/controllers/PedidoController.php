@@ -25,11 +25,11 @@ class PedidoController implements IApiUsable
         $mesa = $m->find($idMesa);
 
         $ok=false;
-        if (isset($parametros['codigoPedido']) && $mesa->estado = "con cliente esperando pedido") {
+        if (isset($parametros['codigoPedido']) && $mesa->estado == "con cliente esperando pedido") {
           $codigoPedido = $parametros['codigoPedido'];
           $ok = true;
         } 
-        else if ($mesa->estado = "con cliente comiendo" || $mesa->estado = "cerrada") {
+        else if ($mesa->estado == "con cliente comiendo" || $mesa->estado == "cerrada") {
           $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
           $codigoPedido = substr(str_shuffle($permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars.$permitted_chars),0,5);
           $ok = true;
