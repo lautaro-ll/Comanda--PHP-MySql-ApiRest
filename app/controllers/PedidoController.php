@@ -142,7 +142,6 @@ class PedidoController implements IApiUsable
 
         $p = new Pedido();
         $lista = $p->where('codigo_pedido',$codigo)->get();
-        var_dump($lista);
         $now = new DateTime("NOW");
         foreach($lista as $pedido) {
           $pedido->estado = $estado;
@@ -151,9 +150,9 @@ class PedidoController implements IApiUsable
           $pedido->save();
         }
 
-
+        var_dump($lista[0]->mesa_id);
         $m = new Mesa();
-        $mesa = $m->find($lista[0]->idMesa);
+        $mesa = $m->find($lista[0]->mesa_id);
         $mesa->estado = "con cliente comiendo";
         $mesa->save();
     
