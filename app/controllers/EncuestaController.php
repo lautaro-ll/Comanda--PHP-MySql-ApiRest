@@ -28,7 +28,7 @@ class EncuestaController implements IApiUsable
       $nuevaEncuesta->experiencia = $experiencia;
       $nuevaEncuesta->save();
   
-      $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+      $payload = json_encode(array("mensaje" => "Encuesta cargada con exito"));
     } else {
       $payload = json_encode(array("mensaje" => "Faltan datos"));
     }
@@ -84,7 +84,7 @@ class EncuestaController implements IApiUsable
       $encuesta->experiencia = $experiencia;
       $encuesta->save();
 
-        $payload = json_encode(array("mensaje" => "Mesa modificado con exito"));
+        $payload = json_encode(array("mensaje" => "Encuesta modificada con exito"));
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
       }
@@ -105,7 +105,7 @@ class EncuestaController implements IApiUsable
       $e = new Encuesta();
       $e->find($id)->delete;
     
-        $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
+        $payload = json_encode(array("mensaje" => "Encuesta borrada con exito"));
       } else {
         $payload = json_encode(array("mensaje" => "Faltan datos"));
       }
