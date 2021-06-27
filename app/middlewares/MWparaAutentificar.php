@@ -22,8 +22,6 @@ class MWparaAutentificar
 				try {
 					AutentificadorJWT::verificarToken($token);
 					$payload = AutentificadorJWT::ObtenerData($token);
-					var_dump("payload ");
-						var_dump($payload);
 					if (isset($payload->cargo)) 
 					{
 						$parsedBody = $request->getParsedBody();
@@ -43,8 +41,6 @@ class MWparaAutentificar
 							$parsedBody["accesoEmpleado"] = "mozo";
 						}
 						$parsedBody["idUsuarioRegistrado"] = $payload->id;
-						var_dump("parsedBody ");
-						var_dump($parsedBody);
 						$request = $request->withParsedBody($parsedBody);
 						$response = $handler->handle($request);
 
