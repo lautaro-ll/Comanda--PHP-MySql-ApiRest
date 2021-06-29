@@ -153,6 +153,8 @@ class ProductoController implements IApiUsable
                 $nuevoProducto->producto = $datos[1];
                 $nuevoProducto->tipo_usuario = $datos[2];
                 $nuevoProducto->precio = $datos[3];
+                $nuevoProducto->demora = $datos[3];
+
               }
               $listado[$i] = $nuevoProducto;
               $i++;
@@ -170,7 +172,7 @@ class ProductoController implements IApiUsable
     $lista = Producto::all()->toArray();;
 
     $f = fopen('php://memory', 'w'); 
-    $titulo = array('id','tipo', 'producto', 'tipo_usuario', 'precio', 'tiempo_estimado');
+    $titulo = array('id_productos','tipo', 'producto', 'tipo_usuario', 'precio', 'demora');
     fputcsv($f, $titulo, ";"); 
 
     foreach ($lista as $line) { 
@@ -179,7 +181,7 @@ class ProductoController implements IApiUsable
     fseek($f, 0);
     fpassthru($f);
     $response = $response->withHeader('Content-Type', 'application/csv');
-    return $response->withHeader('Content-Disposition', 'attachment; filename="export.csv";');
+    return $response->withHeader('Content-Disposition', 'attachment; filename="productos.csv";');
   }
 
   public function ExportarPdf($request, $response, $args)
@@ -220,6 +222,7 @@ class ProductoController implements IApiUsable
           $stringHTML .= "<li>".$producto["producto"]."</li>";
           $stringHTML .= "<li>".$producto["tipo_usuario"]."</li>";
           $stringHTML .= "<li>".$producto["precio"]."</li>";
+          $stringHTML .= "<li>".$producto["demora"]."</li>";
           $stringHTML .= "</ul>";
           $stringHTML .= "<br>";
         }
