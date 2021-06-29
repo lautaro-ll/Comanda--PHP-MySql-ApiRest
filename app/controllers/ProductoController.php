@@ -124,6 +124,7 @@ class ProductoController implements IApiUsable
       if (isset($_FILES["archivo"])) {
         $file = $_FILES["archivo"];
         $lista = ProductoController::RetornarArrayDelCSV($file["tmp_name"]);
+        var_dump($lista);
         for($i=0;$i<sizeof($lista);$i++) {
           $lista[$i]->save();
         }
