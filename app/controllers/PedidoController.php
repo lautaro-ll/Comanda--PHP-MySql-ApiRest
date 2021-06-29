@@ -263,6 +263,7 @@ class PedidoController implements IApiUsable
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
+        var_dump($lista);
         if(isset($lista)) {
           $cargo = $lista[0]["tipo_usuario"];
           $c=0;
@@ -548,6 +549,7 @@ public function FueraDeTiempo($request, $response, $args)
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->where('pedidos.tiempo_estimado', '<', 'pedidos.tiempo_finalizado')
               ->wherenotnull('pedidos.tiempo_finalizado')
+              ->wherenotnull('pedidos.tiempo_estimado')
               ->get();
 
         $payload = json_encode(array("Lista:" => $lista));
