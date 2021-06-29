@@ -576,7 +576,7 @@ public function Cancelados($request, $response, $args)
 
       $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
-              ->where('estado', '=', 'cancelado')
+              ->where('estado', '=', 'Cancelado')
               ->get();
 
         $payload = json_encode(array("Lista:" => $lista));
