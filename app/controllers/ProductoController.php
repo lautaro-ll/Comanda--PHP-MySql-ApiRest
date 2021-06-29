@@ -124,7 +124,6 @@ class ProductoController implements IApiUsable
       if (isset($_FILES["archivo"])) {
         $file = $_FILES["archivo"];
         $lista = ProductoController::RetornarArrayDelCSV($file["tmp_name"]);
-        var_dump($lista);
         for($i=0;$i<sizeof($lista);$i++) {
           $lista[$i]->save();
         }
@@ -147,9 +146,9 @@ class ProductoController implements IApiUsable
   {
     $listado = array();
       if(($archivo = fopen($file_name,"r")) !== FALSE) {
-          $i = -1;
+          $i = 0;
           while (($datos = fgetcsv($archivo, 1000, ";")) !== FALSE) {
-              if(count($datos)==5 && $i!=-1) {
+              if(count($datos)==5) {
                 $nuevoProducto = new Producto();
                 $nuevoProducto->tipo = $datos[0];
                 $nuevoProducto->producto = $datos[1];
