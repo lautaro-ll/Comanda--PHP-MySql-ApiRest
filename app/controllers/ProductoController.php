@@ -158,6 +158,9 @@ class ProductoController implements IApiUsable
                 $nuevoProducto->demora = $datos[4];
                 $listado[$i] = $nuevoProducto;
               }
+              else {
+                break;
+              }
               $i++;
           } 
           fclose($archivo);
