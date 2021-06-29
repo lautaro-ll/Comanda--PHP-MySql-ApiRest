@@ -144,6 +144,7 @@ class ProductoController implements IApiUsable
 
   static function RetornarArrayDelCSV($file_name)
   {
+    $listado = array();
       if(($archivo = fopen($file_name,"r")) !== FALSE) {
           $i = 0;
           while (($datos = fgetcsv($archivo, 1000, ",")) !== FALSE) {
