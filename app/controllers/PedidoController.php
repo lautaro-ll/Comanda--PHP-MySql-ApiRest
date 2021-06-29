@@ -547,6 +547,7 @@ public function FueraDeTiempo($request, $response, $args)
       $lista = Pedido::join('productos', 'pedidos.producto_id', '=', 'productos.id_productos')
               ->whereBetween('tiempo_pedido', [$desde, $hasta])
               ->where('pedidos.tiempo_estimado', '<', 'pedidos.tiempo_finalizado')
+              ->where('NULL', '<>', 'pedidos.tiempo_finalizado')
               ->get();
 
         $payload = json_encode(array("Lista:" => $lista));
