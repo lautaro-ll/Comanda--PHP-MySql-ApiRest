@@ -157,8 +157,8 @@ class ProductoController implements IApiUsable
                 $nuevoProducto->precio = $datos[3];
                 $nuevoProducto->demora = $datos[4];
                 $listado[$i] = $nuevoProducto;
-                $i++;
               }
+              $i++;
           } 
           fclose($archivo);
           return $listado;
