@@ -122,7 +122,6 @@ class PedidoController implements IApiUsable
     
         $p = new Pedido();
         $pedido = $p->find($id);
-        $pedido->obtenerPedido($id);
         $pedido->estado = $estado;
         $pedido->save();
     
