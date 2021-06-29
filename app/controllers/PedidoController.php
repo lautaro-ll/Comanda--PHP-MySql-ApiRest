@@ -263,7 +263,7 @@ class PedidoController implements IApiUsable
         ->whereBetween('tiempo_pedido', [$desde, $hasta])
         ->orderby('productos.tipo_usuario','DESC')
         ->get();
-        var_dump($lista);
+
         if(isset($lista)) {
           $cargo = $lista[0]["tipo_usuario"];
           $c=0;
