@@ -116,7 +116,7 @@ class PedidoController implements IApiUsable
     $parametros = $request->getParsedBody();
     if(isset($parametros['accesoEmpleado'])) { //CUALQUIER EMPLEADO ES VALIDO
       $accesoEmpleado = $parametros['accesoEmpleado'];
-      if (isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="mozo" && $parametros['estado']=="Cancelar") { //CancelarPedido -> MOZO
+      if (isset($parametros['id']) && isset($parametros['estado']) && $accesoEmpleado=="mozo" && $parametros['estado']=="Cancelado") { //CancelarPedido -> MOZO
         $estado = $parametros['estado'];
         $id = $parametros['id'];
     
